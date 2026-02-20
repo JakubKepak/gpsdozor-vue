@@ -75,25 +75,29 @@ watch(
   },
 )
 
-// Focus on selected vehicle
+// Focus on selected vehicle (watches all deps so it works on page reload too)
 const prevFocusCode = ref<string | null>(null)
-watch(selectedCode, (code) => {
-  if (!code || code === prevFocusCode.value) return
-  prevFocusCode.value = code
+watch(
+  [selectedCode, vehicleList, () => mapRef.value?.ready],
+  ([code, list, ready]) => {
+    if (!code || !ready || code === prevFocusCode.value) return
 
-  const vehicle = vehicleList.value.find((v) => v.Code === code)
-  if (!vehicle) return
+    const vehicle = list.find((v) => v.Code === code)
+    if (!vehicle) return
 
-  const lat = parseFloat(vehicle.LastPosition.Latitude)
-  const lng = parseFloat(vehicle.LastPosition.Longitude)
-  if (isNaN(lat) || isNaN(lng)) return
+    prevFocusCode.value = code
 
-  const map = mapRef.value?.map
-  if (map) {
-    map.panTo({ lat, lng })
-    map.setZoom(14)
-  }
-})
+    const lat = parseFloat(vehicle.LastPosition.Latitude)
+    const lng = parseFloat(vehicle.LastPosition.Longitude)
+    if (isNaN(lat) || isNaN(lng)) return
+
+    const map = mapRef.value?.map
+    if (map) {
+      map.panTo({ lat, lng })
+      map.setZoom(14)
+    }
+  },
+)
 
 // Speed-colored polyline
 useSpeedPolyline(mapRef, positions)
