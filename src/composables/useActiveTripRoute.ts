@@ -4,8 +4,8 @@ import { useTrips, usePositionHistory } from '@/api/composables'
 import type { Trip } from '@/types/api'
 
 export function useActiveTripRoute(vehicleCode: MaybeRef<string | null>) {
-  const startOfDay = dayjs().startOf('day').format('YYYY-MM-DDTHH:mm:ss')
-  const endOfDay = dayjs().endOf('day').format('YYYY-MM-DDTHH:mm:ss')
+  const startOfDay = computed(() => dayjs().startOf('day').format('YYYY-MM-DDTHH:mm:ss'))
+  const endOfDay = computed(() => dayjs().endOf('day').format('YYYY-MM-DDTHH:mm:ss'))
 
   const code = computed(() => toValue(vehicleCode) ?? '')
 

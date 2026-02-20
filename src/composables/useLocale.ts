@@ -6,7 +6,6 @@ export function useLocale() {
 
   function changeLocale(newLocale: string) {
     locale.value = newLocale
-    localStorage.setItem('locale', newLocale)
   }
 
   watch(locale, (val) => {

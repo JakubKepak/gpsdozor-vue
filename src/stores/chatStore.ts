@@ -19,12 +19,23 @@ export function provideChatStore() {
   const { locale } = useLocale()
   const { t } = useI18n()
   const getFleetContext = useFleetContext()
+  const MAX_MESSAGES = 100
+  const MAX_INPUT_LENGTH = 2000
   let abortController: AbortController | null = null
 
+  function trimMessages() {
+    if (messages.value.length > MAX_MESSAGES) {
+      messages.value = messages.value.slice(-MAX_MESSAGES)
+    }
+  }
+
   async function sendMessage(text: string) {
+    const trimmed = text.trim().slice(0, MAX_INPUT_LENGTH)
+    if (!trimmed) return
+
     const userMsg: ChatMessage = {
       role: 'user',
-      content: text,
+      content: trimmed,
       timestamp: new Date().toISOString(),
     }
 
@@ -53,7 +64,7 @@ export function provideChatStore() {
           fleetContext: getFleetContext(),
           locale: locale.value,
         }),
-        signal: abortController.signal,
+        signal: AbortSignal.any([abortController.signal, AbortSignal.timeout(30_000)]),
       })
 
       if (!resp.ok) {
@@ -92,6 +103,8 @@ export function provideChatStore() {
       ]
     } finally {
       isLoading.value = false
+      abortController = null
+      trimMessages()
     }
   }
 

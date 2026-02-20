@@ -23,6 +23,7 @@ async function fetchInsights(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ module, data, locale }),
+    signal: AbortSignal.timeout(30_000),
   })
   if (!response.ok) {
     throw new Error(`AI insight error: ${response.status}`)

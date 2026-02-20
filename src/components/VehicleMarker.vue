@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { CustomMarker, InfoWindow } from 'vue3-google-map'
 import type { Vehicle } from '@/types/api'
 import { getEffectiveSpeed } from '@/utils/vehicle'
@@ -12,6 +13,8 @@ const { vehicle, selected = false } = defineProps<{
 const emit = defineEmits<{
   select: [code: string | null]
 }>()
+
+const { t } = useI18n()
 
 const markerRef = ref()
 
@@ -27,8 +30,8 @@ const bgClass = computed(() => {
 
 const statusLabel = computed(() => {
   if (speed.value > 0) return `${speed.value} km/h`
-  if (vehicle.IsActive) return 'Parked'
-  return 'Offline'
+  if (vehicle.IsActive) return t('liveMap.parked')
+  return t('liveMap.offline')
 })
 
 const infoWindowOptions = computed(() => ({
