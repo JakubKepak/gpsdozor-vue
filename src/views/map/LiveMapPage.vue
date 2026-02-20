@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { GoogleMap, CustomMarker } from 'vue3-google-map'
 import { EnvironmentOutlined } from '@ant-design/icons-vue'
@@ -8,30 +7,16 @@ import dayjs from 'dayjs'
 import { useGroups, useVehicles } from '@/api/composables'
 import { useActiveTripRoute } from '@/composables/useActiveTripRoute'
 import { useSpeedPolyline } from '@/composables/useSpeedPolyline'
+import { useQueryParam } from '@/composables/useQueryParam'
 import VehicleMarker from '@/components/VehicleMarker.vue'
 import VehicleListPanel from '@/views/map/VehicleListPanel.vue'
 
 const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 
-const route = useRoute()
-const router = useRouter()
 const { t } = useI18n()
 
 // --- URL state ---
-const selectedCode = computed(() => {
-  const raw = route.query.vehicle
-  return (Array.isArray(raw) ? raw[0] : raw) ?? null
-})
-
-function setSelectedCode(code: string | null) {
-  const query = { ...route.query }
-  if (code) {
-    query.vehicle = code
-  } else {
-    delete query.vehicle
-  }
-  router.replace({ query })
-}
+const { value: selectedCode, set: setSelectedCode } = useQueryParam('vehicle')
 
 const panelCollapsed = ref(false)
 
@@ -76,34 +61,31 @@ watch(
 )
 
 // Focus on selected vehicle (watches all deps so it works on page reload too)
-const prevFocusCode = ref<string | null>(null)
-watch(
-  [selectedCode, vehicleList, () => mapRef.value?.ready],
-  ([code, list, ready]) => {
-    if (!code || !ready || code === prevFocusCode.value) return
+const prevFocusCode = ref('')
+watch([selectedCode, vehicleList, () => mapRef.value?.ready], ([code, list, ready]) => {
+  if (!code || !ready || code === prevFocusCode.value) return
 
-    const vehicle = list.find((v) => v.Code === code)
-    if (!vehicle) return
+  const vehicle = list.find((v) => v.Code === code)
+  if (!vehicle) return
 
-    prevFocusCode.value = code
+  prevFocusCode.value = code
 
-    const lat = parseFloat(vehicle.LastPosition.Latitude)
-    const lng = parseFloat(vehicle.LastPosition.Longitude)
-    if (isNaN(lat) || isNaN(lng)) return
+  const lat = parseFloat(vehicle.LastPosition.Latitude)
+  const lng = parseFloat(vehicle.LastPosition.Longitude)
+  if (isNaN(lat) || isNaN(lng)) return
 
-    const map = mapRef.value?.map
-    if (map) {
-      map.panTo({ lat, lng })
-      map.setZoom(14)
-    }
-  },
-)
+  const map = mapRef.value?.map
+  if (map) {
+    map.panTo({ lat, lng })
+    map.setZoom(14)
+  }
+})
 
 // Speed-colored polyline
 useSpeedPolyline(mapRef, positions)
 
 function onMarkerSelect(code: string | null) {
-  setSelectedCode(code)
+  setSelectedCode(code ?? '')
 }
 
 function onPanelSelectVehicle(code: string) {

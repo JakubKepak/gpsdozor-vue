@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Alert, DatePicker, Select, Row, Col } from 'ant-design-vue'
 import {
@@ -12,6 +11,7 @@ import {
 import dayjs, { type Dayjs } from 'dayjs'
 import { useGroups, useVehicles, useAllVehicleTrips } from '@/api/composables'
 import type { TripWithVehicle } from '@/api/composables/useAllVehicleTrips'
+import { useQueryParam, useSetQueryParams } from '@/composables/useQueryParam'
 import StatCard from '@/components/StatCard.vue'
 import AIInsightsButton from '@/components/AIInsightsButton.vue'
 import InsightCards from '@/components/InsightCards.vue'
@@ -23,37 +23,20 @@ const MAX_RANGE_DAYS = 30
 const DATE_FORMAT = 'YYYY-MM-DD'
 const n = (v: unknown): number => Number(v) || 0
 
-const route = useRoute()
-const router = useRouter()
 const { t } = useI18n()
 
 const showInsights = ref(false)
 
-// --- URL state helpers ---
-function getQueryParam(key: string): string {
-  const raw = route.query[key]
-  if (Array.isArray(raw)) return raw[0] ?? ''
-  return raw ?? ''
-}
-
-function setQueryParams(params: Record<string, string | undefined>) {
-  const query = { ...route.query }
-  for (const [k, v] of Object.entries(params)) {
-    if (v) {
-      query[k] = v
-    } else {
-      delete query[k]
-    }
-  }
-  router.replace({ query })
-}
+// --- URL state ---
+const { value: vehiclesParam, set: setVehiclesParam } = useQueryParam('vehicles')
+const { value: fromParam } = useQueryParam('from')
+const { value: toParam } = useQueryParam('to')
+const setQueryParams = useSetQueryParams()
 
 // --- Date range ---
 function parseDateRange(): [Dayjs, Dayjs] {
-  const fromParam = getQueryParam('from')
-  const toParam = getQueryParam('to')
-  const from = fromParam ? dayjs(fromParam, DATE_FORMAT, true) : null
-  const to = toParam ? dayjs(toParam, DATE_FORMAT, true) : null
+  const from = fromParam.value ? dayjs(fromParam.value, DATE_FORMAT, true) : null
+  const to = toParam.value ? dayjs(toParam.value, DATE_FORMAT, true) : null
 
   if (from?.isValid() && to?.isValid() && to.diff(from, 'day') <= MAX_RANGE_DAYS) {
     return [from, to]
@@ -65,7 +48,7 @@ const dateRange = computed(() => parseDateRange())
 
 // Ensure URL has date params on mount
 onMounted(() => {
-  if (!getQueryParam('from') || !getQueryParam('to')) {
+  if (!fromParam.value || !toParam.value) {
     const [from, to] = parseDateRange()
     setQueryParams({
       from: from.format(DATE_FORMAT),
@@ -103,9 +86,8 @@ const groupCode = computed(() => groups.value?.[0]?.Code ?? '')
 const { data: vehicles, isLoading: vehiclesLoading } = useVehicles(groupCode)
 
 const selectedCodes = computed(() => {
-  const param = getQueryParam('vehicles')
-  if (param) {
-    const codes = param.split(',').filter(Boolean)
+  if (vehiclesParam.value) {
+    const codes = vehiclesParam.value.split(',').filter(Boolean)
     if (codes.length > 0) return codes
   }
   const first = vehicles.value?.[0]?.Code
@@ -114,9 +96,7 @@ const selectedCodes = computed(() => {
 
 function setSelectedCodes(codes: unknown) {
   if (!Array.isArray(codes)) return
-  setQueryParams({
-    vehicles: codes.length > 0 ? codes.join(',') : undefined,
-  })
+  setVehiclesParam(codes.length > 0 ? codes.join(',') : '')
 }
 
 const vehicleOptions = computed(() =>

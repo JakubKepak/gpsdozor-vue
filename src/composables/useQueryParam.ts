@@ -23,3 +23,21 @@ export function useQueryParam(key: string, defaultValue = '') {
 
   return { value, set }
 }
+
+/** Batch-update multiple query params in a single router.replace() call. */
+export function useSetQueryParams() {
+  const route = useRoute()
+  const router = useRouter()
+
+  return (params: Record<string, string | undefined>) => {
+    const query = { ...route.query }
+    for (const [k, v] of Object.entries(params)) {
+      if (v) {
+        query[k] = v
+      } else {
+        delete query[k]
+      }
+    }
+    router.replace({ query })
+  }
+}
