@@ -146,7 +146,7 @@ const tripStartLabel = computed(() =>
       :api-key="MAPS_API_KEY"
       :center="center"
       :zoom="8"
-      style="width: 100%; height: 100%"
+      class="w-full h-full"
       :gesture-handling="'greedy'"
       :disable-default-ui="true"
       :zoom-control="true"
@@ -166,8 +166,7 @@ const tripStartLabel = computed(() =>
       >
         <div class="flex flex-col items-center">
           <div
-            class="flex items-center gap-1 px-2 py-1 rounded-full text-white text-[10px] font-semibold shadow-md whitespace-nowrap"
-            style="background-color: #3b82f6"
+            class="flex items-center gap-1 px-2 py-1 rounded-full text-white text-[10px] font-semibold shadow-md whitespace-nowrap bg-brand-primary"
           >
             <svg
               width="10"
@@ -190,8 +189,7 @@ const tripStartLabel = computed(() =>
             {{ tripStartLabel }}
           </div>
           <div
-            class="w-0 h-0"
-            style="border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #3b82f6"
+            class="w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-brand-primary"
           />
         </div>
       </CustomMarker>
@@ -208,8 +206,7 @@ const tripStartLabel = computed(() =>
     <!-- Trip info bar -->
     <div
       v-if="activeTrip && selectedCode"
-      class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-white rounded-xl shadow-lg px-4 py-3 flex items-center gap-4 text-sm"
-      :style="{ maxWidth: '600px', border: '1px solid rgba(0,0,0,0.08)' }"
+      class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-white rounded-xl shadow-lg px-4 py-3 flex items-center gap-4 text-sm max-w-150 border border-black/8"
     >
       <div
         :class="[
