@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Alert, Card, DatePicker, Row, Col, Statistic, Skeleton } from 'ant-design-vue'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import dayjs, { type Dayjs } from 'dayjs'
-import { RouterLink } from 'vue-router'
 import { useVehicle, useVehicleSensors } from '@/api/composables'
 import type { SensorItem } from '@/types/api'
 import LineChartCard from '@/components/LineChartCard.vue'
@@ -88,8 +87,6 @@ function disabledDate(current: Dayjs): boolean {
   if (!selected) return false
   return Math.abs(current.diff(selected, 'day')) > MAX_RANGE_DAYS
 }
-
-// Data
 const { data: vehicle, isLoading: vehicleLoading, error: vehicleError } = useVehicle(vehicleCode)
 
 const from = computed(() => dateRange.value[0].format('YYYY-MM-DDTHH:mm:ss'))
@@ -126,7 +123,10 @@ const gaugeCards = computed(() => {
     :description="String(vehicleError)"
   />
 
-  <div v-else class="flex flex-col gap-6">
+  <div
+    v-else
+    class="flex flex-col gap-6"
+  >
     <!-- Header -->
     <div>
       <RouterLink
@@ -137,10 +137,18 @@ const gaugeCards = computed(() => {
         {{ t('health.backToList') }}
       </RouterLink>
       <div class="flex items-start justify-between flex-wrap gap-4">
-        <Skeleton v-if="vehicleLoading" active :paragraph="{ rows: 1 }" />
+        <Skeleton
+          v-if="vehicleLoading"
+          active
+          :paragraph="{ rows: 1 }"
+        />
         <div v-else-if="vehicle">
-          <h1 class="text-2xl font-bold text-gray-900 m-0">{{ vehicle.Name }}</h1>
-          <p class="text-gray-500 text-sm mt-1 mb-0">{{ vehicle.SPZ }} · {{ vehicle.BranchName }}</p>
+          <h1 class="text-2xl font-bold text-gray-900 m-0">
+            {{ vehicle.Name }}
+          </h1>
+          <p class="text-gray-500 text-sm mt-1 mb-0">
+            {{ vehicle.SPZ }} · {{ vehicle.BranchName }}
+          </p>
         </div>
         <RangePicker
           :value="dateRange"
@@ -155,14 +163,27 @@ const gaugeCards = computed(() => {
     <!-- Gauge cards -->
     <Row :gutter="[16, 16]">
       <template v-if="vehicleLoading">
-        <Col v-for="i in 5" :key="i" :xs="12" :sm="8" :lg="4">
+        <Col
+          v-for="i in 5"
+          :key="i"
+          :xs="12"
+          :sm="8"
+          :lg="4"
+        >
           <Card :body-style="{ padding: '16px' }">
-            <Skeleton active :paragraph="{ rows: 1 }" />
+            <Skeleton
+              active
+              :paragraph="{ rows: 1 }"
+            />
           </Card>
         </Col>
       </template>
       <template v-else>
-        <Col :xs="12" :sm="8" :lg="4">
+        <Col
+          :xs="12"
+          :sm="8"
+          :lg="4"
+        >
           <Card :body-style="{ padding: '16px' }">
             <Statistic
               :title="t('health.colOdometer')"
@@ -171,7 +192,11 @@ const gaugeCards = computed(() => {
             />
           </Card>
         </Col>
-        <Col :xs="12" :sm="8" :lg="4">
+        <Col
+          :xs="12"
+          :sm="8"
+          :lg="4"
+        >
           <Card :body-style="{ padding: '16px' }">
             <Statistic
               :title="t('health.sensor.Speed')"
@@ -181,9 +206,19 @@ const gaugeCards = computed(() => {
             />
           </Card>
         </Col>
-        <Col v-for="g in gaugeCards" :key="g.name" :xs="12" :sm="8" :lg="4">
+        <Col
+          v-for="g in gaugeCards"
+          :key="g.name"
+          :xs="12"
+          :sm="8"
+          :lg="4"
+        >
           <Card :body-style="{ padding: '16px' }">
-            <Skeleton v-if="sensorsLoading" active :paragraph="{ rows: 1 }" />
+            <Skeleton
+              v-if="sensorsLoading"
+              active
+              :paragraph="{ rows: 1 }"
+            />
             <Statistic
               v-else
               :title="t(`health.sensor.${g.name}`)"
@@ -197,13 +232,28 @@ const gaugeCards = computed(() => {
     </Row>
 
     <!-- Trip economics -->
-    <VehicleTripEconomics v-if="vehicle" :vehicle="vehicle" :from="from" :to="to" />
+    <VehicleTripEconomics
+      v-if="vehicle"
+      :vehicle="vehicle"
+      :from="from"
+      :to="to"
+    />
 
     <!-- Sensor charts -->
-    <h2 class="text-base font-semibold text-gray-900 m-0">{{ t('health.sensorHistory') }}</h2>
+    <h2 class="text-base font-semibold text-gray-900 m-0">
+      {{ t('health.sensorHistory') }}
+    </h2>
 
-    <Row v-if="sensorsLoading" :gutter="[16, 16]">
-      <Col v-for="i in 4" :key="i" :xs="24" :lg="12">
+    <Row
+      v-if="sensorsLoading"
+      :gutter="[16, 16]"
+    >
+      <Col
+        v-for="i in 4"
+        :key="i"
+        :xs="24"
+        :lg="12"
+      >
         <Card :body-style="{ padding: '20px' }">
           <div class="h-4 bg-gray-200 rounded w-40 mb-4 animate-pulse" />
           <div class="h-48 bg-gray-100 rounded animate-pulse" />
@@ -211,8 +261,16 @@ const gaugeCards = computed(() => {
       </Col>
     </Row>
 
-    <Row v-else :gutter="[16, 16]">
-      <Col v-for="name in SENSOR_TYPES" :key="name" :xs="24" :lg="12">
+    <Row
+      v-else
+      :gutter="[16, 16]"
+    >
+      <Col
+        v-for="name in SENSOR_TYPES"
+        :key="name"
+        :xs="24"
+        :lg="12"
+      >
         <template v-if="sensors.find(s => s.name === name)?.data.length">
           <LineChartCard
             :title="t(`health.sensor.${name}`)"
@@ -224,8 +282,13 @@ const gaugeCards = computed(() => {
             :x-formatter="(v: string) => dayjs(v).format('MM-DD HH:mm')"
           />
         </template>
-        <Card v-else :body-style="{ padding: '20px' }">
-          <h3 class="text-sm font-semibold text-gray-900 m-0 mb-4">{{ t(`health.sensor.${name}`) }}</h3>
+        <Card
+          v-else
+          :body-style="{ padding: '20px' }"
+        >
+          <h3 class="text-sm font-semibold text-gray-900 m-0 mb-4">
+            {{ t(`health.sensor.${name}`) }}
+          </h3>
           <div class="h-48 flex items-center justify-center text-gray-400 text-sm">
             {{ t('health.noSensorData') }}
           </div>

@@ -60,7 +60,13 @@ const option = computed(() => ({
 
 <template>
   <Card :body-style="{ padding: '20px' }">
-    <h3 class="text-sm font-semibold text-gray-900 m-0 mb-4">{{ title }}</h3>
-    <VChart :option="option" :style="{ height: `${height}px`, width: '100%' }" autoresize />
+    <h3 class="text-sm font-semibold text-gray-900 m-0 mb-4">
+      {{ title }}
+    </h3>
+    <VChart
+      :option="option"
+      :style="{ height: `${height}px`, width: '100%' }"
+      autoresize
+    />
   </Card>
 </template>

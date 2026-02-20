@@ -113,16 +113,30 @@ const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: 
     :description="String(error)"
   />
 
-  <div v-else class="flex flex-col gap-6">
+  <div
+    v-else
+    class="flex flex-col gap-6"
+  >
     <div class="flex items-start justify-between flex-wrap gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900 m-0">{{ t('health.title') }}</h1>
-        <p class="text-gray-500 text-sm mt-1 mb-0">{{ t('health.subtitle') }}</p>
+        <h1 class="text-2xl font-bold text-gray-900 m-0">
+          {{ t('health.title') }}
+        </h1>
+        <p class="text-gray-500 text-sm mt-1 mb-0">
+          {{ t('health.subtitle') }}
+        </p>
       </div>
-      <AIInsightsButton :active="showInsights" @click="showInsights = !showInsights" />
+      <AIInsightsButton
+        :active="showInsights"
+        @click="showInsights = !showInsights"
+      />
     </div>
 
-    <InsightCards module="health" :visible="showInsights" :data="insightData" />
+    <InsightCards
+      module="health"
+      :visible="showInsights"
+      :data="insightData"
+    />
 
     <div>
       <Input
@@ -156,23 +170,40 @@ const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: 
 
           <template v-else-if="column.key === 'activity'">
             <div class="text-sm">
-              <span v-if="record.Speed > 0" class="text-green-600 font-medium">
+              <span
+                v-if="record.Speed > 0"
+                class="text-green-600 font-medium"
+              >
                 {{ record.Speed }} km/h
               </span>
-              <span v-else class="text-gray-400">{{ t('health.parked') }}</span>
-              <div class="text-xs text-gray-400">{{ dayjs(record.LastPositionTimestamp).fromNow() }}</div>
+              <span
+                v-else
+                class="text-gray-400"
+              >{{ t('health.parked') }}</span>
+              <div class="text-xs text-gray-400">
+                {{ dayjs(record.LastPositionTimestamp).fromNow() }}
+              </div>
             </div>
           </template>
 
           <template v-else-if="column.key === 'status'">
-            <Tag :color="record.IsActive ? 'green' : 'red'" class="m-0">
+            <Tag
+              :color="record.IsActive ? 'green' : 'red'"
+              class="m-0"
+            >
               {{ t(record.IsActive ? 'health.active' : 'health.inactive') }}
             </Tag>
           </template>
 
           <template v-else-if="column.key === 'ecoDriving'">
-            <CheckOutlined v-if="record.IsEcoDrivingEnabled" class="text-green-500" />
-            <span v-else class="text-gray-300">—</span>
+            <CheckOutlined
+              v-if="record.IsEcoDrivingEnabled"
+              class="text-green-500"
+            />
+            <span
+              v-else
+              class="text-gray-300"
+            >—</span>
           </template>
         </template>
       </Table>

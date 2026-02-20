@@ -33,7 +33,10 @@ const style = computed(() => {
 </script>
 
 <template>
-  <Button :style="style" @click="emit('click')">
+  <Button
+    :style="style"
+    @click="emit('click')"
+  >
     <template #icon>
       <BulbOutlined />
     </template>

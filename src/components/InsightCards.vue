@@ -33,16 +33,34 @@ const severityConfig: Record<InsightSeverity, { color: string; bgColor: string; 
 <template>
   <div v-if="visible && data">
     <!-- Loading -->
-    <Row v-if="isLoading" :gutter="[16, 16]">
-      <Col v-for="i in 2" :key="i" :xs="24" :lg="12">
+    <Row
+      v-if="isLoading"
+      :gutter="[16, 16]"
+    >
+      <Col
+        v-for="i in 2"
+        :key="i"
+        :xs="24"
+        :lg="12"
+      >
         <Card :body-style="{ padding: '16px' }">
-          <Skeleton active :title="{ width: '40%' }" :paragraph="{ rows: 3, width: ['100%', '80%', '60%'] }" />
+          <Skeleton
+            active
+            :title="{ width: '40%' }"
+            :paragraph="{ rows: 3, width: ['100%', '80%', '60%'] }"
+          />
         </Card>
       </Col>
     </Row>
 
     <!-- Error -->
-    <Alert v-else-if="error" type="info" :message="t('insights.error')" show-icon closable />
+    <Alert
+      v-else-if="error"
+      type="info"
+      :message="t('insights.error')"
+      show-icon
+      closable
+    />
 
     <!-- Results -->
     <div v-else-if="response?.insights?.length">
@@ -51,7 +69,12 @@ const severityConfig: Record<InsightSeverity, { color: string; bgColor: string; 
         <span class="text-sm font-medium text-gray-500">{{ t('insights.title') }}</span>
       </div>
       <Row :gutter="[16, 16]">
-        <Col v-for="(insight, i) in response.insights" :key="i" :xs="24" :lg="12">
+        <Col
+          v-for="(insight, i) in response.insights"
+          :key="i"
+          :xs="24"
+          :lg="12"
+        >
           <Card
             class="h-full"
             :body-style="{ padding: '16px', borderLeft: `3px solid ${(severityConfig[insight.severity] ?? severityConfig.info).color}` }"
@@ -67,10 +90,21 @@ const severityConfig: Record<InsightSeverity, { color: string; bgColor: string; 
                 <component :is="(severityConfig[insight.severity] ?? severityConfig.info).icon" />
               </div>
               <div class="min-w-0 flex-1">
-                <div class="text-sm font-semibold text-gray-900">{{ insight.title }}</div>
-                <div class="text-xs text-gray-600 mt-1">{{ insight.description }}</div>
-                <ul v-if="insight.recommendations.length" class="mt-2 space-y-1">
-                  <li v-for="(rec, j) in insight.recommendations" :key="j" class="text-xs text-gray-500 flex items-start gap-1.5">
+                <div class="text-sm font-semibold text-gray-900">
+                  {{ insight.title }}
+                </div>
+                <div class="text-xs text-gray-600 mt-1">
+                  {{ insight.description }}
+                </div>
+                <ul
+                  v-if="insight.recommendations.length"
+                  class="mt-2 space-y-1"
+                >
+                  <li
+                    v-for="(rec, j) in insight.recommendations"
+                    :key="j"
+                    class="text-xs text-gray-500 flex items-start gap-1.5"
+                  >
                     <span class="shrink-0 mt-1 w-1 h-1 rounded-full bg-gray-400" />
                     {{ rec }}
                   </li>

@@ -54,19 +54,36 @@ const insightData = computed(() => ({
     :description="String(error)"
   />
 
-  <div v-else class="flex flex-col h-[calc(100vh-3rem)]">
+  <div
+    v-else
+    class="flex flex-col h-[calc(100vh-3rem)]"
+  >
     <!-- Header -->
     <div class="flex items-start justify-between flex-wrap gap-4 mb-6 shrink-0">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900 m-0">{{ t('dashboard.title') }}</h1>
-        <p class="text-gray-500 text-sm mt-1 mb-0">{{ t('dashboard.subtitle') }}</p>
+        <h1 class="text-2xl font-bold text-gray-900 m-0">
+          {{ t('dashboard.title') }}
+        </h1>
+        <p class="text-gray-500 text-sm mt-1 mb-0">
+          {{ t('dashboard.subtitle') }}
+        </p>
       </div>
-      <AIInsightsButton :active="showInsights" @click="showInsights = !showInsights" />
+      <AIInsightsButton
+        :active="showInsights"
+        @click="showInsights = !showInsights"
+      />
     </div>
 
     <!-- Stat cards -->
-    <Row :gutter="[16, 16]" class="shrink-0">
-      <Col :xs="12" :sm="12" :lg="6">
+    <Row
+      :gutter="[16, 16]"
+      class="shrink-0"
+    >
+      <Col
+        :xs="12"
+        :sm="12"
+        :lg="6"
+      >
         <StatCard
           :label="t('dashboard.activeVehicles')"
           :value="stats.active"
@@ -74,10 +91,16 @@ const insightData = computed(() => ({
           color="#22c55e"
           bg-color="#f0fdf4"
         >
-          <template #icon><CarOutlined /></template>
+          <template #icon>
+            <CarOutlined />
+          </template>
         </StatCard>
       </Col>
-      <Col :xs="12" :sm="12" :lg="6">
+      <Col
+        :xs="12"
+        :sm="12"
+        :lg="6"
+      >
         <StatCard
           :label="t('dashboard.idleVehicles')"
           :value="stats.idle"
@@ -85,10 +108,16 @@ const insightData = computed(() => ({
           color="#f59e0b"
           bg-color="#fffbeb"
         >
-          <template #icon><PauseCircleOutlined /></template>
+          <template #icon>
+            <PauseCircleOutlined />
+          </template>
         </StatCard>
       </Col>
-      <Col :xs="12" :sm="12" :lg="6">
+      <Col
+        :xs="12"
+        :sm="12"
+        :lg="6"
+      >
         <StatCard
           :label="t('dashboard.maintenance')"
           :value="stats.inactive"
@@ -96,10 +125,16 @@ const insightData = computed(() => ({
           color="#ef4444"
           bg-color="#fef2f2"
         >
-          <template #icon><ToolOutlined /></template>
+          <template #icon>
+            <ToolOutlined />
+          </template>
         </StatCard>
       </Col>
-      <Col :xs="12" :sm="12" :lg="6">
+      <Col
+        :xs="12"
+        :sm="12"
+        :lg="6"
+      >
         <StatCard
           :label="t('dashboard.totalFleet')"
           :value="stats.total"
@@ -107,23 +142,46 @@ const insightData = computed(() => ({
           color="#3b82f6"
           bg-color="#eff6ff"
         >
-          <template #icon><TeamOutlined /></template>
+          <template #icon>
+            <TeamOutlined />
+          </template>
         </StatCard>
       </Col>
     </Row>
 
     <!-- AI Insights -->
-    <div v-if="showInsights" class="mt-6 shrink-0">
-      <InsightCards module="dashboard" :data="insightData" :visible="showInsights" />
+    <div
+      v-if="showInsights"
+      class="mt-6 shrink-0"
+    >
+      <InsightCards
+        module="dashboard"
+        :data="insightData"
+        :visible="showInsights"
+      />
     </div>
 
     <!-- Map + Sidebar -->
-    <Row :gutter="[16, 16]" class="mt-6 flex-1 min-h-0">
-      <Col :xs="24" :lg="16" class="h-full">
-        <Card class="h-full" :body-style="{ padding: 0, height: '100%', display: 'flex', flexDirection: 'column' }">
+    <Row
+      :gutter="[16, 16]"
+      class="mt-6 flex-1 min-h-0"
+    >
+      <Col
+        :xs="24"
+        :lg="16"
+        class="h-full"
+      >
+        <Card
+          class="h-full"
+          :body-style="{ padding: 0, height: '100%', display: 'flex', flexDirection: 'column' }"
+        >
           <div class="px-4 pt-4 pb-2 shrink-0">
-            <h2 class="text-base font-semibold text-gray-900 m-0">{{ t('dashboard.liveMap') }}</h2>
-            <p class="text-gray-400 text-xs mt-0.5 mb-0">{{ t('dashboard.liveMapSubtitle') }}</p>
+            <h2 class="text-base font-semibold text-gray-900 m-0">
+              {{ t('dashboard.liveMap') }}
+            </h2>
+            <p class="text-gray-400 text-xs mt-0.5 mb-0">
+              {{ t('dashboard.liveMapSubtitle') }}
+            </p>
           </div>
           <div class="flex-1 min-h-0 px-4 pb-4">
             <FleetMap
@@ -134,10 +192,17 @@ const insightData = computed(() => ({
           </div>
         </Card>
       </Col>
-      <Col :xs="24" :lg="8" class="h-full">
+      <Col
+        :xs="24"
+        :lg="8"
+        class="h-full"
+      >
         <div class="flex flex-col gap-4 h-full overflow-auto">
           <RecentAlerts :vehicles="vehicles ?? []" />
-          <VehicleList :vehicles="vehicles ?? []" @locate="focusedVehicleCode = $event" />
+          <VehicleList
+            :vehicles="vehicles ?? []"
+            @locate="focusedVehicleCode = $event"
+          />
         </div>
       </Col>
     </Row>

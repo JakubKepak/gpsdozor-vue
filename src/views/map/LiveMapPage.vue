@@ -128,12 +128,19 @@ const tripStartLabel = computed(() =>
     class="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 flex flex-col items-center justify-center text-center p-6"
   >
     <EnvironmentOutlined class="text-4xl text-blue-300 mb-3" />
-    <div class="text-gray-600 font-medium">{{ t('map.placeholder') }}</div>
-    <div class="text-gray-400 text-sm mt-1">{{ t('map.placeholderHint') }}</div>
+    <div class="text-gray-600 font-medium">
+      {{ t('map.placeholder') }}
+    </div>
+    <div class="text-gray-400 text-sm mt-1">
+      {{ t('map.placeholderHint') }}
+    </div>
   </div>
 
   <!-- Google Map -->
-  <div v-else class="relative w-full h-full">
+  <div
+    v-else
+    class="relative w-full h-full"
+  >
     <GoogleMap
       ref="mapRef"
       :api-key="MAPS_API_KEY"
@@ -173,7 +180,12 @@ const tripStartLabel = computed(() =>
               stroke-linejoin="round"
             >
               <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-              <line x1="4" y1="22" x2="4" y2="15" />
+              <line
+                x1="4"
+                y1="22"
+                x2="4"
+                y2="15"
+              />
             </svg>
             {{ tripStartLabel }}
           </div>
@@ -218,7 +230,10 @@ const tripStartLabel = computed(() =>
       </div>
       <div class="flex items-center gap-3 shrink-0 text-xs text-gray-500">
         <span>{{ (Number(activeTrip.TotalDistance) || 0).toFixed(1) }} km</span>
-        <span v-if="activeTrip.DriverName?.trim()" class="text-gray-400">
+        <span
+          v-if="activeTrip.DriverName?.trim()"
+          class="text-gray-400"
+        >
           {{ activeTrip.DriverName.trim() }}
         </span>
       </div>

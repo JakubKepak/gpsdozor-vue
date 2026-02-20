@@ -128,22 +128,34 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
     <template #bodyCell="{ column, record }">
       <!-- Vehicle -->
       <template v-if="column.key === 'vehicle'">
-        <div class="font-medium text-gray-900 text-sm">{{ record.vehicleName }}</div>
-        <div class="text-xs text-gray-400">{{ record.vehicleSPZ }}</div>
+        <div class="font-medium text-gray-900 text-sm">
+          {{ record.vehicleName }}
+        </div>
+        <div class="text-xs text-gray-400">
+          {{ record.vehicleSPZ }}
+        </div>
       </template>
 
       <!-- Driver -->
       <template v-else-if="column.key === 'driver'">
-        <span v-if="(record.DriverName ?? '').trim()" class="text-sm text-gray-700">
+        <span
+          v-if="(record.DriverName ?? '').trim()"
+          class="text-sm text-gray-700"
+        >
           {{ (record.DriverName ?? '').trim() }}
         </span>
-        <span v-else class="text-xs text-gray-300 italic">—</span>
+        <span
+          v-else
+          class="text-xs text-gray-300 italic"
+        >—</span>
       </template>
 
       <!-- Date -->
       <template v-else-if="column.key === 'date'">
         <div class="text-sm">
-          <div class="text-gray-900">{{ dayjs(record.StartTime).format('DD.MM.YYYY') }}</div>
+          <div class="text-gray-900">
+            {{ dayjs(record.StartTime).format('DD.MM.YYYY') }}
+          </div>
           <div class="text-xs text-gray-400 flex items-center gap-1">
             <ClockCircleOutlined />
             {{ dayjs(record.StartTime).format('HH:mm') }} – {{ dayjs(record.FinishTime).format('HH:mm') }}
@@ -196,18 +208,30 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
 
       <!-- Fuel -->
       <template v-else-if="column.key === 'fuel'">
-        <span v-if="n(record.FuelConsumed?.Value) > 0" class="text-sm text-gray-700">
+        <span
+          v-if="n(record.FuelConsumed?.Value) > 0"
+          class="text-sm text-gray-700"
+        >
           {{ n(record.FuelConsumed?.Value).toFixed(1) }} L
         </span>
-        <span v-else class="text-xs text-gray-300">—</span>
+        <span
+          v-else
+          class="text-xs text-gray-300"
+        >—</span>
       </template>
 
       <!-- Cost -->
       <template v-else-if="column.key === 'cost'">
-        <span v-if="n(record.TripCost?.Value) > 0" class="text-sm text-gray-700">
+        <span
+          v-if="n(record.TripCost?.Value) > 0"
+          class="text-sm text-gray-700"
+        >
           {{ n(record.TripCost?.Value).toFixed(0) }} CZK
         </span>
-        <span v-else class="text-xs text-gray-300">—</span>
+        <span
+          v-else
+          class="text-xs text-gray-300"
+        >—</span>
       </template>
     </template>
   </Table>

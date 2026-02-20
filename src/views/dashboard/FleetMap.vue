@@ -83,10 +83,17 @@ const idleCount = computed(() => vehicles.filter(v => getEffectiveSpeed(v) === 0
 
 <template>
   <!-- Placeholder when no API key -->
-  <div v-if="!MAPS_API_KEY" class="h-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex flex-col items-center justify-center text-center p-6">
+  <div
+    v-if="!MAPS_API_KEY"
+    class="h-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex flex-col items-center justify-center text-center p-6"
+  >
     <EnvironmentOutlined class="text-4xl text-blue-300 mb-3" />
-    <div class="text-gray-600 font-medium">{{ t('map.placeholder') }}</div>
-    <div class="text-gray-400 text-sm mt-1">{{ t('map.placeholderHint') }}</div>
+    <div class="text-gray-600 font-medium">
+      {{ t('map.placeholder') }}
+    </div>
+    <div class="text-gray-400 text-sm mt-1">
+      {{ t('map.placeholderHint') }}
+    </div>
     <div class="flex gap-4 mt-4 text-xs">
       <div class="flex items-center gap-1.5">
         <div class="w-2.5 h-2.5 rounded-full bg-green-500" />
@@ -100,7 +107,10 @@ const idleCount = computed(() => vehicles.filter(v => getEffectiveSpeed(v) === 0
   </div>
 
   <!-- Google Map -->
-  <div v-else class="h-full relative">
+  <div
+    v-else
+    class="h-full relative"
+  >
     <GoogleMap
       ref="mapRef"
       :api-key="MAPS_API_KEY"
@@ -122,7 +132,9 @@ const idleCount = computed(() => vehicles.filter(v => getEffectiveSpeed(v) === 0
 
     <!-- Legend -->
     <div class="absolute top-4 right-4 bg-white rounded-lg shadow-md px-3 py-2.5 text-xs">
-      <div class="font-medium text-gray-700 mb-1.5">{{ t('map.legend') }}</div>
+      <div class="font-medium text-gray-700 mb-1.5">
+        {{ t('map.legend') }}
+      </div>
       <div class="flex flex-col gap-1">
         <div class="flex items-center gap-2">
           <div class="w-2.5 h-2.5 rounded-full bg-green-500" />

@@ -50,15 +50,22 @@ function handleSuggest(key: string) {
     <!-- Messages area -->
     <div class="flex-1 overflow-y-auto px-4 py-4">
       <!-- Empty state -->
-      <div v-if="messages.length === 0 && !isLoading" class="flex flex-col items-center justify-center h-full text-center">
+      <div
+        v-if="messages.length === 0 && !isLoading"
+        class="flex flex-col items-center justify-center h-full text-center"
+      >
         <div
           class="flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
           style="background: linear-gradient(135deg, #7c3aed, #2563eb)"
         >
           <RobotOutlined class="text-2xl text-white" />
         </div>
-        <h3 class="text-lg font-semibold text-gray-900 m-0 mb-1">{{ t('ai.welcomeTitle') }}</h3>
-        <p class="text-sm text-gray-500 mb-6 max-w-sm">{{ t('ai.welcomeSubtitle') }}</p>
+        <h3 class="text-lg font-semibold text-gray-900 m-0 mb-1">
+          {{ t('ai.welcomeTitle') }}
+        </h3>
+        <p class="text-sm text-gray-500 mb-6 max-w-sm">
+          {{ t('ai.welcomeSubtitle') }}
+        </p>
         <div class="flex flex-wrap gap-2 justify-center">
           <button
             v-for="key in SUGGESTED_PROMPTS_KEYS"
@@ -72,10 +79,19 @@ function handleSuggest(key: string) {
       </div>
 
       <!-- Messages -->
-      <div v-else class="flex flex-col gap-4">
-        <template v-for="(msg, i) in messages" :key="i">
+      <div
+        v-else
+        class="flex flex-col gap-4"
+      >
+        <template
+          v-for="(msg, i) in messages"
+          :key="i"
+        >
           <!-- User message -->
-          <div v-if="msg.role === 'user'" class="flex justify-end">
+          <div
+            v-if="msg.role === 'user'"
+            class="flex justify-end"
+          >
             <div class="flex items-start gap-2 max-w-[80%]">
               <div class="bg-blue-500 text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm">
                 {{ msg.content }}
@@ -87,7 +103,10 @@ function handleSuggest(key: string) {
           </div>
 
           <!-- Assistant message -->
-          <div v-else class="flex justify-start">
+          <div
+            v-else
+            class="flex justify-start"
+          >
             <div class="flex items-start gap-2 max-w-[85%]">
               <div
                 class="flex items-center justify-center w-7 h-7 rounded-full shrink-0 mt-0.5"
@@ -107,7 +126,10 @@ function handleSuggest(key: string) {
         </template>
 
         <!-- Loading dots -->
-        <div v-if="isLoading" class="flex justify-start">
+        <div
+          v-if="isLoading"
+          class="flex justify-start"
+        >
           <div class="flex items-start gap-2">
             <div
               class="flex items-center justify-center w-7 h-7 rounded-full shrink-0"
@@ -117,9 +139,18 @@ function handleSuggest(key: string) {
             </div>
             <div class="bg-gray-100 rounded-2xl rounded-bl-sm px-4 py-3">
               <div class="flex gap-1.5">
-                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms" />
-                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms" />
-                <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms" />
+                <div
+                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style="animation-delay: 0ms"
+                />
+                <div
+                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style="animation-delay: 150ms"
+                />
+                <div
+                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style="animation-delay: 300ms"
+                />
               </div>
             </div>
           </div>
@@ -139,7 +170,9 @@ function handleSuggest(key: string) {
           :title="t('ai.clear')"
           @click="clearChat"
         >
-          <template #icon><DeleteOutlined /></template>
+          <template #icon>
+            <DeleteOutlined />
+          </template>
         </Button>
         <Input.TextArea
           v-model:value="input"
@@ -156,7 +189,9 @@ function handleSuggest(key: string) {
           :style="{ background: input.trim() ? 'linear-gradient(135deg, #7c3aed, #2563eb)' : undefined }"
           @click="handleSend"
         >
-          <template #icon><SendOutlined /></template>
+          <template #icon>
+            <SendOutlined />
+          </template>
         </Button>
       </div>
     </div>

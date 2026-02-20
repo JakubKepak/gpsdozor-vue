@@ -176,15 +176,25 @@ const insightData = computed(() => ({
     :description="String(error)"
   />
 
-  <div v-else class="flex flex-col gap-6">
+  <div
+    v-else
+    class="flex flex-col gap-6"
+  >
     <!-- Header -->
     <div class="flex items-start justify-between flex-wrap gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900 m-0">{{ t('fleet.title') }}</h1>
-        <p class="text-gray-500 text-sm mt-1 mb-0">{{ t('fleet.subtitle') }}</p>
+        <h1 class="text-2xl font-bold text-gray-900 m-0">
+          {{ t('fleet.title') }}
+        </h1>
+        <p class="text-gray-500 text-sm mt-1 mb-0">
+          {{ t('fleet.subtitle') }}
+        </p>
       </div>
       <div class="flex items-center gap-3 flex-wrap">
-        <AIInsightsButton :active="showInsights" @click="showInsights = !showInsights" />
+        <AIInsightsButton
+          :active="showInsights"
+          @click="showInsights = !showInsights"
+        />
         <Select
           mode="multiple"
           :value="selectedCodes"
@@ -206,7 +216,10 @@ const insightData = computed(() => ({
 
     <!-- Stat cards -->
     <Row :gutter="[16, 16]">
-      <Col :xs="12" :sm="6">
+      <Col
+        :xs="12"
+        :sm="6"
+      >
         <StatCard
           :label="t('fleet.statTrips')"
           :value="String(tripList.length)"
@@ -214,10 +227,15 @@ const insightData = computed(() => ({
           bg-color="#eff6ff"
           compact
         >
-          <template #icon><NodeIndexOutlined /></template>
+          <template #icon>
+            <NodeIndexOutlined />
+          </template>
         </StatCard>
       </Col>
-      <Col :xs="12" :sm="6">
+      <Col
+        :xs="12"
+        :sm="6"
+      >
         <StatCard
           :label="t('fleet.statDistance')"
           :value="`${totalDistance.toFixed(0)} km`"
@@ -225,10 +243,15 @@ const insightData = computed(() => ({
           bg-color="#f0fdf4"
           compact
         >
-          <template #icon><DashboardOutlined /></template>
+          <template #icon>
+            <DashboardOutlined />
+          </template>
         </StatCard>
       </Col>
-      <Col :xs="12" :sm="6">
+      <Col
+        :xs="12"
+        :sm="6"
+      >
         <StatCard
           :label="t('fleet.statVehicles')"
           :value="String(uniqueVehicles)"
@@ -236,10 +259,15 @@ const insightData = computed(() => ({
           bg-color="#fffbeb"
           compact
         >
-          <template #icon><CarOutlined /></template>
+          <template #icon>
+            <CarOutlined />
+          </template>
         </StatCard>
       </Col>
-      <Col :xs="12" :sm="6">
+      <Col
+        :xs="12"
+        :sm="6"
+      >
         <StatCard
           :label="t('fleet.statDrivers')"
           :value="String(uniqueDrivers)"
@@ -247,15 +275,24 @@ const insightData = computed(() => ({
           bg-color="#f5f3ff"
           compact
         >
-          <template #icon><UserOutlined /></template>
+          <template #icon>
+            <UserOutlined />
+          </template>
         </StatCard>
       </Col>
     </Row>
 
     <!-- AI Insights -->
-    <InsightCards module="fleet" :visible="showInsights" :data="insightData" />
+    <InsightCards
+      module="fleet"
+      :visible="showInsights"
+      :data="insightData"
+    />
 
     <!-- Trip table -->
-    <TripTable :trips="tripList" :loading="isLoading" />
+    <TripTable
+      :trips="tripList"
+      :loading="isLoading"
+    />
   </div>
 </template>

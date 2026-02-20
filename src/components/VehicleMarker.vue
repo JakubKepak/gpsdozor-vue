@@ -64,13 +64,22 @@ const infoWindowOptions = computed(() => ({
       >
         ✕
       </button>
-      <div class="font-semibold text-sm">{{ vehicle.Name }}</div>
-      <div class="text-xs text-gray-400 mt-0.5">{{ vehicle.SPZ }}</div>
+      <div class="font-semibold text-sm">
+        {{ vehicle.Name }}
+      </div>
+      <div class="text-xs text-gray-400 mt-0.5">
+        {{ vehicle.SPZ }}
+      </div>
       <div class="flex items-center gap-1.5 mt-1.5">
-        <div class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ backgroundColor: color }" />
+        <div
+          class="w-2.5 h-2.5 rounded-full shrink-0"
+          :style="{ backgroundColor: color }"
+        />
         <span class="text-xs text-gray-600">{{ statusLabel }}</span>
       </div>
-      <div class="text-xs text-gray-400 mt-1">{{ vehicle.BranchName }}</div>
+      <div class="text-xs text-gray-400 mt-1">
+        {{ vehicle.BranchName }}
+      </div>
     </div>
   </InfoWindow>
 </template>

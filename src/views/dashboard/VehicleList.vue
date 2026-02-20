@@ -32,7 +32,9 @@ function getStatusTag(vehicle: Vehicle): { color: string; label: string } {
 
 <template>
   <Card :body-style="{ padding: '16px' }">
-    <h3 class="text-sm font-semibold text-gray-900 m-0 mb-3">{{ t('vehicles.title') }}</h3>
+    <h3 class="text-sm font-semibold text-gray-900 m-0 mb-3">
+      {{ t('vehicles.title') }}
+    </h3>
     <div class="flex flex-col">
       <div
         v-for="v in vehicles"
@@ -44,19 +46,26 @@ function getStatusTag(vehicle: Vehicle): { color: string; label: string } {
           :style="{ backgroundColor: getStatusDotColor(v) }"
         />
         <div class="min-w-0 flex-1">
-          <div class="text-sm font-medium text-gray-900 truncate">{{ v.Name }}</div>
+          <div class="text-sm font-medium text-gray-900 truncate">
+            {{ v.Name }}
+          </div>
           <div class="flex items-center gap-3 mt-0.5 text-xs text-gray-400">
             <span class="flex items-center gap-1">
               <CarOutlined />
               {{ v.SPZ }}
             </span>
-            <span v-if="getEffectiveSpeed(v) > 0" class="flex items-center gap-1">
+            <span
+              v-if="getEffectiveSpeed(v) > 0"
+              class="flex items-center gap-1"
+            >
               <DashboardOutlined />
               {{ getEffectiveSpeed(v) }} km/h
             </span>
           </div>
         </div>
-        <Tag :color="getStatusTag(v).color">{{ getStatusTag(v).label }}</Tag>
+        <Tag :color="getStatusTag(v).color">
+          {{ getStatusTag(v).label }}
+        </Tag>
         <Tooltip :title="t('vehicles.tripLog')">
           <button
             class="flex items-center justify-center w-7 h-7 rounded-md text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors cursor-pointer bg-transparent border-0 shrink-0"

@@ -63,7 +63,10 @@ export default {}
 </script>
 
 <template>
-  <Layout class="min-h-screen" style="flex-direction: row">
+  <Layout
+    class="min-h-screen"
+    style="flex-direction: row"
+  >
     <Layout.Sider
       v-model:collapsed="collapsed"
       collapsible
@@ -78,9 +81,16 @@ export default {}
           <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500 text-white font-bold text-sm shrink-0">
             GD
           </div>
-          <div v-if="!collapsed" class="overflow-hidden">
-            <div class="text-white font-semibold text-sm leading-tight">GPS Dozor</div>
-            <div class="text-blue-300/60 text-xs leading-tight">{{ t('app.subtitle') }}</div>
+          <div
+            v-if="!collapsed"
+            class="overflow-hidden"
+          >
+            <div class="text-white font-semibold text-sm leading-tight">
+              GPS Dozor
+            </div>
+            <div class="text-blue-300/60 text-xs leading-tight">
+              {{ t('app.subtitle') }}
+            </div>
           </div>
         </div>
 
@@ -98,7 +108,10 @@ export default {}
         <!-- Footer -->
         <div class="border-t border-white/10 p-3">
           <!-- Fleet status -->
-          <div v-if="!collapsed" class="rounded-lg bg-white/5 p-3">
+          <div
+            v-if="!collapsed"
+            class="rounded-lg bg-white/5 p-3"
+          >
             <div class="flex items-center justify-between mb-1">
               <span class="text-blue-300/80 text-xs font-medium">{{ t('sidebar.fleetStatus') }}</span>
               <Badge status="processing" />
@@ -109,8 +122,15 @@ export default {}
               <span class="text-white/40">/{{ totalCount }}</span>
             </div>
           </div>
-          <div v-else class="flex justify-center">
-            <Badge :count="activeCount" size="small" color="green" />
+          <div
+            v-else
+            class="flex justify-center"
+          >
+            <Badge
+              :count="activeCount"
+              size="small"
+              color="green"
+            />
           </div>
 
           <!-- Locale selector -->
@@ -153,8 +173,14 @@ export default {}
       :aria-label="t('ai.title')"
       @click="chatOpen = !chatOpen"
     >
-      <CloseOutlined v-if="chatOpen" class="text-white text-lg" />
-      <RobotOutlined v-else class="text-white text-xl" />
+      <CloseOutlined
+        v-if="chatOpen"
+        class="text-white text-lg"
+      />
+      <RobotOutlined
+        v-else
+        class="text-white text-xl"
+      />
     </button>
 
     <!-- Chat popup -->
@@ -171,8 +197,12 @@ export default {}
           <RobotOutlined class="text-white text-sm" />
         </div>
         <div class="flex-1 min-w-0">
-          <div class="text-white font-semibold text-sm">{{ t('ai.title') }}</div>
-          <div class="text-white/70 text-xs">{{ t('ai.subtitle') }}</div>
+          <div class="text-white font-semibold text-sm">
+            {{ t('ai.title') }}
+          </div>
+          <div class="text-white/70 text-xs">
+            {{ t('ai.subtitle') }}
+          </div>
         </div>
       </div>
       <ChatPanel />

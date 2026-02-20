@@ -75,13 +75,21 @@ const alerts = computed<VehicleAlert[]>(() => {
 
 <template>
   <Card :body-style="{ padding: '16px' }">
-    <h3 class="text-sm font-semibold text-gray-900 m-0 mb-3">{{ t('alerts.title') }}</h3>
+    <h3 class="text-sm font-semibold text-gray-900 m-0 mb-3">
+      {{ t('alerts.title') }}
+    </h3>
 
-    <div v-if="alerts.length === 0" class="text-center py-4 text-gray-400 text-sm">
+    <div
+      v-if="alerts.length === 0"
+      class="text-center py-4 text-gray-400 text-sm"
+    >
       {{ t('alerts.empty') }}
     </div>
 
-    <div v-else class="flex flex-col gap-2">
+    <div
+      v-else
+      class="flex flex-col gap-2"
+    >
       <div
         v-for="(alert, i) in alerts"
         :key="i"
@@ -93,11 +101,15 @@ const alerts = computed<VehicleAlert[]>(() => {
           :style="{ color: severityColors[alert.severity] }"
         />
         <div class="min-w-0 flex-1">
-          <div class="text-sm font-medium text-gray-900 truncate">{{ alert.vehicleName }}</div>
+          <div class="text-sm font-medium text-gray-900 truncate">
+            {{ alert.vehicleName }}
+          </div>
           <div class="text-xs text-gray-500 mt-0.5">
             {{ t(alert.messageId, alert.messageValues ?? {}) }}
           </div>
-          <div class="text-xs text-gray-400 mt-0.5">{{ formatTimeSince(alert.timestamp) }}</div>
+          <div class="text-xs text-gray-400 mt-0.5">
+            {{ formatTimeSince(alert.timestamp) }}
+          </div>
         </div>
       </div>
     </div>

@@ -112,12 +112,18 @@ function toggleGroup(key: string) {
 
     <!-- Groups -->
     <div class="flex-1 overflow-y-auto">
-      <div v-for="group in groups" :key="group.key">
+      <div
+        v-for="group in groups"
+        :key="group.key"
+      >
         <button
           class="w-full flex items-center gap-2 px-3 py-2 bg-gray-50 border-0 border-b border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors text-left"
           @click="toggleGroup(group.key)"
         >
-          <div class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ backgroundColor: group.color }" />
+          <div
+            class="w-2.5 h-2.5 rounded-full shrink-0"
+            :style="{ backgroundColor: group.color }"
+          />
           <span class="text-xs font-semibold text-gray-700 flex-1">{{ t(group.labelId) }}</span>
           <span class="text-xs font-semibold text-gray-400">{{ group.vehicles.length }}</span>
           <span class="text-gray-400 text-[10px]">{{ openGroups[group.key] ? '▾' : '▸' }}</span>
@@ -133,10 +139,17 @@ function toggleGroup(key: string) {
             ]"
             @click="emit('selectVehicle', v.Code)"
           >
-            <div class="w-2 h-2 rounded-full shrink-0" :style="{ backgroundColor: group.color }" />
+            <div
+              class="w-2 h-2 rounded-full shrink-0"
+              :style="{ backgroundColor: group.color }"
+            />
             <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-gray-900 truncate">{{ v.Name }}</div>
-              <div class="text-xs text-gray-400">{{ v.SPZ }}</div>
+              <div class="text-sm font-medium text-gray-900 truncate">
+                {{ v.Name }}
+              </div>
+              <div class="text-xs text-gray-400">
+                {{ v.SPZ }}
+              </div>
             </div>
             <span
               v-if="getEffectiveSpeed(v) > 0"
