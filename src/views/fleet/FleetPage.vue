@@ -120,12 +120,12 @@ function setSelectedCodes(codes: unknown) {
 }
 
 const vehicleOptions = computed(() =>
-  (vehicles.value ?? []).map(v => ({ value: v.Code, label: `${v.Name} (${v.SPZ})` })),
+  (vehicles.value ?? []).map((v) => ({ value: v.Code, label: `${v.Name} (${v.SPZ})` })),
 )
 
 // --- Trip data ---
 const selectedVehicles = computed(() =>
-  (vehicles.value ?? []).filter(v => selectedCodes.value.includes(v.Code)),
+  (vehicles.value ?? []).filter((v) => selectedCodes.value.includes(v.Code)),
 )
 
 const from = computed(() => dateRange.value[0].format('YYYY-MM-DDTHH:mm:ss'))
@@ -144,7 +144,9 @@ const totalDistance = computed(() =>
   tripList.value.reduce((sum: number, t: TripWithVehicle) => sum + n(t.TotalDistance), 0),
 )
 const uniqueDrivers = computed(
-  () => new Set(tripList.value.map((t: TripWithVehicle) => (t.DriverName ?? '').trim()).filter(Boolean)).size,
+  () =>
+    new Set(tripList.value.map((t: TripWithVehicle) => (t.DriverName ?? '').trim()).filter(Boolean))
+      .size,
 )
 const uniqueVehicles = computed(
   () => new Set(tripList.value.map((t: TripWithVehicle) => t.vehicleCode)).size,
@@ -156,13 +158,17 @@ const insightData = computed(() => ({
   totalDistance: totalDistance.value,
   uniqueVehicles: uniqueVehicles.value,
   uniqueDrivers: uniqueDrivers.value,
-  vehicles: selectedVehicles.value.map(v => {
+  vehicles: selectedVehicles.value.map((v) => {
     const vTrips = tripList.value.filter((t: TripWithVehicle) => t.vehicleCode === v.Code)
     return {
       name: v.Name,
       trips: vTrips.length,
       totalDistance: vTrips.reduce((s: number, t: TripWithVehicle) => s + n(t.TotalDistance), 0),
-      avgSpeed: vTrips.length > 0 ? vTrips.reduce((s: number, t: TripWithVehicle) => s + n(t.AverageSpeed), 0) / vTrips.length : 0,
+      avgSpeed:
+        vTrips.length > 0
+          ? vTrips.reduce((s: number, t: TripWithVehicle) => s + n(t.AverageSpeed), 0) /
+            vTrips.length
+          : 0,
     }
   }),
 }))
@@ -208,7 +214,12 @@ const insightData = computed(() => ({
           :value="dateRange"
           :allow-clear="false"
           :disabled-date="disabledDate"
-          @calendar-change="(dates: unknown) => { if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]; else pickerDates = [null, null] }"
+          @calendar-change="
+            (dates: unknown) => {
+              if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
+              else pickerDates = [null, null]
+            }
+          "
           @change="onDateRangeChange"
         />
       </div>

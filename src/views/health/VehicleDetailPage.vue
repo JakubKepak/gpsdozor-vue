@@ -104,7 +104,7 @@ const sensors = computed(() => sensorResponse.value?.items ?? [])
 const gaugeCards = computed(() => {
   const items: { name: string; value: number | null; unit: string }[] = []
   for (const name of SENSOR_TYPES) {
-    const sensor = sensors.value.find(s => s.name === name)
+    const sensor = sensors.value.find((s) => s.name === name)
     items.push({
       name,
       value: getLastReading(sensor),
@@ -154,7 +154,12 @@ const gaugeCards = computed(() => {
           :value="dateRange"
           :allow-clear="false"
           :disabled-date="disabledDate"
-          @calendar-change="(dates: unknown) => { if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]; else pickerDates = [null, null] }"
+          @calendar-change="
+            (dates: unknown) => {
+              if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
+              else pickerDates = [null, null]
+            }
+          "
           @change="handleDateChange"
         />
       </div>
@@ -224,7 +229,9 @@ const gaugeCards = computed(() => {
               :title="t(`health.sensor.${g.name}`)"
               :value="g.value ?? '—'"
               :suffix="g.value !== null ? g.unit : undefined"
-              :value-style="g.value !== null ? { color: getGaugeColor(g.name, g.value) } : { color: '#d1d5db' }"
+              :value-style="
+                g.value !== null ? { color: getGaugeColor(g.name, g.value) } : { color: '#d1d5db' }
+              "
             />
           </Card>
         </Col>
@@ -271,10 +278,12 @@ const gaugeCards = computed(() => {
         :xs="24"
         :lg="12"
       >
-        <template v-if="sensors.find(s => s.name === name)?.data.length">
+        <template v-if="sensors.find((s) => s.name === name)?.data.length">
           <LineChartCard
             :title="t(`health.sensor.${name}`)"
-            :data="sensors.find(s => s.name === name)!.data.map(d => ({ time: d.t, value: d.v }))"
+            :data="
+              sensors.find((s) => s.name === name)!.data.map((d) => ({ time: d.t, value: d.v }))
+            "
             x-key="time"
             y-key="value"
             :y-unit="SENSOR_UNITS[name] ?? ''"

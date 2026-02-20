@@ -14,7 +14,7 @@ export function useSpeedPolyline(
   let polylines: google.maps.Polyline[] = []
 
   function clear() {
-    polylines.forEach(p => p.setMap(null))
+    polylines.forEach((p) => p.setMap(null))
     polylines = []
   }
 

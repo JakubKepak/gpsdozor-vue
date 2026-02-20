@@ -25,7 +25,12 @@ const {
   >
     <div :class="['flex gap-3', compact ? 'items-center' : 'items-start']">
       <div
-        :class="['flex items-center justify-center rounded-lg shrink-0', compact ? 'w-9 h-9 text-base' : 'w-10 h-10 text-lg', colorClass, bgColorClass]"
+        :class="[
+          'flex items-center justify-center rounded-lg shrink-0',
+          compact ? 'w-9 h-9 text-base' : 'w-10 h-10 text-lg',
+          colorClass,
+          bgColorClass,
+        ]"
       >
         <slot name="icon" />
       </div>
@@ -33,7 +38,12 @@ const {
         <div class="text-gray-500 text-xs font-medium">
           {{ label }}
         </div>
-        <div :class="['font-bold text-gray-900 leading-tight', compact ? 'text-lg' : 'text-2xl mt-0.5']">
+        <div
+          :class="[
+            'font-bold text-gray-900 leading-tight',
+            compact ? 'text-lg' : 'text-2xl mt-0.5',
+          ]"
+        >
           {{ value }}
         </div>
         <div

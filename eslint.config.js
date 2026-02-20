@@ -3,6 +3,7 @@ import globals from 'globals'
 import pluginVue from 'eslint-plugin-vue'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import prettier from 'eslint-config-prettier'
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -24,4 +25,5 @@ export default defineConfig([
       'vue/multi-word-component-names': 'off',
     },
   },
+  prettier,
 ])

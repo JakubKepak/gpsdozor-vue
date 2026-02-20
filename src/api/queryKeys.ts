@@ -21,6 +21,5 @@ export const vehicleKeys = {
 
 export const insightKeys = {
   all: ['insights'] as const,
-  byModule: (module: string, dataHash: string) =>
-    ['insights', module, dataHash] as const,
+  byModule: (module: string, dataHash: string) => ['insights', module, dataHash] as const,
 }

@@ -44,9 +44,7 @@ const infoWindowOptions = computed(() => ({
     @click="emit('select', vehicle.Code)"
   >
     <div class="flex flex-col items-center cursor-pointer">
-      <div
-        :class="['w-3.5 h-3.5 rounded-full border-2 border-white shadow-md', bgClass]"
-      />
+      <div :class="['w-3.5 h-3.5 rounded-full border-2 border-white shadow-md', bgClass]" />
     </div>
   </CustomMarker>
 
@@ -70,9 +68,7 @@ const infoWindowOptions = computed(() => ({
         {{ vehicle.SPZ }}
       </div>
       <div class="flex items-center gap-1.5 mt-1.5">
-        <div
-          :class="['w-2.5 h-2.5 rounded-full shrink-0', bgClass]"
-        />
+        <div :class="['w-2.5 h-2.5 rounded-full shrink-0', bgClass]" />
         <span class="text-xs text-gray-600">{{ statusLabel }}</span>
       </div>
       <div class="text-xs text-gray-400 mt-1">

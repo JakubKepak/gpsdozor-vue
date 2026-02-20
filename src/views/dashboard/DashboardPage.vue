@@ -2,12 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Alert, Card, Row, Col } from 'ant-design-vue'
-import {
-  CarOutlined,
-  PauseCircleOutlined,
-  ToolOutlined,
-  TeamOutlined,
-} from '@ant-design/icons-vue'
+import { CarOutlined, PauseCircleOutlined, ToolOutlined, TeamOutlined } from '@ant-design/icons-vue'
 import { useGroups } from '@/api/composables/useGroups'
 import { useVehicles } from '@/api/composables/useVehicles'
 import { getEffectiveSpeed } from '@/utils/vehicle'
@@ -30,9 +25,9 @@ const { data: vehicles, isLoading: vehiclesLoading, error } = useVehicles(groupC
 
 const stats = computed(() => {
   const list = vehicles.value ?? []
-  const active = list.filter(v => getEffectiveSpeed(v) > 0).length
-  const idle = list.filter(v => getEffectiveSpeed(v) === 0 && v.IsActive).length
-  const inactive = list.filter(v => !v.IsActive).length
+  const active = list.filter((v) => getEffectiveSpeed(v) > 0).length
+  const idle = list.filter((v) => getEffectiveSpeed(v) === 0 && v.IsActive).length
+  const inactive = list.filter((v) => !v.IsActive).length
   return { active, idle, inactive, total: list.length }
 })
 

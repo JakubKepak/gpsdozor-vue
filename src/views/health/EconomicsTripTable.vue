@@ -84,10 +84,14 @@ const columns = computed(() => [
     key: 'efficiency',
     width: 90,
     sorter: (a: Trip, b: Trip) => {
-      const ea = n(a.TotalDistance) > 0 && n(a.FuelConsumed?.Value) > 0
-        ? (n(a.FuelConsumed?.Value) / n(a.TotalDistance)) * 100 : 0
-      const eb = n(b.TotalDistance) > 0 && n(b.FuelConsumed?.Value) > 0
-        ? (n(b.FuelConsumed?.Value) / n(b.TotalDistance)) * 100 : 0
+      const ea =
+        n(a.TotalDistance) > 0 && n(a.FuelConsumed?.Value) > 0
+          ? (n(a.FuelConsumed?.Value) / n(a.TotalDistance)) * 100
+          : 0
+      const eb =
+        n(b.TotalDistance) > 0 && n(b.FuelConsumed?.Value) > 0
+          ? (n(b.FuelConsumed?.Value) / n(b.TotalDistance)) * 100
+          : 0
       return ea - eb
     },
   },
@@ -104,7 +108,7 @@ const columns = computed(() => [
   },
 ])
 
-const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
+const dataSource = computed(() => trips.map((t) => ({ ...t, key: t.Id })))
 </script>
 
 <template>
@@ -132,7 +136,8 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
             </div>
             <div class="text-xs text-gray-400 flex items-center gap-1">
               <ClockCircleOutlined />
-              {{ dayjs(record.StartTime).format('HH:mm') }} – {{ dayjs(record.FinishTime).format('HH:mm') }}
+              {{ dayjs(record.StartTime).format('HH:mm') }} –
+              {{ dayjs(record.FinishTime).format('HH:mm') }}
             </div>
           </div>
         </template>
@@ -151,11 +156,15 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
         </template>
 
         <template v-else-if="column.key === 'distance'">
-          <span class="text-sm font-medium text-gray-700">{{ n(record.TotalDistance).toFixed(1) }} km</span>
+          <span class="text-sm font-medium text-gray-700">
+            {{ n(record.TotalDistance).toFixed(1) }} km
+          </span>
         </template>
 
         <template v-else-if="column.key === 'duration'">
-          <span class="text-sm text-gray-600">{{ formatDuration(record.StartTime, record.FinishTime) }}</span>
+          <span class="text-sm text-gray-600">
+            {{ formatDuration(record.StartTime, record.FinishTime) }}
+          </span>
         </template>
 
         <template v-else-if="column.key === 'avgSpeed'">
@@ -164,7 +173,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
 
         <template v-else-if="column.key === 'maxSpeed'">
           <Tag
-            :color="n(record.MaxSpeed) > 130 ? 'red' : n(record.MaxSpeed) > 100 ? 'orange' : 'default'"
+            :color="
+              n(record.MaxSpeed) > 130 ? 'red' : n(record.MaxSpeed) > 100 ? 'orange' : 'default'
+            "
             class="m-0"
           >
             {{ n(record.MaxSpeed).toFixed(0) }} km/h
@@ -181,21 +192,29 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
           <span
             v-else
             class="text-xs text-gray-300"
-          >—</span>
+          >
+            —
+          </span>
         </template>
 
         <template v-else-if="column.key === 'efficiency'">
           <template v-if="n(record.FuelConsumed?.Value) > 0 && n(record.TotalDistance) > 0">
             <span
-              :class="['text-sm font-medium', efficiencyClass(n(record.FuelConsumed?.Value), n(record.TotalDistance))]"
+              :class="[
+                'text-sm font-medium',
+                efficiencyClass(n(record.FuelConsumed?.Value), n(record.TotalDistance)),
+              ]"
             >
-              {{ ((n(record.FuelConsumed?.Value) / n(record.TotalDistance)) * 100).toFixed(1) }} L/100
+              {{ ((n(record.FuelConsumed?.Value) / n(record.TotalDistance)) * 100).toFixed(1) }}
+              L/100
             </span>
           </template>
           <span
             v-else
             class="text-xs text-gray-300"
-          >—</span>
+          >
+            —
+          </span>
         </template>
 
         <template v-else-if="column.key === 'cost'">
@@ -208,7 +227,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
           <span
             v-else
             class="text-xs text-gray-300"
-          >—</span>
+          >
+            —
+          </span>
         </template>
 
         <template v-else-if="column.key === 'driver'">
@@ -221,7 +242,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
           <span
             v-else
             class="text-xs text-gray-300"
-          >—</span>
+          >
+            —
+          </span>
         </template>
       </template>
     </Table>

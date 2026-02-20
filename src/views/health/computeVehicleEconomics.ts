@@ -49,8 +49,7 @@ export function computeVehicleEconomics(vehicle: Vehicle, trips: Trip[]): Vehicl
   }
 
   const hasFuelData = fuelDataPoints > 0
-  const fuelPer100km =
-    totalDistance > 0 && hasFuelData ? (totalFuel / totalDistance) * 100 : 0
+  const fuelPer100km = totalDistance > 0 && hasFuelData ? (totalFuel / totalDistance) * 100 : 0
   const costPerKm = totalDistance > 0 ? totalCost / totalDistance : 0
 
   return {
@@ -82,7 +81,10 @@ export interface DailyFuelPoint {
 }
 
 export function computeDailyFuel(trips: Trip[]): DailyFuelPoint[] {
-  const dayMap = new Map<string, { fuel: number; cost: number; distance: number; fuelDistance: number; trips: number }>()
+  const dayMap = new Map<
+    string,
+    { fuel: number; cost: number; distance: number; fuelDistance: number; trips: number }
+  >()
 
   for (const trip of trips) {
     const date = trip.StartTime?.slice(0, 10) ?? ''

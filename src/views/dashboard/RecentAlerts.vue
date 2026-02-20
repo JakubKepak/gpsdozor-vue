@@ -18,9 +18,9 @@ interface VehicleAlert {
 }
 
 const severityClasses: Record<string, { text: string; borderL: string }> = {
-  high:   { text: 'text-severity-critical', borderL: 'border-l-severity-critical' },
-  medium: { text: 'text-severity-warning',  borderL: 'border-l-severity-warning' },
-  low:    { text: 'text-severity-info',     borderL: 'border-l-severity-info' },
+  high: { text: 'text-severity-critical', borderL: 'border-l-severity-critical' },
+  medium: { text: 'text-severity-warning', borderL: 'border-l-severity-warning' },
+  low: { text: 'text-severity-info', borderL: 'border-l-severity-info' },
 }
 
 function hoursSince(timestamp: string): number {
@@ -93,7 +93,10 @@ const alerts = computed<VehicleAlert[]>(() => {
       <div
         v-for="(alert, i) in alerts"
         :key="i"
-        :class="['flex items-start gap-3 p-2.5 rounded-lg bg-gray-50 border-l-3', severityClasses[alert.severity]?.borderL]"
+        :class="[
+          'flex items-start gap-3 p-2.5 rounded-lg bg-gray-50 border-l-3',
+          severityClasses[alert.severity]?.borderL,
+        ]"
       >
         <WarningOutlined
           :class="['text-sm mt-0.5 shrink-0', severityClasses[alert.severity]?.text]"

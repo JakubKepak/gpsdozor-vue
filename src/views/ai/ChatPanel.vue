@@ -13,11 +13,7 @@ const { messages, isLoading, sendMessage, clearChat } = useChatStore()
 const input = ref('')
 const messagesEndRef = ref<HTMLDivElement | null>(null)
 
-const SUGGESTED_PROMPTS_KEYS = [
-  'ai.suggestStatus',
-  'ai.suggestMileage',
-  'ai.suggestFuel',
-] as const
+const SUGGESTED_PROMPTS_KEYS = ['ai.suggestStatus', 'ai.suggestMileage', 'ai.suggestFuel'] as const
 
 // Auto-scroll on new messages
 watch([messages, isLoading], () => {
@@ -95,7 +91,9 @@ function handleSuggest(key: string) {
               <div class="bg-blue-500 text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm">
                 {{ msg.content }}
               </div>
-              <div class="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 shrink-0 mt-0.5">
+              <div
+                class="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 text-blue-600 shrink-0 mt-0.5"
+              >
                 <UserOutlined class="text-xs" />
               </div>
             </div>
@@ -114,7 +112,7 @@ function handleSuggest(key: string) {
               </div>
               <div class="flex flex-col gap-2 min-w-0">
                 <ChatBlocks
-                  v-for="(block, j) in (msg.content as ChatBlock[])"
+                  v-for="(block, j) in msg.content as ChatBlock[]"
                   :key="j"
                   :block="block"
                 />
@@ -177,7 +175,10 @@ function handleSuggest(key: string) {
         />
         <Button
           type="primary"
-          :class="['shrink-0 self-end', input.trim() ? 'bg-linear-to-br! from-brand-gradient-from! to-brand-gradient-to!' : '']"
+          :class="[
+            'shrink-0 self-end',
+            input.trim() ? 'bg-linear-to-br! from-brand-gradient-from! to-brand-gradient-to!' : '',
+          ]"
           :loading="isLoading"
           :disabled="!input.trim()"
           @click="handleSend"

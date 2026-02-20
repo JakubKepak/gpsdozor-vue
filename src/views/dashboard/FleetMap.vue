@@ -56,7 +56,7 @@ watch(
   () => focusedVehicleCode,
   (code) => {
     if (!code) return
-    const vehicle = vehicles.find(v => v.Code === code)
+    const vehicle = vehicles.find((v) => v.Code === code)
     if (!vehicle) return
 
     const lat = parseFloat(vehicle.LastPosition.Latitude)
@@ -77,8 +77,10 @@ function onMarkerSelect(code: string | null) {
   selectedCode.value = code
 }
 
-const activeCount = computed(() => vehicles.filter(v => getEffectiveSpeed(v) > 0).length)
-const idleCount = computed(() => vehicles.filter(v => getEffectiveSpeed(v) === 0 && v.IsActive).length)
+const activeCount = computed(() => vehicles.filter((v) => getEffectiveSpeed(v) > 0).length)
+const idleCount = computed(
+  () => vehicles.filter((v) => getEffectiveSpeed(v) === 0 && v.IsActive).length,
+)
 </script>
 
 <template>

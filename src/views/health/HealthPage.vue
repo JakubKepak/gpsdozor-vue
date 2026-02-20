@@ -26,7 +26,7 @@ const filteredVehicles = computed(() => {
   if (!search.value.trim()) return list
   const q = search.value.toLowerCase()
   return list.filter(
-    v =>
+    (v) =>
       v.Name.toLowerCase().includes(q) ||
       v.SPZ.toLowerCase().includes(q) ||
       v.BranchName.toLowerCase().includes(q),
@@ -34,13 +34,13 @@ const filteredVehicles = computed(() => {
 })
 
 const branches = computed(() =>
-  [...new Set((vehicles.value ?? []).map(v => v.BranchName))].map(b => ({ text: b, value: b })),
+  [...new Set((vehicles.value ?? []).map((v) => v.BranchName))].map((b) => ({ text: b, value: b })),
 )
 
 const isLoading = computed(() => groupsLoading.value || vehiclesLoading.value)
 
 const insightData = computed(() => ({
-  vehicles: (vehicles.value ?? []).map(v => ({
+  vehicles: (vehicles.value ?? []).map((v) => ({
     name: v.Name,
     spz: v.SPZ,
     branch: v.BranchName,
@@ -70,7 +70,8 @@ const columns = computed(() => [
     key: 'branch',
     width: 180,
     filters: branches.value,
-    onFilter: (value: string | number | boolean, record: Vehicle) => record.BranchName === String(value),
+    onFilter: (value: string | number | boolean, record: Vehicle) =>
+      record.BranchName === String(value),
   },
   {
     title: t('health.colOdometer'),
@@ -92,7 +93,8 @@ const columns = computed(() => [
       { text: t('health.active'), value: 'true' },
       { text: t('health.inactive'), value: 'false' },
     ],
-    onFilter: (value: string | number | boolean, record: Vehicle) => String(record.IsActive) === String(value),
+    onFilter: (value: string | number | boolean, record: Vehicle) =>
+      String(record.IsActive) === String(value),
   },
   {
     title: t('health.colEcoDriving'),
@@ -102,7 +104,7 @@ const columns = computed(() => [
   },
 ])
 
-const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: v.Code })))
+const dataSource = computed(() => filteredVehicles.value.map((v) => ({ ...v, key: v.Code })))
 </script>
 
 <template>
@@ -143,7 +145,7 @@ const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: 
         :placeholder="t('health.searchPlaceholder')"
         allow-clear
         class="mb-4 max-w-100"
-        @update:value="(val: string) => search = val"
+        @update:value="(val: string) => (search = val)"
       />
       <Table
         :columns="columns"
@@ -178,7 +180,9 @@ const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: 
               <span
                 v-else
                 class="text-gray-400"
-              >{{ t('health.parked') }}</span>
+              >
+                {{ t('health.parked') }}
+              </span>
               <div class="text-xs text-gray-400">
                 {{ dayjs(record.LastPositionTimestamp).fromNow() }}
               </div>
@@ -202,7 +206,9 @@ const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: 
             <span
               v-else
               class="text-gray-300"
-            >—</span>
+            >
+              —
+            </span>
           </template>
         </template>
       </Table>

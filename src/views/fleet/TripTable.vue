@@ -31,11 +31,11 @@ function truncateAddress(addr: string, maxLen = 35): string {
 }
 
 const vehicleFilters = computed(() =>
-  [...new Set(trips.map(t => t.vehicleName))].map(name => ({ text: name, value: name })),
+  [...new Set(trips.map((t) => t.vehicleName))].map((name) => ({ text: name, value: name })),
 )
 
 const driverFilters = computed(() =>
-  [...new Set(trips.map(t => (t.DriverName ?? '').trim()).filter(Boolean))].map(name => ({
+  [...new Set(trips.map((t) => (t.DriverName ?? '').trim()).filter(Boolean))].map((name) => ({
     text: name,
     value: name,
   })),
@@ -47,20 +47,23 @@ const columns = computed(() => [
     key: 'vehicle',
     width: 150,
     filters: vehicleFilters.value,
-    onFilter: (value: string | number | boolean, record: TripWithVehicle) => record.vehicleName === String(value),
+    onFilter: (value: string | number | boolean, record: TripWithVehicle) =>
+      record.vehicleName === String(value),
   },
   {
     title: t('fleet.colDriver'),
     key: 'driver',
     width: 120,
     filters: driverFilters.value,
-    onFilter: (value: string | number | boolean, record: TripWithVehicle) => (record.DriverName ?? '').trim() === String(value),
+    onFilter: (value: string | number | boolean, record: TripWithVehicle) =>
+      (record.DriverName ?? '').trim() === String(value),
   },
   {
     title: t('fleet.colDate'),
     key: 'date',
     width: 150,
-    sorter: (a: TripWithVehicle, b: TripWithVehicle) => dayjs(a.StartTime).unix() - dayjs(b.StartTime).unix(),
+    sorter: (a: TripWithVehicle, b: TripWithVehicle) =>
+      dayjs(a.StartTime).unix() - dayjs(b.StartTime).unix(),
     defaultSortOrder: 'descend' as const,
   },
   {
@@ -97,7 +100,8 @@ const columns = computed(() => [
     title: t('fleet.colFuel'),
     key: 'fuel',
     width: 80,
-    sorter: (a: TripWithVehicle, b: TripWithVehicle) => n(a.FuelConsumed?.Value) - n(b.FuelConsumed?.Value),
+    sorter: (a: TripWithVehicle, b: TripWithVehicle) =>
+      n(a.FuelConsumed?.Value) - n(b.FuelConsumed?.Value),
   },
   {
     title: t('fleet.colCost'),
@@ -107,7 +111,7 @@ const columns = computed(() => [
   },
 ])
 
-const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
+const dataSource = computed(() => trips.map((t) => ({ ...t, key: t.Id })))
 </script>
 
 <template>
@@ -147,7 +151,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
         <span
           v-else
           class="text-xs text-gray-300 italic"
-        >—</span>
+        >
+          —
+        </span>
       </template>
 
       <!-- Date -->
@@ -158,7 +164,8 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
           </div>
           <div class="text-xs text-gray-400 flex items-center gap-1">
             <ClockCircleOutlined />
-            {{ dayjs(record.StartTime).format('HH:mm') }} – {{ dayjs(record.FinishTime).format('HH:mm') }}
+            {{ dayjs(record.StartTime).format('HH:mm') }} –
+            {{ dayjs(record.FinishTime).format('HH:mm') }}
           </div>
         </div>
       </template>
@@ -199,7 +206,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
       <!-- Max Speed -->
       <template v-else-if="column.key === 'maxSpeed'">
         <Tag
-          :color="n(record.MaxSpeed) > 130 ? 'red' : n(record.MaxSpeed) > 100 ? 'orange' : 'default'"
+          :color="
+            n(record.MaxSpeed) > 130 ? 'red' : n(record.MaxSpeed) > 100 ? 'orange' : 'default'
+          "
           class="m-0"
         >
           {{ n(record.MaxSpeed).toFixed(0) }} km/h
@@ -217,7 +226,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
         <span
           v-else
           class="text-xs text-gray-300"
-        >—</span>
+        >
+          —
+        </span>
       </template>
 
       <!-- Cost -->
@@ -231,7 +242,9 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
         <span
           v-else
           class="text-xs text-gray-300"
-        >—</span>
+        >
+          —
+        </span>
       </template>
     </template>
   </Table>

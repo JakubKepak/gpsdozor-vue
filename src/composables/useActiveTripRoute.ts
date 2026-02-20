@@ -18,7 +18,7 @@ export function useActiveTripRoute(vehicleCode: MaybeRef<string | null>) {
 
   const activeTrip = computed((): Trip | null => {
     if (!trips.value?.length) return null
-    const unfinished = trips.value.find(t => !t.IsFinished)
+    const unfinished = trips.value.find((t) => !t.IsFinished)
     if (unfinished) return unfinished
     return trips.value[trips.value.length - 1]
   })

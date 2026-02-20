@@ -17,9 +17,10 @@ export function useAllVehicleTrips(
 ) {
   return useQueries({
     queries: computed(() =>
-      toValue(vehicles).map(v => ({
+      toValue(vehicles).map((v) => ({
         queryKey: vehicleKeys.trips(v.Code, toValue(from), toValue(to)),
-        queryFn: () => apiGet<Trip[]>(`/vehicle/${v.Code}/trips?from=${toValue(from)}&to=${toValue(to)}`),
+        queryFn: () =>
+          apiGet<Trip[]>(`/vehicle/${v.Code}/trips?from=${toValue(from)}&to=${toValue(to)}`),
         enabled: !!toValue(from) && !!toValue(to),
       })),
     ),
@@ -28,7 +29,7 @@ export function useAllVehicleTrips(
       const allTrips: TripWithVehicle[] = []
       results.forEach((result, i) => {
         if (result.data) {
-          result.data.forEach(trip => {
+          result.data.forEach((trip) => {
             allTrips.push({
               ...trip,
               vehicleCode: vList[i].Code,
@@ -40,8 +41,8 @@ export function useAllVehicleTrips(
       })
       return {
         data: allTrips,
-        isLoading: results.some(r => r.isLoading),
-        error: results.find(r => r.error)?.error ?? null,
+        isLoading: results.some((r) => r.isLoading),
+        error: results.find((r) => r.error)?.error ?? null,
       }
     },
   })

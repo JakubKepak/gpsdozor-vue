@@ -18,7 +18,7 @@ export function usePositionHistory(
       const res = await apiGet<PositionHistoryResponse[]>(
         `/vehicles/history/${toValue(vehicleCodes).join(',')}?from=${toValue(from)}&to=${toValue(to)}`,
       )
-      return res.flatMap(r => r.Positions)
+      return res.flatMap((r) => r.Positions)
     },
     enabled: computed(() => toValue(vehicleCodes).length > 0 && !!toValue(from) && !!toValue(to)),
     refetchInterval: computed(() => toValue(refetchInterval) ?? false),

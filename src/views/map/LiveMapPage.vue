@@ -81,7 +81,7 @@ watch(selectedCode, (code) => {
   if (!code || code === prevFocusCode.value) return
   prevFocusCode.value = code
 
-  const vehicle = vehicleList.value.find(v => v.Code === code)
+  const vehicle = vehicleList.value.find((v) => v.Code === code)
   if (!vehicle) return
 
   const lat = parseFloat(vehicle.LastPosition.Latitude)

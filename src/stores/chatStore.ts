@@ -36,10 +36,11 @@ export function provideChatStore() {
       abortController = new AbortController()
 
       const history = [...messages.value]
-        .filter((m): m is ChatMessage & { content: string } =>
-          typeof m.content === 'string' || m.role === 'user',
+        .filter(
+          (m): m is ChatMessage & { content: string } =>
+            typeof m.content === 'string' || m.role === 'user',
         )
-        .map(m => ({
+        .map((m) => ({
           role: m.role,
           content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
         }))
@@ -47,14 +48,21 @@ export function provideChatStore() {
       const resp = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history, fleetContext: getFleetContext(), locale: locale.value }),
+        body: JSON.stringify({
+          messages: history,
+          fleetContext: getFleetContext(),
+          locale: locale.value,
+        }),
         signal: abortController.signal,
       })
 
       if (!resp.ok) {
         const errorKey = resp.status === 429 ? 'ai.rateLimited' : 'ai.error'
         const errorBlock: ChatBlock[] = [{ type: 'text', content: t(errorKey) }]
-        messages.value = [...messages.value, { role: 'assistant', content: errorBlock, timestamp: new Date().toISOString() }]
+        messages.value = [
+          ...messages.value,
+          { role: 'assistant', content: errorBlock, timestamp: new Date().toISOString() },
+        ]
         return
       }
 
@@ -76,7 +84,11 @@ export function provideChatStore() {
 
       messages.value = [
         ...messages.value,
-        { role: 'assistant', content: [{ type: 'text', content: t('ai.error') }], timestamp: new Date().toISOString() },
+        {
+          role: 'assistant',
+          content: [{ type: 'text', content: t('ai.error') }],
+          timestamp: new Date().toISOString(),
+        },
       ]
     } finally {
       isLoading.value = false

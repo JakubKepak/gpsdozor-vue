@@ -123,7 +123,14 @@ const dailyData = computed(() => {
             :value-style="
               !economics.hasFuelData
                 ? { color: '#d1d5db' }
-                : { color: economics.fuelPer100km > 15 ? '#ef4444' : economics.fuelPer100km > 10 ? '#f59e0b' : '#22c55e' }
+                : {
+                    color:
+                      economics.fuelPer100km > 15
+                        ? '#ef4444'
+                        : economics.fuelPer100km > 10
+                          ? '#f59e0b'
+                          : '#22c55e',
+                  }
             "
           />
         </Card>
@@ -151,7 +158,9 @@ const dailyData = computed(() => {
           <Statistic
             :title="t('health.driversCard')"
             :value="economics.drivers.length > 0 ? economics.drivers.join(', ') : '—'"
-            :value-style="economics.drivers.length > 0 ? { fontSize: '16px' } : { color: '#d1d5db' }"
+            :value-style="
+              economics.drivers.length > 0 ? { fontSize: '16px' } : { color: '#d1d5db' }
+            "
           />
         </Card>
       </Col>

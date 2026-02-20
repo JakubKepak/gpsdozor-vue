@@ -22,11 +22,34 @@ const dataRef = computed(() => data)
 const visibleRef = computed(() => visible)
 const { data: response, isLoading, error } = useAIInsights(module, dataRef, visibleRef)
 
-const severityConfig: Record<InsightSeverity, { textClass: string; bgClass: string; borderClass: string; icon: () => ReturnType<typeof h> }> = {
-  info:     { textClass: 'text-severity-info',     bgClass: 'bg-severity-info-bg',     borderClass: 'border-l-severity-info',     icon: () => h(BulbOutlined) },
-  warning:  { textClass: 'text-severity-warning',  bgClass: 'bg-severity-warning-bg',  borderClass: 'border-l-severity-warning',  icon: () => h(WarningOutlined) },
-  critical: { textClass: 'text-severity-critical', bgClass: 'bg-severity-critical-bg', borderClass: 'border-l-severity-critical', icon: () => h(CloseCircleOutlined) },
-  positive: { textClass: 'text-severity-positive', bgClass: 'bg-severity-positive-bg', borderClass: 'border-l-severity-positive', icon: () => h(CheckCircleOutlined) },
+const severityConfig: Record<
+  InsightSeverity,
+  { textClass: string; bgClass: string; borderClass: string; icon: () => ReturnType<typeof h> }
+> = {
+  info: {
+    textClass: 'text-severity-info',
+    bgClass: 'bg-severity-info-bg',
+    borderClass: 'border-l-severity-info',
+    icon: () => h(BulbOutlined),
+  },
+  warning: {
+    textClass: 'text-severity-warning',
+    bgClass: 'bg-severity-warning-bg',
+    borderClass: 'border-l-severity-warning',
+    icon: () => h(WarningOutlined),
+  },
+  critical: {
+    textClass: 'text-severity-critical',
+    bgClass: 'bg-severity-critical-bg',
+    borderClass: 'border-l-severity-critical',
+    icon: () => h(CloseCircleOutlined),
+  },
+  positive: {
+    textClass: 'text-severity-positive',
+    bgClass: 'bg-severity-positive-bg',
+    borderClass: 'border-l-severity-positive',
+    icon: () => h(CheckCircleOutlined),
+  },
 }
 </script>
 
@@ -76,7 +99,10 @@ const severityConfig: Record<InsightSeverity, { textClass: string; bgClass: stri
           :lg="12"
         >
           <Card
-            :class="['h-full border-l-3', (severityConfig[insight.severity] ?? severityConfig.info).borderClass]"
+            :class="[
+              'h-full border-l-3',
+              (severityConfig[insight.severity] ?? severityConfig.info).borderClass,
+            ]"
             :body-style="{ padding: '16px' }"
           >
             <div class="flex items-start gap-3">

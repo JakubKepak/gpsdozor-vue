@@ -24,7 +24,6 @@ const route = useRoute()
 const { t } = useI18n()
 const { locale, changeLocale } = useLocale()
 
-
 const isMapPage = computed(() => route.path === '/map')
 
 const menuItems = computed(() => [
@@ -43,7 +42,10 @@ function onMenuClick({ key }: { key: string | number }) {
   router.push(String(key))
 }
 
-const localeFlags: Record<string, string> = { cs: '\ud83c\udde8\ud83c\uddff', en: '\ud83c\uddec\ud83c\udde7' }
+const localeFlags: Record<string, string> = {
+  cs: '\ud83c\udde8\ud83c\uddff',
+  en: '\ud83c\uddec\ud83c\udde7',
+}
 const localeOptions = [
   { value: 'cs', label: `${localeFlags.cs} CZ` },
   { value: 'en', label: `${localeFlags.en} EN` },
@@ -56,9 +58,7 @@ export default {}
 </script>
 
 <template>
-  <Layout
-    class="h-screen overflow-hidden flex-row"
-  >
+  <Layout class="h-screen overflow-hidden flex-row">
     <Layout.Sider
       v-model:collapsed="collapsed"
       collapsible
@@ -70,16 +70,16 @@ export default {}
       <div class="flex flex-col h-full">
         <!-- Logo -->
         <div class="flex items-center gap-3 px-4 h-16 border-b border-white/10">
-          <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500 text-white font-bold text-sm shrink-0">
+          <div
+            class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500 text-white font-bold text-sm shrink-0"
+          >
             GD
           </div>
           <div
             v-if="!collapsed"
             class="overflow-hidden"
           >
-            <div class="text-white font-semibold text-sm leading-tight">
-              GPS Dozor
-            </div>
+            <div class="text-white font-semibold text-sm leading-tight">GPS Dozor</div>
             <div class="text-blue-300/60 text-xs leading-tight">
               {{ t('app.subtitle') }}
             </div>

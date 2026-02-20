@@ -11,7 +11,10 @@ const router = createRouter({
         { path: 'fleet', component: () => import('@/views/fleet/FleetPage.vue') },
         { path: 'map', component: () => import('@/views/map/LiveMapPage.vue') },
         { path: 'health', component: () => import('@/views/health/HealthPage.vue') },
-        { path: 'health/:vehicleCode', component: () => import('@/views/health/VehicleDetailPage.vue') },
+        {
+          path: 'health/:vehicleCode',
+          component: () => import('@/views/health/VehicleDetailPage.vue'),
+        },
       ],
     },
   ],

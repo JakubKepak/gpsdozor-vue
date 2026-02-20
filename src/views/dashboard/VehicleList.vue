@@ -2,7 +2,12 @@
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Card, Tag, Tooltip } from 'ant-design-vue'
-import { CarOutlined, DashboardOutlined, AimOutlined, NodeIndexOutlined } from '@ant-design/icons-vue'
+import {
+  CarOutlined,
+  DashboardOutlined,
+  AimOutlined,
+  NodeIndexOutlined,
+} from '@ant-design/icons-vue'
 import type { Vehicle } from '@/types/api'
 import { getEffectiveSpeed } from '@/utils/vehicle'
 
@@ -41,9 +46,7 @@ function getStatusTag(vehicle: Vehicle): { color: string; label: string } {
         :key="v.Code"
         class="flex items-center gap-3 py-2.5 border-b border-gray-100 last:border-0"
       >
-        <div
-          :class="['w-2 h-2 rounded-full shrink-0', getStatusDotClass(v)]"
-        />
+        <div :class="['w-2 h-2 rounded-full shrink-0', getStatusDotClass(v)]" />
         <div class="min-w-0 flex-1">
           <div class="text-sm font-medium text-gray-900 truncate">
             {{ v.Name }}

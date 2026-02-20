@@ -28,7 +28,7 @@ const option = computed(() => ({
   grid: { top: 20, right: 16, bottom: 24, left: 48 },
   xAxis: {
     type: 'category' as const,
-    data: data.map(d => d[xKey] as string),
+    data: data.map((d) => d[xKey] as string),
     axisLabel: {
       fontSize: 11,
       formatter: xFormatter ?? ((v: string) => v.slice(5)),
@@ -47,7 +47,7 @@ const option = computed(() => ({
   series: [
     {
       type: 'line' as const,
-      data: data.map(d => d[yKey]),
+      data: data.map((d) => d[yKey]),
       smooth: true,
       lineStyle: { color, width: 2 },
       itemStyle: { color },
