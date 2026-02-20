@@ -142,8 +142,7 @@ const dataSource = computed(() => filteredVehicles.value.map(v => ({ ...v, key: 
       <Input
         :placeholder="t('health.searchPlaceholder')"
         allow-clear
-        class="mb-4"
-        :style="{ maxWidth: '400px' }"
+        class="mb-4 max-w-100"
         @update:value="(val: string) => search = val"
       />
       <Table

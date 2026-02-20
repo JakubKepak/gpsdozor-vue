@@ -13,6 +13,13 @@ const { trips } = defineProps<{
 const { t } = useI18n()
 const n = (v: unknown): number => Number(v) || 0
 
+function efficiencyClass(fuel: number, distance: number): string {
+  const eff = (fuel / distance) * 100
+  if (eff > 15) return 'text-severity-critical'
+  if (eff > 10) return 'text-severity-warning'
+  return 'text-severity-positive'
+}
+
 function formatDuration(start: string, finish: string): string {
   if (!start || !finish) return '—'
   const mins = dayjs(finish).diff(dayjs(start), 'minute')
@@ -180,14 +187,7 @@ const dataSource = computed(() => trips.map(t => ({ ...t, key: t.Id })))
         <template v-else-if="column.key === 'efficiency'">
           <template v-if="n(record.FuelConsumed?.Value) > 0 && n(record.TotalDistance) > 0">
             <span
-              class="text-sm font-medium"
-              :style="{
-                color: (n(record.FuelConsumed?.Value) / n(record.TotalDistance)) * 100 > 15
-                  ? '#ef4444'
-                  : (n(record.FuelConsumed?.Value) / n(record.TotalDistance)) * 100 > 10
-                    ? '#f59e0b'
-                    : '#22c55e',
-              }"
+              :class="['text-sm font-medium', efficiencyClass(n(record.FuelConsumed?.Value), n(record.TotalDistance))]"
             >
               {{ ((n(record.FuelConsumed?.Value) / n(record.TotalDistance)) * 100).toFixed(1) }} L/100
             </span>
