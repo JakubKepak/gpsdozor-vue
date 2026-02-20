@@ -9,12 +9,19 @@ import {
   EnvironmentOutlined,
   ToolOutlined,
   GlobalOutlined,
+  RobotOutlined,
+  CloseOutlined,
 } from '@ant-design/icons-vue'
 import { useLocale } from '@/composables/useLocale'
 import { useGroups } from '@/api/composables/useGroups'
 import { useVehicles } from '@/api/composables/useVehicles'
+import { provideChatStore } from '@/stores/chatStore'
+import ChatPanel from '@/views/ai/ChatPanel.vue'
 
 const collapsed = ref(false)
+const chatOpen = ref(false)
+
+provideChatStore()
 const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
@@ -138,5 +145,37 @@ export default {}
         <router-view />
       </Layout.Content>
     </Layout>
+
+    <!-- Chat bubble -->
+    <button
+      class="fixed z-50 flex items-center justify-center w-14 h-14 rounded-full border-0 cursor-pointer shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+      :style="{ right: '24px', bottom: '24px', background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }"
+      :aria-label="t('ai.title')"
+      @click="chatOpen = !chatOpen"
+    >
+      <CloseOutlined v-if="chatOpen" class="text-white text-lg" />
+      <RobotOutlined v-else class="text-white text-xl" />
+    </button>
+
+    <!-- Chat popup -->
+    <div
+      v-if="chatOpen"
+      class="fixed z-40 flex flex-col bg-white rounded-2xl shadow-2xl overflow-hidden"
+      :style="{ right: '24px', bottom: '96px', width: '380px', height: '520px', border: '1px solid rgba(0,0,0,0.08)' }"
+    >
+      <div
+        class="flex items-center gap-3 px-4 py-3 shrink-0"
+        style="background: linear-gradient(135deg, #7c3aed, #2563eb)"
+      >
+        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20">
+          <RobotOutlined class="text-white text-sm" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-white font-semibold text-sm">{{ t('ai.title') }}</div>
+          <div class="text-white/70 text-xs">{{ t('ai.subtitle') }}</div>
+        </div>
+      </div>
+      <ChatPanel />
+    </div>
   </Layout>
 </template>
