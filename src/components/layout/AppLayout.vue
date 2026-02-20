@@ -2,23 +2,20 @@
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Layout, Menu, Badge, Select } from 'ant-design-vue'
+import { Layout, Menu, Select } from 'ant-design-vue'
 import {
   DashboardOutlined,
   CarOutlined,
   EnvironmentOutlined,
   ToolOutlined,
-  GlobalOutlined,
   RobotOutlined,
   CloseOutlined,
 } from '@ant-design/icons-vue'
 import { useLocale } from '@/composables/useLocale'
-import { useGroups } from '@/api/composables/useGroups'
-import { useVehicles } from '@/api/composables/useVehicles'
 import { provideChatStore } from '@/stores/chatStore'
 import ChatPanel from '@/views/ai/ChatPanel.vue'
 
-const collapsed = ref(false)
+const collapsed = ref(true)
 const chatOpen = ref(false)
 
 provideChatStore()
@@ -27,11 +24,6 @@ const route = useRoute()
 const { t } = useI18n()
 const { locale, changeLocale } = useLocale()
 
-const { data: groups } = useGroups()
-const groupCode = computed(() => groups.value?.[0]?.Code ?? '')
-const { data: vehicles } = useVehicles(groupCode)
-const activeCount = computed(() => vehicles.value?.filter(v => v.Speed > 0).length ?? 0)
-const totalCount = computed(() => vehicles.value?.length ?? 0)
 
 const isMapPage = computed(() => route.path === '/map')
 
@@ -51,9 +43,10 @@ function onMenuClick({ key }: { key: string | number }) {
   router.push(String(key))
 }
 
+const localeFlags: Record<string, string> = { cs: '\ud83c\udde8\ud83c\uddff', en: '\ud83c\uddec\ud83c\udde7' }
 const localeOptions = [
-  { value: 'cs', label: 'CZ' },
-  { value: 'en', label: 'EN' },
+  { value: 'cs', label: `${localeFlags.cs} CZ` },
+  { value: 'en', label: `${localeFlags.en} EN` },
 ]
 </script>
 
@@ -107,46 +100,25 @@ export default {}
 
         <!-- Footer -->
         <div class="border-t border-white/10 p-3">
-          <!-- Fleet status -->
-          <div
-            v-if="!collapsed"
-            class="rounded-lg bg-white/5 p-3"
-          >
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-blue-300/80 text-xs font-medium">{{ t('sidebar.fleetStatus') }}</span>
-              <Badge status="processing" />
-            </div>
-            <div class="text-white text-sm">
-              {{ t('sidebar.activeVehicles') }}
-              <span class="font-semibold text-green-400">{{ activeCount }}</span>
-              <span class="text-white/40">/{{ totalCount }}</span>
-            </div>
-          </div>
-          <div
-            v-else
-            class="flex justify-center"
-          >
-            <Badge
-              :count="activeCount"
-              size="small"
-              color="green"
-            />
-          </div>
-
           <!-- Locale selector -->
-          <div :class="['flex items-center mt-2', collapsed ? 'justify-center' : 'gap-2 px-1']">
-            <GlobalOutlined class="text-white/50 text-xs" />
+          <div :class="['flex items-center mt-2', collapsed ? 'justify-center' : 'px-1']">
             <Select
               v-if="!collapsed"
               :value="locale"
               size="small"
               variant="borderless"
               :options="localeOptions"
-              class="w-16"
+              class="w-22 locale-select"
               :popup-match-select-width="false"
-              :style="{ color: 'rgba(255,255,255,0.6)' }"
               @update:value="(val: unknown) => changeLocale(String(val))"
             />
+            <button
+              v-else
+              class="bg-transparent border-0 cursor-pointer text-base p-0 leading-none"
+              @click="changeLocale(locale === 'cs' ? 'en' : 'cs')"
+            >
+              {{ localeFlags[locale] ?? localeFlags.cs }}
+            </button>
           </div>
 
           <!-- Collapse button -->
@@ -209,3 +181,18 @@ export default {}
     </div>
   </Layout>
 </template>
+
+<style scoped>
+.locale-select :deep(.ant-select-selector) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+}
+.locale-select :deep(.ant-select-selection-item) {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+.locale-select :deep(.ant-select-arrow) {
+  color: rgba(255, 255, 255, 0.35);
+}
+</style>
