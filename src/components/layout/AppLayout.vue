@@ -57,7 +57,7 @@ export default {}
 
 <template>
   <Layout
-    class="min-h-screen flex-row"
+    class="h-screen overflow-hidden flex-row"
   >
     <Layout.Sider
       v-model:collapsed="collapsed"
@@ -65,7 +65,7 @@ export default {}
       :width="220"
       :collapsed-width="64"
       :trigger="null"
-      class="bg-sidebar sticky top-0 h-screen overflow-auto"
+      class="bg-sidebar h-full overflow-auto"
     >
       <div class="flex flex-col h-full">
         <!-- Logo -->
@@ -131,7 +131,7 @@ export default {}
     </Layout.Sider>
 
     <Layout>
-      <Layout.Content :class="isMapPage ? 'overflow-hidden' : 'p-6 bg-gray-50 min-h-screen'">
+      <Layout.Content :class="isMapPage ? 'overflow-hidden' : 'p-6 bg-gray-50 overflow-auto'">
         <router-view />
       </Layout.Content>
     </Layout>
