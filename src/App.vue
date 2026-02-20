@@ -1,6 +1,16 @@
 <script setup lang="ts">
+import { ConfigProvider } from 'ant-design-vue'
+import { colors } from '@/theme/colors'
+
+const theme = {
+  token: {
+    colorPrimary: colors.brand.primary,
+  },
+}
 </script>
 
 <template>
-  <router-view />
+  <ConfigProvider :theme="theme">
+    <router-view />
+  </ConfigProvider>
 </template>

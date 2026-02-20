@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+/*
+ * App color tokens — keep in sync with src/theme/colors.ts
+ * Generates utility classes: bg-brand-primary, text-status-active, etc.
+ */
+@theme {
+  --color-brand-primary: #3b82f6;
+  --color-brand-gradient-from: #7c3aed;
+  --color-brand-gradient-to: #2563eb;
+
+  --color-sidebar: #0a1628;
+
+  --color-status-active: #22c55e;
+  --color-status-idle: #f59e0b;
+  --color-status-offline: #ef4444;
+  --color-status-inactive: #9ca3af;
+
+  --color-severity-info: #3b82f6;
+  --color-severity-info-bg: #eff6ff;
+  --color-severity-warning: #f59e0b;
+  --color-severity-warning-bg: #fffbeb;
+  --color-severity-critical: #ef4444;
+  --color-severity-critical-bg: #fef2f2;
+  --color-severity-positive: #22c55e;
+  --color-severity-positive-bg: #f0fdf4;
+
+  --color-accent-violet: #8b5cf6;
+  --color-accent-violet-bg: #f5f3ff;
+
+  --color-muted: #d1d5db;
+}
+
 /* Sidebar menu overrides */
 .ant-layout-sider .ant-menu-dark {
   background: transparent !important;
@@ -18,12 +49,19 @@
 }
 
 /* Sidebar locale select overrides */
-.ant-layout-sider .ant-select .ant-select-selector {
-  color: rgba(255, 255, 255, 0.6) !important;
+.locale-select .ant-select-selector {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
 }
 
-.ant-layout-sider .ant-select .ant-select-arrow {
-  color: rgba(255, 255, 255, 0.4) !important;
+.locale-select .ant-select-selection-item {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.locale-select .ant-select-arrow {
+  color: rgba(255, 255, 255, 0.35);
 }
 
 /* Google Maps InfoWindow — hide default close button and header padding */

@@ -57,8 +57,7 @@ export default {}
 
 <template>
   <Layout
-    class="min-h-screen"
-    style="flex-direction: row"
+    class="min-h-screen flex-row"
   >
     <Layout.Sider
       v-model:collapsed="collapsed"
@@ -66,7 +65,7 @@ export default {}
       :width="220"
       :collapsed-width="64"
       :trigger="null"
-      :style="{ background: '#0a1628', position: 'sticky', top: 0, height: '100vh', overflow: 'auto' }"
+      class="bg-sidebar sticky top-0 h-screen overflow-auto"
     >
       <div class="flex flex-col h-full">
         <!-- Logo -->
@@ -93,8 +92,7 @@ export default {}
           :selected-keys="selectedKeys"
           :items="menuItems"
           theme="dark"
-          class="border-none mt-2 flex-1"
-          :style="{ background: 'transparent' }"
+          class="border-none mt-2 flex-1 bg-transparent!"
           @click="onMenuClick"
         />
 
@@ -181,18 +179,3 @@ export default {}
     </div>
   </Layout>
 </template>
-
-<style scoped>
-.locale-select :deep(.ant-select-selector) {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-radius: 6px !important;
-}
-.locale-select :deep(.ant-select-selection-item) {
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-weight: 500;
-  font-size: 12px;
-}
-.locale-select :deep(.ant-select-arrow) {
-  color: rgba(255, 255, 255, 0.35);
-}
-</style>
