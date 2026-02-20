@@ -5,15 +5,15 @@ const {
   label,
   value,
   subtitle,
-  color,
-  bgColor,
+  colorClass,
+  bgColorClass,
   compact = false,
 } = defineProps<{
   label: string
   value: string | number
   subtitle?: string
-  color: string
-  bgColor: string
+  colorClass: string
+  bgColorClass: string
   compact?: boolean
 }>()
 </script>
@@ -25,8 +25,7 @@ const {
   >
     <div :class="['flex gap-3', compact ? 'items-center' : 'items-start']">
       <div
-        :class="['flex items-center justify-center rounded-lg shrink-0', compact ? 'w-9 h-9 text-base' : 'w-10 h-10 text-lg']"
-        :style="{ color, backgroundColor: bgColor }"
+        :class="['flex items-center justify-center rounded-lg shrink-0', compact ? 'w-9 h-9 text-base' : 'w-10 h-10 text-lg', colorClass, bgColorClass]"
       >
         <slot name="icon" />
       </div>

@@ -223,8 +223,8 @@ const insightData = computed(() => ({
         <StatCard
           :label="t('fleet.statTrips')"
           :value="String(tripList.length)"
-          color="#3b82f6"
-          bg-color="#eff6ff"
+          color-class="text-brand-primary"
+          bg-color-class="bg-severity-info-bg"
           compact
         >
           <template #icon>
@@ -239,8 +239,8 @@ const insightData = computed(() => ({
         <StatCard
           :label="t('fleet.statDistance')"
           :value="`${totalDistance.toFixed(0)} km`"
-          color="#22c55e"
-          bg-color="#f0fdf4"
+          color-class="text-status-active"
+          bg-color-class="bg-severity-positive-bg"
           compact
         >
           <template #icon>
@@ -255,8 +255,8 @@ const insightData = computed(() => ({
         <StatCard
           :label="t('fleet.statVehicles')"
           :value="String(uniqueVehicles)"
-          color="#f59e0b"
-          bg-color="#fffbeb"
+          color-class="text-status-idle"
+          bg-color-class="bg-severity-warning-bg"
           compact
         >
           <template #icon>
@@ -271,8 +271,8 @@ const insightData = computed(() => ({
         <StatCard
           :label="t('fleet.statDrivers')"
           :value="String(uniqueDrivers)"
-          color="#8b5cf6"
-          bg-color="#f5f3ff"
+          color-class="text-accent-violet"
+          bg-color-class="bg-accent-violet-bg"
           compact
         >
           <template #icon>

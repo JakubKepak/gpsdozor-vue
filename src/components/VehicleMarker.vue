@@ -19,10 +19,10 @@ const lat = computed(() => parseFloat(vehicle.LastPosition.Latitude))
 const lng = computed(() => parseFloat(vehicle.LastPosition.Longitude))
 const speed = computed(() => getEffectiveSpeed(vehicle))
 
-const color = computed(() => {
-  if (speed.value > 0) return '#22c55e'
-  if (vehicle.IsActive) return '#f59e0b'
-  return '#9ca3af'
+const bgClass = computed(() => {
+  if (speed.value > 0) return 'bg-status-active'
+  if (vehicle.IsActive) return 'bg-status-idle'
+  return 'bg-status-inactive'
 })
 
 const statusLabel = computed(() => {
@@ -45,8 +45,7 @@ const infoWindowOptions = computed(() => ({
   >
     <div class="flex flex-col items-center cursor-pointer">
       <div
-        class="w-3.5 h-3.5 rounded-full border-2 border-white shadow-md"
-        :style="{ backgroundColor: color }"
+        :class="['w-3.5 h-3.5 rounded-full border-2 border-white shadow-md', bgClass]"
       />
     </div>
   </CustomMarker>
@@ -72,8 +71,7 @@ const infoWindowOptions = computed(() => ({
       </div>
       <div class="flex items-center gap-1.5 mt-1.5">
         <div
-          class="w-2.5 h-2.5 rounded-full shrink-0"
-          :style="{ backgroundColor: color }"
+          :class="['w-2.5 h-2.5 rounded-full shrink-0', bgClass]"
         />
         <span class="text-xs text-gray-600">{{ statusLabel }}</span>
       </div>

@@ -88,8 +88,8 @@ const insightData = computed(() => ({
           :label="t('dashboard.activeVehicles')"
           :value="stats.active"
           :subtitle="t('dashboard.activeSubtitle')"
-          color="#22c55e"
-          bg-color="#f0fdf4"
+          color-class="text-status-active"
+          bg-color-class="bg-severity-positive-bg"
         >
           <template #icon>
             <CarOutlined />
@@ -105,8 +105,8 @@ const insightData = computed(() => ({
           :label="t('dashboard.idleVehicles')"
           :value="stats.idle"
           :subtitle="t('dashboard.idleSubtitle')"
-          color="#f59e0b"
-          bg-color="#fffbeb"
+          color-class="text-status-idle"
+          bg-color-class="bg-severity-warning-bg"
         >
           <template #icon>
             <PauseCircleOutlined />
@@ -122,8 +122,8 @@ const insightData = computed(() => ({
           :label="t('dashboard.maintenance')"
           :value="stats.inactive"
           :subtitle="t('dashboard.maintenanceSubtitle')"
-          color="#ef4444"
-          bg-color="#fef2f2"
+          color-class="text-status-offline"
+          bg-color-class="bg-severity-critical-bg"
         >
           <template #icon>
             <ToolOutlined />
@@ -139,8 +139,8 @@ const insightData = computed(() => ({
           :label="t('dashboard.totalFleet')"
           :value="stats.total"
           :subtitle="t('dashboard.totalSubtitle')"
-          color="#3b82f6"
-          bg-color="#eff6ff"
+          color-class="text-brand-primary"
+          bg-color-class="bg-severity-info-bg"
         >
           <template #icon>
             <TeamOutlined />

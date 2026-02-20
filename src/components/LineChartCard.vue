@@ -63,9 +63,11 @@ const option = computed(() => ({
     <h3 class="text-sm font-semibold text-gray-900 m-0 mb-4">
       {{ title }}
     </h3>
+    <!-- height inline style justified: dynamic numeric prop from parent -->
     <VChart
       :option="option"
-      :style="{ height: `${height}px`, width: '100%' }"
+      class="w-full"
+      :style="{ height: `${height}px` }"
       autoresize
     />
   </Card>

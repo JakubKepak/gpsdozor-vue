@@ -22,11 +22,11 @@ const dataRef = computed(() => data)
 const visibleRef = computed(() => visible)
 const { data: response, isLoading, error } = useAIInsights(module, dataRef, visibleRef)
 
-const severityConfig: Record<InsightSeverity, { color: string; bgColor: string; icon: () => ReturnType<typeof h> }> = {
-  info:     { color: '#3b82f6', bgColor: '#eff6ff',  icon: () => h(BulbOutlined) },
-  warning:  { color: '#f59e0b', bgColor: '#fffbeb',  icon: () => h(WarningOutlined) },
-  critical: { color: '#ef4444', bgColor: '#fef2f2',  icon: () => h(CloseCircleOutlined) },
-  positive: { color: '#22c55e', bgColor: '#f0fdf4',  icon: () => h(CheckCircleOutlined) },
+const severityConfig: Record<InsightSeverity, { textClass: string; bgClass: string; borderClass: string; icon: () => ReturnType<typeof h> }> = {
+  info:     { textClass: 'text-severity-info',     bgClass: 'bg-severity-info-bg',     borderClass: 'border-l-severity-info',     icon: () => h(BulbOutlined) },
+  warning:  { textClass: 'text-severity-warning',  bgClass: 'bg-severity-warning-bg',  borderClass: 'border-l-severity-warning',  icon: () => h(WarningOutlined) },
+  critical: { textClass: 'text-severity-critical', bgClass: 'bg-severity-critical-bg', borderClass: 'border-l-severity-critical', icon: () => h(CloseCircleOutlined) },
+  positive: { textClass: 'text-severity-positive', bgClass: 'bg-severity-positive-bg', borderClass: 'border-l-severity-positive', icon: () => h(CheckCircleOutlined) },
 }
 </script>
 
@@ -76,16 +76,16 @@ const severityConfig: Record<InsightSeverity, { color: string; bgColor: string; 
           :lg="12"
         >
           <Card
-            class="h-full"
-            :body-style="{ padding: '16px', borderLeft: `3px solid ${(severityConfig[insight.severity] ?? severityConfig.info).color}` }"
+            :class="['h-full border-l-3', (severityConfig[insight.severity] ?? severityConfig.info).borderClass]"
+            :body-style="{ padding: '16px' }"
           >
             <div class="flex items-start gap-3">
               <div
-                class="flex items-center justify-center w-8 h-8 rounded-lg text-sm shrink-0"
-                :style="{
-                  color: (severityConfig[insight.severity] ?? severityConfig.info).color,
-                  backgroundColor: (severityConfig[insight.severity] ?? severityConfig.info).bgColor,
-                }"
+                :class="[
+                  'flex items-center justify-center w-8 h-8 rounded-lg text-sm shrink-0',
+                  (severityConfig[insight.severity] ?? severityConfig.info).textClass,
+                  (severityConfig[insight.severity] ?? severityConfig.info).bgClass,
+                ]"
               >
                 <component :is="(severityConfig[insight.severity] ?? severityConfig.info).icon" />
               </div>
