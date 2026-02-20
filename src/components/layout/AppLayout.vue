@@ -11,12 +11,20 @@ import {
   GlobalOutlined,
 } from '@ant-design/icons-vue'
 import { useLocale } from '@/composables/useLocale'
+import { useGroups } from '@/api/composables/useGroups'
+import { useVehicles } from '@/api/composables/useVehicles'
 
 const collapsed = ref(false)
 const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 const { locale, changeLocale } = useLocale()
+
+const { data: groups } = useGroups()
+const groupCode = computed(() => groups.value?.[0]?.Code ?? '')
+const { data: vehicles } = useVehicles(groupCode)
+const activeCount = computed(() => vehicles.value?.filter(v => v.Speed > 0).length ?? 0)
+const totalCount = computed(() => vehicles.value?.length ?? 0)
 
 const isMapPage = computed(() => route.path === '/map')
 
@@ -90,12 +98,12 @@ export default {}
             </div>
             <div class="text-white text-sm">
               {{ t('sidebar.activeVehicles') }}
-              <span class="font-semibold text-green-400">–</span>
-              <span class="text-white/40">/–</span>
+              <span class="font-semibold text-green-400">{{ activeCount }}</span>
+              <span class="text-white/40">/{{ totalCount }}</span>
             </div>
           </div>
           <div v-else class="flex justify-center">
-            <Badge :count="0" size="small" color="green" />
+            <Badge :count="activeCount" size="small" color="green" />
           </div>
 
           <!-- Locale selector -->
