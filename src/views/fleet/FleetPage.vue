@@ -198,7 +198,7 @@ const insightData = computed(() => ({
         <Select
           mode="multiple"
           :value="selectedCodes"
-          :style="{ minWidth: '220px', maxWidth: '400px' }"
+          class="min-w-55 max-w-100"
           max-tag-count="responsive"
           :placeholder="t('fleet.selectVehicles')"
           :options="vehicleOptions"
