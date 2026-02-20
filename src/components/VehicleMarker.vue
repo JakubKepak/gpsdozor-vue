@@ -54,10 +54,9 @@ const infoWindowOptions = computed(() => ({
   <InfoWindow
     v-if="selected"
     :options="infoWindowOptions"
-    :header-disabled="true"
     @close-click="emit('select', null)"
   >
-    <div class="relative min-w-35 pr-6">
+    <div class="vehicle-popover relative min-w-35 pr-6">
       <button
         class="absolute -top-0.5 right-0 flex items-center justify-center w-5 h-5 rounded-full bg-transparent border-0 cursor-pointer text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors text-xs leading-none"
         aria-label="Close"

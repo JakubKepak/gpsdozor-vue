@@ -25,3 +25,14 @@
 .ant-layout-sider .ant-select .ant-select-arrow {
   color: rgba(255, 255, 255, 0.4) !important;
 }
+
+/* Google Maps InfoWindow — hide default close button and header padding */
+.gm-style-iw-chr {
+  display: none !important;
+}
+.gm-style-iw-d {
+  overflow: visible !important;
+}
+.gm-style-iw.gm-style-iw-c {
+  padding: 12px !important;
+}
