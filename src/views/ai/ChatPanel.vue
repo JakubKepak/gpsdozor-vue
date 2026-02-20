@@ -55,8 +55,7 @@ function handleSuggest(key: string) {
         class="flex flex-col items-center justify-center h-full text-center"
       >
         <div
-          class="flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
-          style="background: linear-gradient(135deg, #7c3aed, #2563eb)"
+          class="flex items-center justify-center w-16 h-16 rounded-2xl mb-4 bg-linear-to-br from-brand-gradient-from to-brand-gradient-to"
         >
           <RobotOutlined class="text-2xl text-white" />
         </div>
@@ -109,8 +108,7 @@ function handleSuggest(key: string) {
           >
             <div class="flex items-start gap-2 max-w-[85%]">
               <div
-                class="flex items-center justify-center w-7 h-7 rounded-full shrink-0 mt-0.5"
-                style="background: linear-gradient(135deg, #7c3aed, #2563eb)"
+                class="flex items-center justify-center w-7 h-7 rounded-full shrink-0 mt-0.5 bg-linear-to-br from-brand-gradient-from to-brand-gradient-to"
               >
                 <RobotOutlined class="text-xs text-white" />
               </div>
@@ -132,24 +130,20 @@ function handleSuggest(key: string) {
         >
           <div class="flex items-start gap-2">
             <div
-              class="flex items-center justify-center w-7 h-7 rounded-full shrink-0"
-              style="background: linear-gradient(135deg, #7c3aed, #2563eb)"
+              class="flex items-center justify-center w-7 h-7 rounded-full shrink-0 bg-linear-to-br from-brand-gradient-from to-brand-gradient-to"
             >
               <RobotOutlined class="text-xs text-white" />
             </div>
             <div class="bg-gray-100 rounded-2xl rounded-bl-sm px-4 py-3">
               <div class="flex gap-1.5">
                 <div
-                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                  style="animation-delay: 0ms"
+                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]"
                 />
                 <div
-                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                  style="animation-delay: 150ms"
+                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]"
                 />
                 <div
-                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                  style="animation-delay: 300ms"
+                  class="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]"
                 />
               </div>
             </div>
@@ -183,10 +177,9 @@ function handleSuggest(key: string) {
         />
         <Button
           type="primary"
-          class="shrink-0 self-end"
+          :class="['shrink-0 self-end', input.trim() ? 'bg-linear-to-br! from-brand-gradient-from! to-brand-gradient-to!' : '']"
           :loading="isLoading"
           :disabled="!input.trim()"
-          :style="{ background: input.trim() ? 'linear-gradient(135deg, #7c3aed, #2563eb)' : undefined }"
           @click="handleSend"
         >
           <template #icon>
