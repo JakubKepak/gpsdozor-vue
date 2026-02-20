@@ -1,12 +1,261 @@
 <script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { Alert, DatePicker, Select, Row, Col } from 'ant-design-vue'
+import {
+  CarOutlined,
+  UserOutlined,
+  DashboardOutlined,
+  NodeIndexOutlined,
+} from '@ant-design/icons-vue'
+import dayjs, { type Dayjs } from 'dayjs'
+import { useGroups, useVehicles, useAllVehicleTrips } from '@/api/composables'
+import type { TripWithVehicle } from '@/api/composables/useAllVehicleTrips'
+import StatCard from '@/components/StatCard.vue'
+import AIInsightsButton from '@/components/AIInsightsButton.vue'
+import InsightCards from '@/components/InsightCards.vue'
+import TripTable from '@/views/fleet/TripTable.vue'
 
+const { RangePicker } = DatePicker
+
+const MAX_RANGE_DAYS = 30
+const DATE_FORMAT = 'YYYY-MM-DD'
+const n = (v: unknown): number => Number(v) || 0
+
+const route = useRoute()
+const router = useRouter()
 const { t } = useI18n()
+
+const showInsights = ref(false)
+
+// --- URL state helpers ---
+function getQueryParam(key: string): string {
+  const raw = route.query[key]
+  if (Array.isArray(raw)) return raw[0] ?? ''
+  return raw ?? ''
+}
+
+function setQueryParams(params: Record<string, string | undefined>) {
+  const query = { ...route.query }
+  for (const [k, v] of Object.entries(params)) {
+    if (v) {
+      query[k] = v
+    } else {
+      delete query[k]
+    }
+  }
+  router.replace({ query })
+}
+
+// --- Date range ---
+function parseDateRange(): [Dayjs, Dayjs] {
+  const fromParam = getQueryParam('from')
+  const toParam = getQueryParam('to')
+  const from = fromParam ? dayjs(fromParam, DATE_FORMAT, true) : null
+  const to = toParam ? dayjs(toParam, DATE_FORMAT, true) : null
+
+  if (from?.isValid() && to?.isValid() && to.diff(from, 'day') <= MAX_RANGE_DAYS) {
+    return [from, to]
+  }
+  return [dayjs().subtract(7, 'day'), dayjs()]
+}
+
+const dateRange = computed(() => parseDateRange())
+
+// Ensure URL has date params on mount
+onMounted(() => {
+  if (!getQueryParam('from') || !getQueryParam('to')) {
+    const [from, to] = parseDateRange()
+    setQueryParams({
+      from: from.format(DATE_FORMAT),
+      to: to.format(DATE_FORMAT),
+    })
+  }
+})
+
+function onDateRangeChange(dates: unknown) {
+  if (Array.isArray(dates) && dates[0] && dates[1]) {
+    const from = dayjs(dates[0])
+    const to = dayjs(dates[1])
+    if (from.isValid() && to.isValid()) {
+      setQueryParams({
+        from: from.format(DATE_FORMAT),
+        to: to.format(DATE_FORMAT),
+      })
+    }
+  }
+  pickerDates.value = [null, null]
+}
+
+const pickerDates = ref<[Dayjs | null, Dayjs | null]>([null, null])
+
+function disabledDate(current: Dayjs): boolean {
+  if (current.isAfter(dayjs())) return true
+  const selected = pickerDates.value[0] ?? pickerDates.value[1]
+  if (!selected) return false
+  return Math.abs(current.diff(selected, 'day')) > MAX_RANGE_DAYS
+}
+
+// --- Vehicle selection ---
+const { data: groups, isLoading: groupsLoading } = useGroups()
+const groupCode = computed(() => groups.value?.[0]?.Code ?? '')
+const { data: vehicles, isLoading: vehiclesLoading } = useVehicles(groupCode)
+
+const selectedCodes = computed(() => {
+  const param = getQueryParam('vehicles')
+  if (param) {
+    const codes = param.split(',').filter(Boolean)
+    if (codes.length > 0) return codes
+  }
+  const first = vehicles.value?.[0]?.Code
+  return first ? [first] : []
+})
+
+function setSelectedCodes(codes: unknown) {
+  if (!Array.isArray(codes)) return
+  setQueryParams({
+    vehicles: codes.length > 0 ? codes.join(',') : undefined,
+  })
+}
+
+const vehicleOptions = computed(() =>
+  (vehicles.value ?? []).map(v => ({ value: v.Code, label: `${v.Name} (${v.SPZ})` })),
+)
+
+// --- Trip data ---
+const selectedVehicles = computed(() =>
+  (vehicles.value ?? []).filter(v => selectedCodes.value.includes(v.Code)),
+)
+
+const from = computed(() => dateRange.value[0].format('YYYY-MM-DDTHH:mm:ss'))
+const to = computed(() => dateRange.value[1].format('YYYY-MM-DDTHH:mm:ss'))
+
+const tripsResult = useAllVehicleTrips(selectedVehicles, from, to)
+
+const trips = computed(() => tripsResult.value.data)
+const tripsLoading = computed(() => tripsResult.value.isLoading)
+const error = computed(() => tripsResult.value.error)
+
+const isLoading = computed(() => groupsLoading.value || vehiclesLoading.value || tripsLoading.value)
+
+const tripList = computed(() => trips.value ?? [])
+const totalDistance = computed(() =>
+  tripList.value.reduce((sum: number, t: TripWithVehicle) => sum + n(t.TotalDistance), 0),
+)
+const uniqueDrivers = computed(
+  () => new Set(tripList.value.map((t: TripWithVehicle) => (t.DriverName ?? '').trim()).filter(Boolean)).size,
+)
+const uniqueVehicles = computed(
+  () => new Set(tripList.value.map((t: TripWithVehicle) => t.vehicleCode)).size,
+)
+
+// --- AI insights ---
+const insightData = computed(() => ({
+  trips: tripList.value.length,
+  totalDistance: totalDistance.value,
+  uniqueVehicles: uniqueVehicles.value,
+  uniqueDrivers: uniqueDrivers.value,
+  vehicles: selectedVehicles.value.map(v => {
+    const vTrips = tripList.value.filter((t: TripWithVehicle) => t.vehicleCode === v.Code)
+    return {
+      name: v.Name,
+      trips: vTrips.length,
+      totalDistance: vTrips.reduce((s: number, t: TripWithVehicle) => s + n(t.TotalDistance), 0),
+      avgSpeed: vTrips.length > 0 ? vTrips.reduce((s: number, t: TripWithVehicle) => s + n(t.AverageSpeed), 0) / vTrips.length : 0,
+    }
+  }),
+}))
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold text-gray-800">{{ t('fleet.title') }}</h1>
-    <p class="text-gray-500 mt-1">{{ t('fleet.subtitle') }}</p>
+  <Alert
+    v-if="error"
+    type="error"
+    :message="t('fleet.loadError')"
+    :description="String(error)"
+  />
+
+  <div v-else class="flex flex-col gap-6">
+    <!-- Header -->
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 m-0">{{ t('fleet.title') }}</h1>
+        <p class="text-gray-500 text-sm mt-1 mb-0">{{ t('fleet.subtitle') }}</p>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <AIInsightsButton :active="showInsights" @click="showInsights = !showInsights" />
+        <Select
+          mode="multiple"
+          :value="selectedCodes"
+          :style="{ minWidth: '220px', maxWidth: '400px' }"
+          max-tag-count="responsive"
+          :placeholder="t('fleet.selectVehicles')"
+          :options="vehicleOptions"
+          @update:value="setSelectedCodes"
+        />
+        <RangePicker
+          :value="dateRange"
+          :allow-clear="false"
+          :disabled-date="disabledDate"
+          @calendar-change="(dates: unknown) => { if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]; else pickerDates = [null, null] }"
+          @change="onDateRangeChange"
+        />
+      </div>
+    </div>
+
+    <!-- Stat cards -->
+    <Row :gutter="[16, 16]">
+      <Col :xs="12" :sm="6">
+        <StatCard
+          :label="t('fleet.statTrips')"
+          :value="String(tripList.length)"
+          color="#3b82f6"
+          bg-color="#eff6ff"
+          compact
+        >
+          <template #icon><NodeIndexOutlined /></template>
+        </StatCard>
+      </Col>
+      <Col :xs="12" :sm="6">
+        <StatCard
+          :label="t('fleet.statDistance')"
+          :value="`${totalDistance.toFixed(0)} km`"
+          color="#22c55e"
+          bg-color="#f0fdf4"
+          compact
+        >
+          <template #icon><DashboardOutlined /></template>
+        </StatCard>
+      </Col>
+      <Col :xs="12" :sm="6">
+        <StatCard
+          :label="t('fleet.statVehicles')"
+          :value="String(uniqueVehicles)"
+          color="#f59e0b"
+          bg-color="#fffbeb"
+          compact
+        >
+          <template #icon><CarOutlined /></template>
+        </StatCard>
+      </Col>
+      <Col :xs="12" :sm="6">
+        <StatCard
+          :label="t('fleet.statDrivers')"
+          :value="String(uniqueDrivers)"
+          color="#8b5cf6"
+          bg-color="#f5f3ff"
+          compact
+        >
+          <template #icon><UserOutlined /></template>
+        </StatCard>
+      </Col>
+    </Row>
+
+    <!-- AI Insights -->
+    <InsightCards module="fleet" :visible="showInsights" :data="insightData" />
+
+    <!-- Trip table -->
+    <TripTable :trips="tripList" :loading="isLoading" />
   </div>
 </template>
