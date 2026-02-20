@@ -8,7 +8,7 @@ export function usePositionHistory(
   vehicleCodes: MaybeRef<string[]>,
   from: MaybeRef<string>,
   to: MaybeRef<string>,
-  refetchInterval?: number,
+  refetchInterval?: MaybeRef<number | undefined>,
 ) {
   return useQuery({
     queryKey: computed(() =>
@@ -21,6 +21,6 @@ export function usePositionHistory(
       return res.flatMap(r => r.Positions)
     },
     enabled: computed(() => toValue(vehicleCodes).length > 0 && !!toValue(from) && !!toValue(to)),
-    refetchInterval,
+    refetchInterval: computed(() => toValue(refetchInterval) ?? false),
   })
 }
