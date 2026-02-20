@@ -17,10 +17,10 @@ const emit = defineEmits<{
 const router = useRouter()
 const { t } = useI18n()
 
-function getStatusDotColor(vehicle: Vehicle): string {
-  if (getEffectiveSpeed(vehicle) > 0) return '#22c55e'
-  if (vehicle.IsActive) return '#f59e0b'
-  return '#ef4444'
+function getStatusDotClass(vehicle: Vehicle): string {
+  if (getEffectiveSpeed(vehicle) > 0) return 'bg-status-active'
+  if (vehicle.IsActive) return 'bg-status-idle'
+  return 'bg-status-offline'
 }
 
 function getStatusTag(vehicle: Vehicle): { color: string; label: string } {
@@ -42,8 +42,7 @@ function getStatusTag(vehicle: Vehicle): { color: string; label: string } {
         class="flex items-center gap-3 py-2.5 border-b border-gray-100 last:border-0"
       >
         <div
-          class="w-2 h-2 rounded-full shrink-0"
-          :style="{ backgroundColor: getStatusDotColor(v) }"
+          :class="['w-2 h-2 rounded-full shrink-0', getStatusDotClass(v)]"
         />
         <div class="min-w-0 flex-1">
           <div class="text-sm font-medium text-gray-900 truncate">

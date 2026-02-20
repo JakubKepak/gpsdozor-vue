@@ -116,7 +116,7 @@ const idleCount = computed(() => vehicles.filter(v => getEffectiveSpeed(v) === 0
       :api-key="MAPS_API_KEY"
       :center="center"
       :zoom="6"
-      style="width: 100%; height: 100%; border-radius: 8px"
+      class="w-full h-full rounded-lg"
       :gesture-handling="'greedy'"
       :disable-default-ui="true"
       :zoom-control="true"

@@ -50,7 +50,7 @@ import { Skeleton, Card, Row, Col } from 'ant-design-vue'
         <Card>
           <Skeleton.Node
             active
-            :style="{ width: '100%', height: '300px' }"
+            class="w-full! h-75!"
           />
         </Card>
       </Col>
