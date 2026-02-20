@@ -14,7 +14,8 @@ const {
   height = 260,
 } = defineProps<{
   title: string
-  data: Record<string, unknown>[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: Record<string, any>[]
   xKey?: string
   yKey?: string
   color?: string
