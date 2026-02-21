@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { Skeleton, Card, Row, Col } from 'ant-design-vue'
-
-const SkeletonNode = Skeleton.Node
 </script>
 
 <template>
@@ -50,10 +48,7 @@ const SkeletonNode = Skeleton.Node
         :lg="16"
       >
         <Card>
-          <SkeletonNode
-            active
-            class="w-full! h-75!"
-          />
+          <div class="w-full h-75 bg-gray-200 rounded animate-pulse" />
         </Card>
       </Col>
       <Col
