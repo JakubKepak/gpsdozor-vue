@@ -12,6 +12,7 @@ import dayjs, { type Dayjs } from 'dayjs'
 import { useGroups, useVehicles, useAllVehicleTrips } from '@/api/composables'
 import type { TripWithVehicle } from '@/api/composables/useAllVehicleTrips'
 import { useQueryParam, useSetQueryParams } from '@/composables/useQueryParam'
+import { useLocale } from '@/composables/useLocale'
 import StatCard from '@/components/StatCard.vue'
 import AIInsightsButton from '@/components/AIInsightsButton.vue'
 import InsightCards from '@/components/InsightCards.vue'
@@ -24,6 +25,7 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 const n = (v: unknown): number => Number(v) || 0
 
 const { t } = useI18n()
+const { dateFormat } = useLocale()
 
 const showInsights = ref(false)
 
@@ -263,6 +265,7 @@ const insightData = computed(() => ({
       />
       <RangePicker
         :value="dateRange"
+        :format="dateFormat"
         :allow-clear="false"
         :disabled-date="disabledDate"
         @calendar-change="
