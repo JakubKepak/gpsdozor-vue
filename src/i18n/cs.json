@@ -80,6 +80,7 @@
   "health.colStatus": "Stav",
   "health.colEcoDriving": "Eco jízda",
   "health.active": "V provozu",
+  "health.idle": "Stojí",
   "health.inactive": "Mimo provoz",
   "health.parked": "Zaparkováno",
   "health.backToList": "Zpět na seznam",

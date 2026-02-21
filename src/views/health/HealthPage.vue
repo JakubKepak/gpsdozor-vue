@@ -10,6 +10,7 @@ import { useGroups, useVehicles } from '@/api/composables'
 import AIInsightsButton from '@/components/AIInsightsButton.vue'
 import InsightCards from '@/components/InsightCards.vue'
 import type { Vehicle } from '@/types/api'
+import { getEffectiveSpeed } from '@/utils/vehicle'
 
 dayjs.extend(relativeTime)
 
@@ -83,18 +84,23 @@ const columns = computed(() => [
     title: t('health.colActivity'),
     key: 'activity',
     width: 140,
-    sorter: (a: Vehicle, b: Vehicle) => a.Speed - b.Speed,
+    sorter: (a: Vehicle, b: Vehicle) => getEffectiveSpeed(a) - getEffectiveSpeed(b),
   },
   {
     title: t('health.colStatus'),
     key: 'status',
     width: 100,
     filters: [
-      { text: t('health.active'), value: 'true' },
-      { text: t('health.inactive'), value: 'false' },
+      { text: t('health.active'), value: 'active' },
+      { text: t('health.idle'), value: 'idle' },
+      { text: t('health.inactive'), value: 'offline' },
     ],
-    onFilter: (value: string | number | boolean, record: Vehicle) =>
-      String(record.IsActive) === String(value),
+    onFilter: (value: string | number | boolean, record: Vehicle) => {
+      const speed = getEffectiveSpeed(record)
+      if (value === 'active') return speed > 0
+      if (value === 'idle') return speed === 0 && record.IsActive
+      return !record.IsActive
+    },
   },
   {
     title: t('health.colEcoDriving'),
@@ -173,10 +179,10 @@ const dataSource = computed(() => filteredVehicles.value.map((v) => ({ ...v, key
           <template v-else-if="column.key === 'activity'">
             <div class="text-sm">
               <span
-                v-if="record.Speed > 0"
+                v-if="getEffectiveSpeed(record as Vehicle) > 0"
                 class="text-green-600 font-medium"
               >
-                {{ record.Speed }} km/h
+                {{ getEffectiveSpeed(record as Vehicle) }} km/h
               </span>
               <span
                 v-else
@@ -192,10 +198,25 @@ const dataSource = computed(() => filteredVehicles.value.map((v) => ({ ...v, key
 
           <template v-else-if="column.key === 'status'">
             <Tag
-              :color="record.IsActive ? 'green' : 'red'"
+              v-if="getEffectiveSpeed(record as Vehicle) > 0"
+              color="green"
               class="m-0"
             >
-              {{ t(record.IsActive ? 'health.active' : 'health.inactive') }}
+              {{ t('health.active') }}
+            </Tag>
+            <Tag
+              v-else-if="record.IsActive"
+              color="orange"
+              class="m-0"
+            >
+              {{ t('health.idle') }}
+            </Tag>
+            <Tag
+              v-else
+              color="red"
+              class="m-0"
+            >
+              {{ t('health.inactive') }}
             </Tag>
           </template>
 

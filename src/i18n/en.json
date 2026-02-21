@@ -80,6 +80,7 @@
   "health.colStatus": "Status",
   "health.colEcoDriving": "Eco Driving",
   "health.active": "In service",
+  "health.idle": "Idle",
   "health.inactive": "Out of service",
   "health.parked": "Parked",
   "health.backToList": "Back to list",
