@@ -154,11 +154,10 @@ function handleSuggest(key: string) {
 
     <!-- Input area -->
     <div class="border-t border-gray-200 p-3">
-      <div class="flex gap-2">
+      <div class="chat-input-area flex items-center gap-2">
         <Button
           v-if="messages.length > 0"
-          size="small"
-          class="shrink-0 self-end"
+          class="shrink-0"
           :title="t('ai.clear')"
           @click="clearChat"
         >
@@ -176,7 +175,7 @@ function handleSuggest(key: string) {
         <Button
           type="primary"
           :class="[
-            'shrink-0 self-end',
+            'shrink-0',
             input.trim() ? 'bg-linear-to-br! from-brand-gradient-from! to-brand-gradient-to!' : '',
           ]"
           :loading="isLoading"
@@ -191,3 +190,11 @@ function handleSuggest(key: string) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.chat-input-area :deep(.ant-btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
