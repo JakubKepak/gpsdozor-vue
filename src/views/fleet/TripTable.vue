@@ -69,6 +69,7 @@ const columns = computed(() => [
   {
     title: t('fleet.colRoute'),
     key: 'route',
+    width: 250,
     ellipsis: true,
   },
   {
@@ -87,13 +88,13 @@ const columns = computed(() => [
   {
     title: t('fleet.colAvgSpeed'),
     key: 'avgSpeed',
-    width: 90,
+    width: 110,
     sorter: (a: TripWithVehicle, b: TripWithVehicle) => n(a.AverageSpeed) - n(b.AverageSpeed),
   },
   {
     title: t('fleet.colMaxSpeed'),
     key: 'maxSpeed',
-    width: 90,
+    width: 110,
     sorter: (a: TripWithVehicle, b: TripWithVehicle) => n(a.MaxSpeed) - n(b.MaxSpeed),
   },
   {

@@ -6,6 +6,7 @@ import { Alert, Card, DatePicker, Row, Col, Statistic, Skeleton } from 'ant-desi
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import dayjs, { type Dayjs } from 'dayjs'
 import { useVehicle, useVehicleSensors } from '@/api/composables'
+import { useLocale } from '@/composables/useLocale'
 import type { SensorItem } from '@/types/api'
 import LineChartCard from '@/components/LineChartCard.vue'
 import VehicleTripEconomics from '@/views/health/VehicleTripEconomics.vue'
@@ -17,7 +18,6 @@ const SENSOR_TYPES = [
   'ExternalBatteryVoltage',
   'CoolingLiquidTemperature',
   'Rpm',
-  'Speed',
   'FuelConsumedTotal',
 ]
 
@@ -25,7 +25,6 @@ const SENSOR_COLORS: Record<string, string> = {
   ExternalBatteryVoltage: '#3b82f6',
   CoolingLiquidTemperature: '#ef4444',
   Rpm: '#f59e0b',
-  Speed: '#22c55e',
   FuelConsumedTotal: '#8b5cf6',
 }
 
@@ -33,7 +32,6 @@ const SENSOR_UNITS: Record<string, string> = {
   ExternalBatteryVoltage: 'V',
   CoolingLiquidTemperature: '°C',
   Rpm: 'RPM',
-  Speed: 'km/h',
   FuelConsumedTotal: 'L',
 }
 
@@ -63,6 +61,7 @@ function getLastReading(sensor: SensorItem | undefined): number | null {
 
 const route = useRoute()
 const { t } = useI18n()
+const { dateFormat } = useLocale()
 
 const vehicleCode = computed(() => String(route.params.vehicleCode ?? ''))
 
@@ -152,6 +151,7 @@ const gaugeCards = computed(() => {
         </div>
         <RangePicker
           :value="dateRange"
+          :format="dateFormat"
           :allow-clear="false"
           :disabled-date="disabledDate"
           @calendar-change="
