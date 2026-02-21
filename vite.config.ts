@@ -17,6 +17,8 @@ const MODULE_PROMPTS: Record<string, string> = {
     'You are a fleet management analyst. Analyze fuel consumption data. Forecast cost trends, identify vehicles with wasteful consumption, and suggest cost reduction opportunities.',
   health:
     'You are a fleet management analyst. Analyze vehicle health scores and metrics. Predict which vehicles may need maintenance soon, identify anomalies, and flag critical issues.',
+  'eco-driving':
+    'You are a fleet management analyst. Analyze eco-driving comparison data across multiple vehicles. Compare vehicles by event counts and severity, identify worst offenders, suggest coaching targets, and highlight vehicles needing attention. Use the eco score (high*3 + medium*2 + low*1, lower is better) to rank driving quality.',
 }
 
 const RESPONSE_SCHEMA = {

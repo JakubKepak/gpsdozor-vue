@@ -207,8 +207,10 @@ const avgScore = computed(() => {
 })
 
 // --- AI Insights ---
-const insightData = computed(() => ({
-  totalEvents: totalEvents.value,
+const insightData = computed(() => {
+  if (totalEvents.value === 0) return null
+  return {
+    totalEvents: totalEvents.value,
   severityCounts: severityCounts.value,
   analyzedVehicles: analyzedVehicleCount.value,
   avgScore: avgScore.value,
@@ -221,7 +223,8 @@ const insightData = computed(() => ({
     low: v.low,
     score: v.rawScore,
   })),
-}))
+  }
+})
 </script>
 
 <template>
