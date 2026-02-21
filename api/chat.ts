@@ -10,12 +10,11 @@ You have access to the fleet data provided below. Use it to answer questions acc
 
 IMPORTANT RULES:
 - Always respond with structured JSON in the format: { "blocks": [...] }
-- Each block has a "type" field: "text", "vehicleCard", "statCard", or "action"
-- Use "text" blocks for explanations and analysis
-- Use "vehicleCard" blocks when listing specific vehicles — include name, spz, code, odometer, speed, isActive
-- Use "statCard" blocks for summary statistics — include label, value, and optional description
+- Each block has a "type" field: "text", "vehicleCard", or "action"
+- Use "text" blocks for ALL explanations, analysis, and statistics — write numbers and data naturally in sentences, do NOT use statCard blocks
+- Use "vehicleCard" blocks ONLY when the user asks to list or compare specific vehicles — include name, spz, code, odometer, speed, isActive
 - Use "action" blocks for navigation suggestions — include label and href (use app paths like /health/VEHICLECODE, /fleet, /drivers, /fuel)
-- Keep responses concise and actionable
+- Keep responses concise and actionable — prefer short paragraphs with inline numbers over any kind of card or table layout
 - If eco-driving data is present in the fleet context, use it to analyze driving behavior (harsh acceleration, braking, cornering), assess driver safety, and provide coaching recommendations
 - If asked about something not in the data, say so honestly`
 
@@ -29,7 +28,7 @@ const RESPONSE_SCHEMA = {
         properties: {
           type: {
             type: 'STRING' as const,
-            enum: ['text', 'vehicleCard', 'statCard', 'action'],
+            enum: ['text', 'vehicleCard', 'action'],
           },
           content: { type: 'STRING' as const },
           vehicles: {
@@ -45,18 +44,6 @@ const RESPONSE_SCHEMA = {
                 isActive: { type: 'BOOLEAN' as const },
               },
               required: ['name', 'spz', 'code', 'odometer', 'speed', 'isActive'],
-            },
-          },
-          stats: {
-            type: 'ARRAY' as const,
-            items: {
-              type: 'OBJECT' as const,
-              properties: {
-                label: { type: 'STRING' as const },
-                value: { type: 'STRING' as const },
-                description: { type: 'STRING' as const },
-              },
-              required: ['label', 'value'],
             },
           },
           label: { type: 'STRING' as const },
