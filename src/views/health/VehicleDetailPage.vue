@@ -5,14 +5,16 @@ import { useI18n } from 'vue-i18n'
 import { Alert, Card, DatePicker, Row, Col, Statistic, Skeleton } from 'ant-design-vue'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import dayjs, { type Dayjs } from 'dayjs'
-import { useVehicle, useVehicleSensors, useTrips } from '@/api/composables'
+import { useVehicle, useVehicleSensors, useTrips, useEcoDriving } from '@/api/composables'
 import { useLocale } from '@/composables/useLocale'
 import { computeVehicleEconomics } from '@/views/health/computeVehicleEconomics'
+import { EcoDrivingEventType } from '@/types/api'
 import type { SensorItem } from '@/types/api'
 import AIInsightsButton from '@/components/AIInsightsButton.vue'
 import InsightCards from '@/components/InsightCards.vue'
 import LineChartCard from '@/components/LineChartCard.vue'
 import VehicleTripEconomics from '@/views/health/VehicleTripEconomics.vue'
+import EcoDrivingSection from '@/views/health/EcoDrivingSection.vue'
 
 const { RangePicker } = DatePicker
 
@@ -116,6 +118,33 @@ const gaugeCards = computed(() => {
   return items
 })
 
+// --- Eco-Driving ---
+const ecoEnabled = computed(() => vehicle.value?.IsEcoDrivingEnabled ?? false)
+const { data: ecoEvents } = useEcoDriving(vehicleCode, from, to, ecoEnabled)
+
+const INT_MIN = -2147483648
+
+const ecoSummary = computed(() => {
+  const events = ecoEvents.value
+  if (!events || events.length === 0) return null
+  const byType: Record<string, number> = {}
+  const bySeverity = { high: 0, medium: 0, low: 0 }
+  for (const e of events) {
+    const name = EcoDrivingEventType[e.EventType] ?? 'Unknown'
+    byType[name] = (byType[name] ?? 0) + 1
+    if (e.EventSeverity === 3) bySeverity.high++
+    else if (e.EventSeverity === 2) bySeverity.medium++
+    else if (e.EventSeverity === 1) bySeverity.low++
+  }
+  const speeds = events.map((e) => e.Speed).filter((s) => s !== INT_MIN && s >= 0)
+  return {
+    totalEvents: events.length,
+    byType,
+    bySeverity,
+    avgSpeed: speeds.length > 0 ? Math.round(speeds.reduce((a, b) => a + b, 0) / speeds.length) : null,
+  }
+})
+
 // --- AI Insights ---
 const showInsights = ref(false)
 
@@ -143,6 +172,7 @@ const insightData = computed(() => {
       },
       {} as Record<string, { value: number | null; unit: string }>,
     ),
+    ecoDriving: ecoSummary.value,
   }
 })
 </script>
@@ -351,5 +381,13 @@ const insightData = computed(() => {
         </Card>
       </Col>
     </Row>
+
+    <!-- Eco-Driving -->
+    <EcoDrivingSection
+      v-if="vehicle"
+      :vehicle="vehicle"
+      :from="from"
+      :to="to"
+    />
   </div>
 </template>

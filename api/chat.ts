@@ -16,6 +16,7 @@ IMPORTANT RULES:
 - Use "statCard" blocks for summary statistics — include label, value, and optional description
 - Use "action" blocks for navigation suggestions — include label and href (use app paths like /health/VEHICLECODE, /fleet, /drivers, /fuel)
 - Keep responses concise and actionable
+- If eco-driving data is present in the fleet context, use it to analyze driving behavior (harsh acceleration, braking, cornering), assess driver safety, and provide coaching recommendations
 - If asked about something not in the data, say so honestly`
 
 const RESPONSE_SCHEMA = {

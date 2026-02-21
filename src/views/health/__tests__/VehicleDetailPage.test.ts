@@ -15,13 +15,14 @@ vi.mock('@/api/composables', () => ({
   useVehicle: vi.fn(),
   useVehicleSensors: vi.fn(),
   useTrips: vi.fn(),
+  useEcoDriving: vi.fn(),
 }))
 
 vi.mock('@/api/composables/useAIInsights', () => ({
   useAIInsights: vi.fn(),
 }))
 
-import { useVehicle, useVehicleSensors, useTrips } from '@/api/composables'
+import { useVehicle, useVehicleSensors, useTrips, useEcoDriving } from '@/api/composables'
 import { useAIInsights } from '@/api/composables/useAIInsights'
 
 const testVehicle = createVehicle({
@@ -68,6 +69,12 @@ function setupMocks(overrides: {
   } as any)
 
   vi.mocked(useAIInsights).mockReturnValue({
+    data: ref(null),
+    isLoading: ref(false),
+    error: ref(null),
+  } as any)
+
+  vi.mocked(useEcoDriving).mockReturnValue({
     data: ref(null),
     isLoading: ref(false),
     error: ref(null),

@@ -80,13 +80,34 @@ export interface SensorResponse {
 }
 
 export interface EcoDrivingEvent {
-  Type: string
-  Severity: 'None' | 'Low' | 'Medium' | 'High'
+  EventType: number
+  EventValue: number
   Timestamp: string
-  Latitude: number
-  Longitude: number
+  Position: { Latitude: number; Longitude: number }
+  EventSeverity: number
   Speed: number
-  Value: number
+}
+
+/** EventType enum: 0=Unknown, 1=CorneringLeft, 2=CorneringRight, 3=Cornering, 4=Acceleration, 5=Braking, 6=Bump, 7=LongClutch, 8=DriveOnNeutral, 9=LongFreeWheel */
+export const EcoDrivingEventType: Record<number, string> = {
+  0: 'Unknown',
+  1: 'CorneringLeft',
+  2: 'CorneringRight',
+  3: 'Cornering',
+  4: 'Acceleration',
+  5: 'Braking',
+  6: 'Bump',
+  7: 'LongClutch',
+  8: 'DriveOnNeutral',
+  9: 'LongFreeWheel',
+}
+
+/** EventSeverity enum: 0=None, 1=Low, 2=Medium, 3=High */
+export const EcoDrivingSeverity: Record<number, string> = {
+  0: 'None',
+  1: 'Low',
+  2: 'Medium',
+  3: 'High',
 }
 
 export interface EngineRelayState {

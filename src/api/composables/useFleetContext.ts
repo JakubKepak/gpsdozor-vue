@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/vue-query'
 import { vehicleKeys, groupKeys } from '@/api/queryKeys'
-import type { Vehicle, Group, Trip } from '@/types/api'
+import type { Vehicle, Group, Trip, EcoDrivingEvent } from '@/types/api'
+import { EcoDrivingEventType } from '@/types/api'
 
 export function useFleetContext(): () => string {
   const queryClient = useQueryClient()
@@ -28,6 +29,7 @@ export function useFleetContext(): () => string {
     ]
 
     const allTrips: (Trip & { vehicleName: string })[] = []
+    const allEcoEvents: { vehicleName: string; events: EcoDrivingEvent[] }[] = []
     const cache = queryClient.getQueryCache().getAll()
     for (const query of cache) {
       const key = query.queryKey
@@ -37,6 +39,14 @@ export function useFleetContext(): () => string {
         const trips = query.state.data as Trip[]
         for (const trip of trips) {
           allTrips.push({ ...trip, vehicleName: vehicle?.Name ?? vehicleCode })
+        }
+      }
+      if (Array.isArray(key) && key[0] === 'vehicles' && key[2] === 'eco-driving' && query.state.data) {
+        const vehicleCode = key[1] as string
+        const vehicle = vehicles.find((v) => v.Code === vehicleCode)
+        const events = query.state.data as EcoDrivingEvent[]
+        if (events.length > 0) {
+          allEcoEvents.push({ vehicleName: vehicle?.Name ?? vehicleCode, events })
         }
       }
     }
@@ -81,6 +91,25 @@ export function useFleetContext(): () => string {
           `- Total distance: ${(totalDist / 1000).toFixed(0)} km`,
           `- Average consumption: ${totalDist > 0 ? ((totalFuel / (totalDist / 1000)) * 100).toFixed(1) : '?'} L/100km`,
           `- Total cost: ${totalCost.toFixed(0)} CZK`,
+        )
+      }
+    }
+
+    if (allEcoEvents.length > 0) {
+      sections.push('', 'Eco-driving events:')
+      for (const { vehicleName, events } of allEcoEvents) {
+        const byType: Record<string, number> = {}
+        let high = 0, medium = 0, low = 0
+        for (const e of events) {
+          const name = EcoDrivingEventType[e.EventType] ?? 'Unknown'
+          byType[name] = (byType[name] ?? 0) + 1
+          if (e.EventSeverity === 3) high++
+          else if (e.EventSeverity === 2) medium++
+          else if (e.EventSeverity === 1) low++
+        }
+        const typeSummary = Object.entries(byType).map(([t, c]) => `${t}: ${c}`).join(', ')
+        sections.push(
+          `- ${vehicleName}: ${events.length} events (high: ${high}, medium: ${medium}, low: ${low}) — ${typeSummary}`,
         )
       }
     }
