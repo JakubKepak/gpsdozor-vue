@@ -108,7 +108,9 @@ const selectedCodes = computed(() => {
     const codes = vehiclesParam.value.split(',').filter(Boolean)
     if (codes.length > 0) return codes
   }
-  return ecoEnabledVehicles.value.map((v) => v.Code)
+  const preferred = ecoEnabledVehicles.value.find((v) => v.Name.includes('AHE'))
+  const code = preferred?.Code ?? ecoEnabledVehicles.value[0]?.Code
+  return code ? [code] : []
 })
 
 function setSelectedCodes(codes: unknown) {
