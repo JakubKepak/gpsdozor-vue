@@ -1,4 +1,4 @@
-export type InsightModule = 'dashboard' | 'fleet' | 'drivers' | 'fuel' | 'health'
+export type InsightModule = 'dashboard' | 'fleet' | 'drivers' | 'fuel' | 'health' | 'eco-driving'
 
 export type InsightSeverity = 'info' | 'warning' | 'critical' | 'positive'
 

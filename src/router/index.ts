@@ -15,6 +15,10 @@ const router = createRouter({
           path: 'health/:vehicleCode',
           component: () => import('@/views/health/VehicleDetailPage.vue'),
         },
+        {
+          path: 'eco-driving',
+          component: () => import('@/views/eco-driving/EcoDrivingPage.vue'),
+        },
       ],
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },

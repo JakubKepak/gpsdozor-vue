@@ -8,6 +8,7 @@ import {
   CarOutlined,
   EnvironmentOutlined,
   ToolOutlined,
+  ThunderboltOutlined,
   RobotOutlined,
   CloseOutlined,
   RightOutlined,
@@ -49,10 +50,12 @@ const menuItems = computed(() => [
   { key: '/fleet', icon: () => h(CarOutlined), label: t('nav.fleet') },
   { key: '/map', icon: () => h(EnvironmentOutlined), label: t('nav.map') },
   { key: '/health', icon: () => h(ToolOutlined), label: t('nav.health') },
+  { key: '/eco-driving', icon: () => h(ThunderboltOutlined), label: t('nav.ecoDriving') },
 ])
 
 const selectedKeys = computed(() => {
   if (route.path.startsWith('/health')) return ['/health']
+  if (route.path.startsWith('/eco-driving')) return ['/eco-driving']
   return [route.path]
 })
 
