@@ -178,10 +178,25 @@ const insightData = computed(() => ({
           {{ t('fleet.subtitle') }}
         </p>
       </div>
-      <AIInsightsButton
-        :active="showInsights"
-        @click="showInsights = !showInsights"
-      />
+      <div class="flex items-center gap-3">
+        <RangePicker
+          :value="dateRange"
+          :format="dateFormat"
+          :allow-clear="false"
+          :disabled-date="disabledDate"
+          @calendar-change="
+            (dates: unknown) => {
+              if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
+              else pickerDates = [null, null]
+            }
+          "
+          @change="onDateRangeChange"
+        />
+        <AIInsightsButton
+          :active="showInsights"
+          @click="showInsights = !showInsights"
+        />
+      </div>
     </div>
 
     <!-- Stat cards -->
@@ -253,30 +268,15 @@ const insightData = computed(() => ({
     </Row>
 
     <!-- Filters -->
-    <div class="flex items-center gap-3 flex-wrap">
-      <Select
-        mode="multiple"
-        :value="selectedCodes"
-        class="w-full flex-1"
-        max-tag-count="responsive"
-        :placeholder="t('fleet.selectVehicles')"
-        :options="vehicleOptions"
-        @update:value="setSelectedCodes"
-      />
-      <RangePicker
-        :value="dateRange"
-        :format="dateFormat"
-        :allow-clear="false"
-        :disabled-date="disabledDate"
-        @calendar-change="
-          (dates: unknown) => {
-            if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
-            else pickerDates = [null, null]
-          }
-        "
-        @change="onDateRangeChange"
-      />
-    </div>
+    <Select
+      mode="multiple"
+      :value="selectedCodes"
+      class="w-full"
+      max-tag-count="responsive"
+      :placeholder="t('fleet.selectVehicles')"
+      :options="vehicleOptions"
+      @update:value="setSelectedCodes"
+    />
 
     <!-- AI Insights -->
     <InsightCards
