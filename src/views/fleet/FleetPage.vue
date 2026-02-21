@@ -176,33 +176,10 @@ const insightData = computed(() => ({
           {{ t('fleet.subtitle') }}
         </p>
       </div>
-      <div class="flex items-center gap-3 flex-wrap">
-        <AIInsightsButton
-          :active="showInsights"
-          @click="showInsights = !showInsights"
-        />
-        <Select
-          mode="multiple"
-          :value="selectedCodes"
-          class="min-w-55 max-w-100"
-          max-tag-count="responsive"
-          :placeholder="t('fleet.selectVehicles')"
-          :options="vehicleOptions"
-          @update:value="setSelectedCodes"
-        />
-        <RangePicker
-          :value="dateRange"
-          :allow-clear="false"
-          :disabled-date="disabledDate"
-          @calendar-change="
-            (dates: unknown) => {
-              if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
-              else pickerDates = [null, null]
-            }
-          "
-          @change="onDateRangeChange"
-        />
-      </div>
+      <AIInsightsButton
+        :active="showInsights"
+        @click="showInsights = !showInsights"
+      />
     </div>
 
     <!-- Stat cards -->
@@ -272,6 +249,31 @@ const insightData = computed(() => ({
         </StatCard>
       </Col>
     </Row>
+
+    <!-- Filters -->
+    <div class="flex items-center gap-3 flex-wrap">
+      <Select
+        mode="multiple"
+        :value="selectedCodes"
+        class="w-full flex-1"
+        max-tag-count="responsive"
+        :placeholder="t('fleet.selectVehicles')"
+        :options="vehicleOptions"
+        @update:value="setSelectedCodes"
+      />
+      <RangePicker
+        :value="dateRange"
+        :allow-clear="false"
+        :disabled-date="disabledDate"
+        @calendar-change="
+          (dates: unknown) => {
+            if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
+            else pickerDates = [null, null]
+          }
+        "
+        @change="onDateRangeChange"
+      />
+    </div>
 
     <!-- AI Insights -->
     <InsightCards
