@@ -25,13 +25,42 @@ const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 const mapRef = ref<InstanceType<typeof GoogleMap> | null>(null)
 const center = { lat: 50.08, lng: 14.43 }
 
-function svgCircleUrl(color: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="9" cy="9" r="7" fill="${color}" stroke="white" stroke-width="2.5"/></svg>`
+function svgDataUrl(svg: string): string {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`
 }
 
-const startIconUrl = svgCircleUrl('#22c55e')
-const endIconUrl = svgCircleUrl('#ef4444')
+const startIconUrl = svgDataUrl(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="9" cy="9" r="7" fill="#22c55e" stroke="white" stroke-width="2.5"/></svg>',
+)
+
+const endIconUrl = svgDataUrl(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="42" viewBox="0 0 30 42">
+    <filter id="s"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-opacity="0.3"/></filter>
+    <g filter="url(#s)">
+      <path d="M15 1C7.27 1 1 7.27 1 15c0 10.5 14 25 14 25s14-14.5 14-25C29 7.27 22.73 1 15 1z" fill="#1f2937"/>
+      <circle cx="15" cy="15" r="10" fill="white"/>
+      <defs><clipPath id="fc"><circle cx="15" cy="15" r="9"/></clipPath></defs>
+      <g clip-path="url(#fc)">
+        <rect x="6" y="6" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="10.5" y="6" width="4.5" height="4.5" fill="white"/>
+        <rect x="15" y="6" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="19.5" y="6" width="4.5" height="4.5" fill="white"/>
+        <rect x="6" y="10.5" width="4.5" height="4.5" fill="white"/>
+        <rect x="10.5" y="10.5" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="15" y="10.5" width="4.5" height="4.5" fill="white"/>
+        <rect x="19.5" y="10.5" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="6" y="15" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="10.5" y="15" width="4.5" height="4.5" fill="white"/>
+        <rect x="15" y="15" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="19.5" y="15" width="4.5" height="4.5" fill="white"/>
+        <rect x="6" y="19.5" width="4.5" height="4.5" fill="white"/>
+        <rect x="10.5" y="19.5" width="4.5" height="4.5" fill="#1f2937"/>
+        <rect x="15" y="19.5" width="4.5" height="4.5" fill="white"/>
+        <rect x="19.5" y="19.5" width="4.5" height="4.5" fill="#1f2937"/>
+      </g>
+    </g>
+  </svg>`,
+)
 
 const validPositions = computed(() =>
   positions.filter((p) => {
@@ -194,7 +223,7 @@ watch(
           <span class="text-gray-600">{{ trip.StartAddress || '—' }}</span>
         </div>
         <div class="flex items-center gap-2">
-          <div class="w-2.5 h-2.5 rounded-full bg-red-500" />
+          <div class="w-3 h-3 shrink-0 rounded-sm checkerboard" />
           <span class="text-gray-600">{{ trip.FinishAddress || '—' }}</span>
         </div>
 
@@ -220,3 +249,15 @@ watch(
     </div>
   </div>
 </template>
+
+<style scoped>
+.checkerboard {
+  background-image:
+    linear-gradient(45deg, #1f2937 25%, transparent 25%),
+    linear-gradient(-45deg, #1f2937 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1f2937 75%),
+    linear-gradient(-45deg, transparent 75%, #1f2937 75%);
+  background-size: 6px 6px;
+  background-position: 0 0, 0 3px, 3px -3px, -3px 0;
+}
+</style>
