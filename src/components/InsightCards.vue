@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { h, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Card, Row, Col, Skeleton, Alert } from 'ant-design-vue'
+import { Card, Skeleton, Alert } from 'ant-design-vue'
 import {
   BulbOutlined,
   WarningOutlined,
   CloseCircleOutlined,
   CheckCircleOutlined,
+  CloseOutlined,
 } from '@ant-design/icons-vue'
 import { useAIInsights } from '@/api/composables/useAIInsights'
 import type { InsightModule, InsightSeverity } from '@/types/insights'
@@ -16,6 +17,8 @@ const { module, data, visible } = defineProps<{
   data: Record<string, unknown> | null
   visible: boolean
 }>()
+
+const emit = defineEmits<{ close: [] }>()
 
 const { t } = useI18n()
 const dataRef = computed(() => data)
@@ -56,25 +59,28 @@ const severityConfig: Record<
 <template>
   <div v-if="visible && data">
     <!-- Loading -->
-    <Row
+    <Card
       v-if="isLoading"
-      :gutter="[16, 16]"
+      :body-style="{ padding: '20px' }"
     >
-      <Col
-        v-for="i in 2"
-        :key="i"
-        :xs="24"
-        :lg="12"
-      >
-        <Card :body-style="{ padding: '16px' }">
-          <Skeleton
-            active
-            :title="{ width: '40%' }"
-            :paragraph="{ rows: 3, width: ['100%', '80%', '60%'] }"
-          />
-        </Card>
-      </Col>
-    </Row>
+      <div class="flex items-center gap-2 mb-4">
+        <BulbOutlined class="text-blue-500" />
+        <span class="text-sm font-medium text-gray-500 flex-1">{{ t('insights.title') }}</span>
+        <CloseOutlined
+          class="text-gray-400 hover:text-gray-600 cursor-pointer text-xs"
+          @click="emit('close')"
+        />
+      </div>
+      <div class="space-y-4">
+        <Skeleton
+          v-for="i in 2"
+          :key="i"
+          active
+          :title="{ width: '40%' }"
+          :paragraph="{ rows: 2, width: ['100%', '80%'] }"
+        />
+      </div>
+    </Card>
 
     <!-- Error -->
     <Alert
@@ -86,60 +92,56 @@ const severityConfig: Record<
     />
 
     <!-- Results -->
-    <div v-else-if="response?.insights?.length">
-      <div class="flex items-center gap-2 mb-3">
+    <Card
+      v-else-if="response?.insights?.length"
+      :body-style="{ padding: '20px' }"
+    >
+      <div class="flex items-center gap-2 mb-4">
         <BulbOutlined class="text-blue-500" />
-        <span class="text-sm font-medium text-gray-500">{{ t('insights.title') }}</span>
+        <span class="text-sm font-medium text-gray-500 flex-1">{{ t('insights.title') }}</span>
+        <CloseOutlined
+          class="text-gray-400 hover:text-gray-600 cursor-pointer text-xs"
+          @click="emit('close')"
+        />
       </div>
-      <Row :gutter="[16, 16]">
-        <Col
+      <div class="divide-y divide-gray-100">
+        <div
           v-for="(insight, i) in response.insights"
           :key="i"
-          :xs="24"
-          :lg="12"
+          :class="['flex items-start gap-3 py-4 first:pt-0 last:pb-0 border-l-3 pl-4 -ml-1', (severityConfig[insight.severity] ?? severityConfig.info).borderClass]"
         >
-          <Card
+          <div
             :class="[
-              'h-full border-l-3',
-              (severityConfig[insight.severity] ?? severityConfig.info).borderClass,
+              'flex items-center justify-center w-8 h-8 rounded-lg text-sm shrink-0',
+              (severityConfig[insight.severity] ?? severityConfig.info).textClass,
+              (severityConfig[insight.severity] ?? severityConfig.info).bgClass,
             ]"
-            :body-style="{ padding: '16px' }"
           >
-            <div class="flex items-start gap-3">
-              <div
-                :class="[
-                  'flex items-center justify-center w-8 h-8 rounded-lg text-sm shrink-0',
-                  (severityConfig[insight.severity] ?? severityConfig.info).textClass,
-                  (severityConfig[insight.severity] ?? severityConfig.info).bgClass,
-                ]"
-              >
-                <component :is="(severityConfig[insight.severity] ?? severityConfig.info).icon" />
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="text-sm font-semibold text-gray-900">
-                  {{ insight.title }}
-                </div>
-                <div class="text-xs text-gray-600 mt-1">
-                  {{ insight.description }}
-                </div>
-                <ul
-                  v-if="insight.recommendations.length"
-                  class="mt-2 space-y-1"
-                >
-                  <li
-                    v-for="(rec, j) in insight.recommendations"
-                    :key="j"
-                    class="text-xs text-gray-500 flex items-start gap-1.5"
-                  >
-                    <span class="shrink-0 mt-1 w-1 h-1 rounded-full bg-gray-400" />
-                    {{ rec }}
-                  </li>
-                </ul>
-              </div>
+            <component :is="(severityConfig[insight.severity] ?? severityConfig.info).icon" />
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-sm font-semibold text-gray-900">
+              {{ insight.title }}
             </div>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+            <div class="text-xs text-gray-600 mt-1">
+              {{ insight.description }}
+            </div>
+            <ul
+              v-if="insight.recommendations.length"
+              class="mt-2 space-y-1"
+            >
+              <li
+                v-for="(rec, j) in insight.recommendations"
+                :key="j"
+                class="text-xs text-gray-500 flex items-start gap-1.5"
+              >
+                <span class="shrink-0 mt-1 w-1 h-1 rounded-full bg-gray-400" />
+                {{ rec }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Card>
   </div>
 </template>

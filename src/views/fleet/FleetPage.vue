@@ -284,6 +284,7 @@ const insightData = computed(() => ({
       module="fleet"
       :visible="showInsights"
       :data="insightData"
+      @close="showInsights = false"
     />
 
     <!-- Trip table -->

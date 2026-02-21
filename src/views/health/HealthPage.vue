@@ -138,6 +138,7 @@ const dataSource = computed(() => filteredVehicles.value.map((v) => ({ ...v, key
       module="health"
       :visible="showInsights"
       :data="insightData"
+      @close="showInsights = false"
     />
 
     <div>

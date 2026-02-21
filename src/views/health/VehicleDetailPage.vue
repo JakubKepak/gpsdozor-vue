@@ -282,6 +282,7 @@ const insightData = computed(() => {
       module="health"
       :visible="showInsights"
       :data="insightData"
+      @close="showInsights = false"
     />
 
     <!-- Trip economics -->

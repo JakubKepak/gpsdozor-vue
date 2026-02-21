@@ -153,6 +153,7 @@ const insightData = computed(() => ({
         module="dashboard"
         :data="insightData"
         :visible="showInsights"
+        @close="showInsights = false"
       />
     </div>
 
