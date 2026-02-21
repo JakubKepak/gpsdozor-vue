@@ -9,10 +9,9 @@ import {
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { useEcoDriving } from '@/api/composables'
-import { EcoDrivingEventType, EcoDrivingSeverity } from '@/types/api'
+import { EcoDrivingEventType } from '@/types/api'
 import type { Vehicle, EcoDrivingEvent } from '@/types/api'
-
-const INT_MIN = -2147483648
+import { INT_MIN, EVENT_TYPE_COLORS, eventTypeName, severityName, severityColor, formatSpeed } from '@/views/eco-driving/constants'
 
 type EcoRow = EcoDrivingEvent & { key: string }
 
@@ -68,39 +67,6 @@ const maxDistribution = computed(() =>
 )
 
 // --- Table ---
-function eventTypeName(type: number): string {
-  return EcoDrivingEventType[type] ?? 'Unknown'
-}
-
-function severityName(sev: number): string {
-  return EcoDrivingSeverity[sev] ?? 'None'
-}
-
-function severityColor(sev: number): string {
-  if (sev === 3) return 'red'
-  if (sev === 2) return 'orange'
-  if (sev === 1) return 'green'
-  return 'default'
-}
-
-function formatSpeed(speed: number): string {
-  if (speed === INT_MIN || speed < 0) return '—'
-  return `${speed} km/h`
-}
-
-const EVENT_TYPE_COLORS: Record<number, string> = {
-  0: '#6b7280', // Unknown - gray
-  1: '#3b82f6', // CorneringLeft - blue
-  2: '#3b82f6', // CorneringRight - blue
-  3: '#3b82f6', // Cornering - blue
-  4: '#ef4444', // Acceleration - red
-  5: '#f59e0b', // Braking - amber
-  6: '#8b5cf6', // Bump - purple
-  7: '#6b7280', // LongClutch - gray
-  8: '#6b7280', // DriveOnNeutral - gray
-  9: '#6b7280', // LongFreeWheel - gray
-}
-
 const columns = computed(() => [
   {
     title: t('health.ecoDriving.colTime'),

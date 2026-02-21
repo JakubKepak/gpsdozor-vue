@@ -75,7 +75,7 @@ watch(
     const event = validEvents.value.find((e) => eventKey(e) === key)
     if (event) {
       map.panTo({ lat: event.Position.Latitude, lng: event.Position.Longitude })
-      if (map.getZoom()! < 12) map.setZoom(14)
+      if ((map.getZoom() ?? 0) < 12) map.setZoom(14)
     }
   },
 )

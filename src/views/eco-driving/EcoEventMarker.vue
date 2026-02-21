@@ -4,8 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { CustomMarker, InfoWindow } from 'vue3-google-map'
 import { Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { EcoDrivingEventType, EcoDrivingSeverity } from '@/types/api'
-import { INT_MIN, EVENT_TYPE_COLORS, eventKey as makeEventKey, type EcoEventWithVehicle } from './constants'
+import { INT_MIN, EVENT_TYPE_COLORS, eventKey as makeEventKey, eventTypeName, severityName, severityColor, formatSpeed, type EcoEventWithVehicle } from './constants'
 
 const { event, selected = false } = defineProps<{
   event: EcoEventWithVehicle
@@ -27,26 +26,6 @@ const sizeClass = computed(() => {
   if (event.EventSeverity === 2) return 'w-3 h-3'
   return 'w-2.5 h-2.5'
 })
-
-function eventTypeName(type: number): string {
-  return EcoDrivingEventType[type] ?? 'Unknown'
-}
-
-function severityName(sev: number): string {
-  return EcoDrivingSeverity[sev] ?? 'None'
-}
-
-function severityColor(sev: number): string {
-  if (sev === 3) return 'red'
-  if (sev === 2) return 'orange'
-  if (sev === 1) return 'green'
-  return 'default'
-}
-
-function formatSpeed(speed: number): string {
-  if (speed === INT_MIN || speed < 0) return '—'
-  return `${speed} km/h`
-}
 
 const infoWindowOptions = computed(() => ({
   position: { lat: event.Position.Latitude, lng: event.Position.Longitude },

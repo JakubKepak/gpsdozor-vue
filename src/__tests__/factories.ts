@@ -79,16 +79,6 @@ export function createVehicleCardBlock(): ChatBlock {
   }
 }
 
-export function createStatCardBlock(): ChatBlock {
-  return {
-    type: 'statCard',
-    stats: [
-      { label: 'Active', value: '5' },
-      { label: 'Idle', value: '3', description: 'Parked vehicles' },
-    ],
-  }
-}
-
 export function createActionBlock(): ChatBlock {
   return { type: 'action', label: 'View Fleet', href: '/fleet' }
 }

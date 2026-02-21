@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Card, Table, Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { EcoDrivingEventType, EcoDrivingSeverity } from '@/types/api'
-import { INT_MIN, EVENT_TYPE_COLORS, type EcoEventWithVehicle } from './constants'
+import { EcoDrivingEventType } from '@/types/api'
+import { INT_MIN, EVENT_TYPE_COLORS, eventTypeName, severityName, severityColor, formatSpeed, type EcoEventWithVehicle } from './constants'
 
 type EcoRow = EcoEventWithVehicle & { key: string }
 
@@ -18,26 +18,6 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-
-function eventTypeName(type: number): string {
-  return EcoDrivingEventType[type] ?? 'Unknown'
-}
-
-function severityName(sev: number): string {
-  return EcoDrivingSeverity[sev] ?? 'None'
-}
-
-function severityColor(sev: number): string {
-  if (sev === 3) return 'red'
-  if (sev === 2) return 'orange'
-  if (sev === 1) return 'green'
-  return 'default'
-}
-
-function formatSpeed(speed: number): string {
-  if (speed === INT_MIN || speed < 0) return '—'
-  return `${speed} km/h`
-}
 
 const distributionTypes = computed(() => {
   const map = new Map<number, string>()

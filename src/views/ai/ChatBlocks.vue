@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Card, Tag } from 'ant-design-vue'
-import { CarOutlined } from '@ant-design/icons-vue'
+import { Card, Tag, Button } from 'ant-design-vue'
+import { CarOutlined, ArrowRightOutlined } from '@ant-design/icons-vue'
+import { RouterLink } from 'vue-router'
 import type { ChatBlock } from '@/types/chat'
 
 defineProps<{
@@ -62,4 +63,19 @@ defineProps<{
     </Card>
   </div>
 
+  <!-- Action -->
+  <RouterLink
+    v-else-if="block.type === 'action'"
+    :to="block.href"
+  >
+    <Button
+      type="default"
+      size="small"
+    >
+      <template #icon>
+        <ArrowRightOutlined />
+      </template>
+      {{ block.label }}
+    </Button>
+  </RouterLink>
 </template>

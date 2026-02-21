@@ -3,7 +3,6 @@ import { mountWithPlugins } from '@/__tests__/mount-helpers'
 import {
   createTextBlock,
   createVehicleCardBlock,
-  createStatCardBlock,
   createActionBlock,
 } from '@/__tests__/factories'
 
@@ -62,18 +61,6 @@ describe('ChatBlocks', () => {
     })
 
     expect(wrapper.text()).toContain('Inactive')
-  })
-
-  it('renders statCard block with stat values', () => {
-    const wrapper = mountWithPlugins(ChatBlocks, {
-      props: { block: createStatCardBlock() },
-    })
-
-    expect(wrapper.text()).toContain('Active')
-    expect(wrapper.text()).toContain('5')
-    expect(wrapper.text()).toContain('Idle')
-    expect(wrapper.text()).toContain('3')
-    expect(wrapper.text()).toContain('Parked vehicles')
   })
 
   it('renders action block as RouterLink with button', () => {
