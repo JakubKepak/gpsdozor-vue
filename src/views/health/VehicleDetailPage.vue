@@ -5,9 +5,12 @@ import { useI18n } from 'vue-i18n'
 import { Alert, Card, DatePicker, Row, Col, Statistic, Skeleton } from 'ant-design-vue'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import dayjs, { type Dayjs } from 'dayjs'
-import { useVehicle, useVehicleSensors } from '@/api/composables'
+import { useVehicle, useVehicleSensors, useTrips } from '@/api/composables'
 import { useLocale } from '@/composables/useLocale'
+import { computeVehicleEconomics } from '@/views/health/computeVehicleEconomics'
 import type { SensorItem } from '@/types/api'
+import AIInsightsButton from '@/components/AIInsightsButton.vue'
+import InsightCards from '@/components/InsightCards.vue'
 import LineChartCard from '@/components/LineChartCard.vue'
 import VehicleTripEconomics from '@/views/health/VehicleTripEconomics.vue'
 
@@ -112,6 +115,36 @@ const gaugeCards = computed(() => {
   }
   return items
 })
+
+// --- AI Insights ---
+const showInsights = ref(false)
+
+const { data: trips } = useTrips(vehicleCode, from, to)
+
+const insightData = computed(() => {
+  if (!vehicle.value || !trips.value) return null
+  const eco = computeVehicleEconomics(vehicle.value, trips.value)
+  return {
+    vehicleName: vehicle.value.Name,
+    vehicleSPZ: vehicle.value.SPZ,
+    odometer: vehicle.value.Odometer,
+    totalTrips: eco.totalTrips,
+    totalDistance: eco.totalDistance,
+    totalFuel: eco.totalFuel,
+    fuelEfficiency: eco.fuelPer100km,
+    totalCost: eco.totalCost,
+    avgSpeed: eco.avgSpeed,
+    maxSpeed: eco.maxSpeed,
+    drivers: eco.drivers,
+    sensors: gaugeCards.value.reduce(
+      (acc, g) => {
+        acc[g.name] = { value: g.value, unit: g.unit }
+        return acc
+      },
+      {} as Record<string, { value: number | null; unit: string }>,
+    ),
+  }
+})
 </script>
 
 <template>
@@ -149,19 +182,25 @@ const gaugeCards = computed(() => {
             {{ vehicle.SPZ }} · {{ vehicle.BranchName }}
           </p>
         </div>
-        <RangePicker
-          :value="dateRange"
-          :format="dateFormat"
-          :allow-clear="false"
-          :disabled-date="disabledDate"
-          @calendar-change="
-            (dates: unknown) => {
-              if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
-              else pickerDates = [null, null]
-            }
-          "
-          @change="handleDateChange"
-        />
+        <div class="flex items-center gap-3">
+          <RangePicker
+            :value="dateRange"
+            :format="dateFormat"
+            :allow-clear="false"
+            :disabled-date="disabledDate"
+            @calendar-change="
+              (dates: unknown) => {
+                if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
+                else pickerDates = [null, null]
+              }
+            "
+            @change="handleDateChange"
+          />
+          <AIInsightsButton
+            :active="showInsights"
+            @click="showInsights = !showInsights"
+          />
+        </div>
       </div>
     </div>
 
@@ -237,6 +276,13 @@ const gaugeCards = computed(() => {
         </Col>
       </template>
     </Row>
+
+    <!-- AI Insights -->
+    <InsightCards
+      module="health"
+      :visible="showInsights"
+      :data="insightData"
+    />
 
     <!-- Trip economics -->
     <VehicleTripEconomics
