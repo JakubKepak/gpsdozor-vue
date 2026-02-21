@@ -61,7 +61,7 @@ function getGaugeColor(sensorName: string, value: number): string {
 
 function getLastReading(sensor: SensorItem | undefined): number | null {
   if (!sensor || sensor.data.length === 0) return null
-  return sensor.data[sensor.data.length - 1].v
+  return Math.round(sensor.data[sensor.data.length - 1].v * 10) / 10
 }
 
 const route = useRoute()
