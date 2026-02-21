@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Alert, DatePicker, Select, Row, Col } from 'ant-design-vue'
+import { Alert, Card, DatePicker, Select, Row, Col } from 'ant-design-vue'
 import {
   CarOutlined,
   UserOutlined,
@@ -9,7 +9,7 @@ import {
   NodeIndexOutlined,
 } from '@ant-design/icons-vue'
 import dayjs, { type Dayjs } from 'dayjs'
-import { useGroups, useVehicles, useAllVehicleTrips } from '@/api/composables'
+import { useGroups, useVehicles, useAllVehicleTrips, usePositionHistory } from '@/api/composables'
 import type { TripWithVehicle } from '@/api/composables/useAllVehicleTrips'
 import { useQueryParam, useSetQueryParams } from '@/composables/useQueryParam'
 import { useLocale } from '@/composables/useLocale'
@@ -17,6 +17,7 @@ import StatCard from '@/components/StatCard.vue'
 import AIInsightsButton from '@/components/AIInsightsButton.vue'
 import InsightCards from '@/components/InsightCards.vue'
 import TripTable from '@/views/fleet/TripTable.vue'
+import TripRouteMap from '@/views/fleet/TripRouteMap.vue'
 
 const { RangePicker } = DatePicker
 
@@ -133,6 +134,26 @@ const uniqueDrivers = computed(
 const uniqueVehicles = computed(
   () => new Set(tripList.value.map((t: TripWithVehicle) => t.vehicleCode)).size,
 )
+
+// --- Trip map ---
+const selectedTrip = ref<TripWithVehicle | null>(null)
+const mapCardRef = ref<InstanceType<typeof Card> | null>(null)
+
+const posCodes = computed(() =>
+  selectedTrip.value ? [selectedTrip.value.vehicleCode] : [],
+)
+const posFrom = computed(() => selectedTrip.value?.StartTime ?? '')
+const posTo = computed(() => selectedTrip.value?.FinishTime ?? '')
+
+const { data: positions, isLoading: positionsLoading } = usePositionHistory(posCodes, posFrom, posTo)
+
+function onSelectTrip(trip: TripWithVehicle) {
+  selectedTrip.value = trip
+  nextTick(() => {
+    const el = (mapCardRef.value as any)?.$el as HTMLElement | undefined
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+}
 
 // --- AI insights ---
 const insightData = computed(() => ({
@@ -279,6 +300,28 @@ const insightData = computed(() => ({
       </Col>
     </Row>
 
+    <!-- Trip route map -->
+    <Card
+      ref="mapCardRef"
+      :body-style="{ padding: 0 }"
+    >
+      <div class="px-5 pt-5 pb-2">
+        <h3 class="text-sm font-semibold text-gray-900 m-0">
+          {{ t('fleet.tripMap') }}
+        </h3>
+        <p class="text-xs text-gray-400 mt-0.5 mb-0">
+          {{ t('fleet.tripMapSubtitle') }}
+        </p>
+      </div>
+      <div class="px-5 pb-5">
+        <TripRouteMap
+          :trip="selectedTrip"
+          :positions="positions ?? []"
+          :loading="positionsLoading"
+        />
+      </div>
+    </Card>
+
     <!-- AI Insights -->
     <InsightCards
       module="fleet"
@@ -291,6 +334,8 @@ const insightData = computed(() => ({
     <TripTable
       :trips="tripList"
       :loading="isLoading"
+      :selected-trip-id="selectedTrip?.Id ?? null"
+      @select-trip="onSelectTrip"
     />
   </div>
 </template>

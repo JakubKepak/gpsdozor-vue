@@ -7,13 +7,14 @@ vi.mock('@/api/composables', () => ({
   useGroups: vi.fn(),
   useVehicles: vi.fn(),
   useAllVehicleTrips: vi.fn(),
+  usePositionHistory: vi.fn(),
 }))
 
 vi.mock('@/api/composables/useAIInsights', () => ({
   useAIInsights: vi.fn(),
 }))
 
-import { useGroups, useVehicles, useAllVehicleTrips } from '@/api/composables'
+import { useGroups, useVehicles, useAllVehicleTrips, usePositionHistory } from '@/api/composables'
 import { useAIInsights } from '@/api/composables/useAIInsights'
 
 const vehicle = createVehicle({ Code: 'V1', Name: 'Test Car', SPZ: 'ABC 123' })
@@ -47,6 +48,12 @@ function setupMocks(overrides: { error?: Error | null; trips?: any[] } = {}) {
       error: overrides.error ?? null,
     })) as any,
   )
+
+  vi.mocked(usePositionHistory).mockReturnValue({
+    data: ref([]),
+    isLoading: ref(false),
+    error: ref(null),
+  } as any)
 
   vi.mocked(useAIInsights).mockReturnValue({
     data: ref(null),

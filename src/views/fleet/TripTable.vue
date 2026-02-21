@@ -6,9 +6,14 @@ import { EnvironmentOutlined, ClockCircleOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import type { TripWithVehicle } from '@/api/composables/useAllVehicleTrips'
 
-const { trips, loading = false } = defineProps<{
+const { trips, loading = false, selectedTripId = null } = defineProps<{
   trips: TripWithVehicle[]
   loading?: boolean
+  selectedTripId?: number | null
+}>()
+
+const emit = defineEmits<{
+  selectTrip: [trip: TripWithVehicle]
 }>()
 
 const { t } = useI18n()
@@ -113,6 +118,12 @@ const dataSource = computed(() => trips.map((t) => ({ ...t, key: t.Id })))
     :columns="columns"
     :data-source="dataSource"
     :loading="loading"
+    :custom-row="
+      (record: TripWithVehicle) => ({
+        onClick: () => emit('selectTrip', record),
+        class: record.Id === selectedTripId ? 'cursor-pointer trip-row-selected' : 'cursor-pointer',
+      })
+    "
     :pagination="{
       defaultPageSize: 20,
       showSizeChanger: true,
@@ -243,3 +254,9 @@ const dataSource = computed(() => trips.map((t) => ({ ...t, key: t.Id })))
     </template>
   </Table>
 </template>
+
+<style scoped>
+:deep(.trip-row-selected) td {
+  background-color: var(--color-blue-50, #eff6ff) !important;
+}
+</style>
