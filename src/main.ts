@@ -19,4 +19,10 @@ app.use(VueQueryPlugin)
 app.use(router)
 app.use(i18n)
 
+app.config.errorHandler = (err, instance, info) => {
+  console.error('[Vue Global Error]', err)
+  console.error('Component:', instance)
+  console.error('Info:', info)
+}
+
 app.mount('#app')

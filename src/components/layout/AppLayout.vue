@@ -13,6 +13,7 @@ import {
 } from '@ant-design/icons-vue'
 import { useLocale } from '@/composables/useLocale'
 import { provideChatStore } from '@/stores/chatStore'
+import ErrorBoundary from '@/components/ErrorBoundary.vue'
 import ChatPanel from '@/views/ai/ChatPanel.vue'
 
 const collapsed = ref(true)
@@ -132,7 +133,11 @@ export default {}
 
     <Layout>
       <Layout.Content :class="isMapPage ? 'overflow-hidden' : 'p-6 bg-gray-50 overflow-auto'">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <ErrorBoundary :key="$route.path">
+            <component :is="Component" />
+          </ErrorBoundary>
+        </router-view>
       </Layout.Content>
     </Layout>
 

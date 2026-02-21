@@ -142,5 +142,9 @@
   "liveMap.tripDistance": "Vzdálenost",
   "liveMap.tripDriver": "Řidič",
   "liveMap.collapsePanel": "Sbalit",
-  "liveMap.expandPanel": "Rozbalit"
+  "liveMap.expandPanel": "Rozbalit",
+  "error.title": "Nastala neočekávaná chyba",
+  "error.description": "Omlouváme se, něco se pokazilo. Zkuste to prosím znovu.",
+  "error.retry": "Zkusit znovu",
+  "error.reload": "Obnovit stránku"
 }

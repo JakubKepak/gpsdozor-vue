@@ -142,5 +142,9 @@
   "liveMap.tripDistance": "Distance",
   "liveMap.tripDriver": "Driver",
   "liveMap.collapsePanel": "Collapse",
-  "liveMap.expandPanel": "Expand"
+  "liveMap.expandPanel": "Expand",
+  "error.title": "Something went wrong",
+  "error.description": "An unexpected error occurred. Please try again.",
+  "error.retry": "Try again",
+  "error.reload": "Reload page"
 }
