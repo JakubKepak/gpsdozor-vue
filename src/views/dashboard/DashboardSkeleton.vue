@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Skeleton, Card, Row, Col } from 'ant-design-vue'
+
+const SkeletonNode = Skeleton.Node
 </script>
 
 <template>
@@ -48,7 +50,7 @@ import { Skeleton, Card, Row, Col } from 'ant-design-vue'
         :lg="16"
       >
         <Card>
-          <Skeleton.Node
+          <SkeletonNode
             active
             class="w-full! h-75!"
           />

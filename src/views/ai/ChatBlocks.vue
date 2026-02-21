@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { Card, Row, Col, Statistic, Tag, Button } from 'ant-design-vue'
-import { CarOutlined, ArrowRightOutlined } from '@ant-design/icons-vue'
-import { RouterLink } from 'vue-router'
+import { Card, Row, Col, Statistic, Tag } from 'ant-design-vue'
+import { CarOutlined } from '@ant-design/icons-vue'
 import type { ChatBlock } from '@/types/chat'
 
 defineProps<{
@@ -35,12 +34,9 @@ defineProps<{
             <CarOutlined />
           </div>
           <div>
-            <RouterLink
-              :to="`/health/${v.code}`"
-              class="font-medium text-sm text-blue-600 hover:text-blue-800"
-            >
+            <div class="font-medium text-sm text-gray-900">
               {{ v.name }}
-            </RouterLink>
+            </div>
             <div class="text-xs text-gray-400">
               {{ v.spz }}
             </div>
@@ -98,20 +94,4 @@ defineProps<{
       </Card>
     </Col>
   </Row>
-
-  <!-- Action -->
-  <RouterLink
-    v-else-if="block.type === 'action'"
-    :to="block.href"
-  >
-    <Button
-      type="default"
-      size="small"
-    >
-      <template #icon>
-        <ArrowRightOutlined />
-      </template>
-      {{ block.label }}
-    </Button>
-  </RouterLink>
 </template>
