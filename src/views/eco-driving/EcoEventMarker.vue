@@ -5,7 +5,7 @@ import { CustomMarker, InfoWindow } from 'vue3-google-map'
 import { Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { EcoDrivingEventType, EcoDrivingSeverity } from '@/types/api'
-import { INT_MIN, EVENT_TYPE_COLORS, type EcoEventWithVehicle } from './constants'
+import { INT_MIN, EVENT_TYPE_COLORS, eventKey as makeEventKey, type EcoEventWithVehicle } from './constants'
 
 const { event, selected = false } = defineProps<{
   event: EcoEventWithVehicle
@@ -18,9 +18,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const eventKey = computed(
-  () => `${event.vehicleCode}-${event.EventType}-${event.Timestamp}-${event.Position.Latitude}-${event.Position.Longitude}`,
-)
+const eventKey = computed(() => makeEventKey(event))
 
 const bgColor = computed(() => EVENT_TYPE_COLORS[event.EventType] ?? '#6b7280')
 

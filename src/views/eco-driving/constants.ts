@@ -32,3 +32,7 @@ export type EcoEventWithVehicle = EcoDrivingEvent & {
   vehicleName: string
   vehicleSPZ: string
 }
+
+export function eventKey(e: EcoEventWithVehicle): string {
+  return `${e.vehicleCode}-${e.EventType}-${e.Timestamp}-${e.Position.Latitude}-${e.Position.Longitude}`
+}

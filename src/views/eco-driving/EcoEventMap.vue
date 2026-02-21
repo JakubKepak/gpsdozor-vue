@@ -4,11 +4,16 @@ import { useI18n } from 'vue-i18n'
 import { GoogleMap } from 'vue3-google-map'
 import { EnvironmentOutlined } from '@ant-design/icons-vue'
 import { EcoDrivingEventType } from '@/types/api'
-import { EVENT_TYPE_COLORS, type EcoEventWithVehicle } from './constants'
+import { EVENT_TYPE_COLORS, eventKey, type EcoEventWithVehicle } from './constants'
 import EcoEventMarker from './EcoEventMarker.vue'
 
-const { events } = defineProps<{
+const { events, selectedKey = null } = defineProps<{
   events: EcoEventWithVehicle[]
+  selectedKey?: string | null
+}>()
+
+const emit = defineEmits<{
+  'update:selectedKey': [key: string | null]
 }>()
 
 const { t } = useI18n()
@@ -16,7 +21,6 @@ const { t } = useI18n()
 const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 
 const mapRef = ref<InstanceType<typeof GoogleMap> | null>(null)
-const selectedKey = ref<string | null>(null)
 const hasFitted = ref(false)
 
 const center = { lat: 50.08, lng: 14.43 }
@@ -57,13 +61,24 @@ function fitToEvents() {
   hasFitted.value = true
 }
 
-function eventKey(e: EcoEventWithVehicle): string {
-  return `${e.vehicleCode}-${e.EventType}-${e.Timestamp}-${e.Position.Latitude}-${e.Position.Longitude}`
+function onMarkerSelect(key: string | null) {
+  emit('update:selectedKey', key)
 }
 
-function onMarkerSelect(key: string | null) {
-  selectedKey.value = key
-}
+// Pan to selected event (e.g. from table click)
+watch(
+  () => selectedKey,
+  (key) => {
+    if (!key) return
+    const map = mapRef.value?.map
+    if (!map) return
+    const event = validEvents.value.find((e) => eventKey(e) === key)
+    if (event) {
+      map.panTo({ lat: event.Position.Latitude, lng: event.Position.Longitude })
+      if (map.getZoom()! < 12) map.setZoom(14)
+    }
+  },
+)
 
 // Legend: only show event types present in data
 const legendItems = computed(() => {

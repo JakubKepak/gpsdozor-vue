@@ -13,6 +13,10 @@ const { events, loading = false } = defineProps<{
   loading?: boolean
 }>()
 
+const emit = defineEmits<{
+  selectEvent: [event: EcoEventWithVehicle]
+}>()
+
 const { t } = useI18n()
 
 function eventTypeName(type: number): string {
@@ -121,6 +125,10 @@ const dataSource = computed(() =>
       }"
       size="small"
       :scroll="{ x: 750 }"
+      :custom-row="(record: EcoRow) => ({
+        onClick: () => emit('selectEvent', record),
+        class: 'cursor-pointer',
+      })"
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'vehicle'">

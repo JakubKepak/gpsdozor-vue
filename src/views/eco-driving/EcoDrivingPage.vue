@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Alert, Card, DatePicker, Select, Row, Col, Empty } from 'ant-design-vue'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons-vue'
 import dayjs, { type Dayjs } from 'dayjs'
 import { useGroups, useVehicles, useAllVehicleEcoDriving } from '@/api/composables'
-import type { EcoEventWithVehicle } from './constants'
+import { eventKey, type EcoEventWithVehicle } from './constants'
 import { useQueryParam, useSetQueryParams } from '@/composables/useQueryParam'
 import { useLocale } from '@/composables/useLocale'
 import StatCard from '@/components/StatCard.vue'
@@ -20,6 +20,18 @@ import EcoRankingTable from '@/views/eco-driving/EcoRankingTable.vue'
 import EcoDistributionChart from '@/views/eco-driving/EcoDistributionChart.vue'
 import EcoEventLog from '@/views/eco-driving/EcoEventLog.vue'
 import EcoEventMap from '@/views/eco-driving/EcoEventMap.vue'
+
+// --- Map ↔ Table sync ---
+const selectedEventKey = ref<string | null>(null)
+const mapCardRef = ref<InstanceType<typeof Card> | null>(null)
+
+function onTableSelectEvent(event: EcoEventWithVehicle) {
+  selectedEventKey.value = eventKey(event)
+  nextTick(() => {
+    const el = (mapCardRef.value as any)?.$el as HTMLElement | undefined
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+}
 
 const { RangePicker } = DatePicker
 
@@ -269,6 +281,7 @@ const insightData = computed(() => ({
 
     <!-- Hero event map -->
     <Card
+      ref="mapCardRef"
       v-if="totalEvents > 0"
       :body-style="{ padding: 0 }"
     >
@@ -282,7 +295,11 @@ const insightData = computed(() => ({
       </div>
 
       <div class="px-5 pb-5">
-        <EcoEventMap :events="events" />
+        <EcoEventMap
+          :events="events"
+          :selected-key="selectedEventKey"
+          @update:selected-key="selectedEventKey = $event"
+        />
       </div>
     </Card>
 
@@ -382,6 +399,7 @@ const insightData = computed(() => ({
       <EcoEventLog
         :events="events"
         :loading="isLoading"
+        @select-event="onTableSelectEvent"
       />
     </template>
   </div>
