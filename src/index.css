@@ -64,6 +64,28 @@
   color: rgba(255, 255, 255, 0.35);
 }
 
+/* Chat bubble – pulse & glow (default visible state) */
+@keyframes chat-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes chat-glow {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(124, 58, 237, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15); }
+  50% { box-shadow: 0 0 20px 6px rgba(124, 58, 237, 0.55), 0 4px 16px rgba(0, 0, 0, 0.2); }
+}
+.chat-bubble-glow {
+  animation: chat-pulse 2.5s ease-in-out infinite, chat-glow 2.5s ease-in-out infinite;
+}
+/* Disable animation on hover so Tailwind hover:scale-105 works cleanly */
+.chat-bubble-glow:hover {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-bubble-glow {
+    animation: none;
+  }
+}
+
 /* Google Maps InfoWindow — hide default close button and header padding */
 .gm-style-iw-chr {
   display: none !important;
