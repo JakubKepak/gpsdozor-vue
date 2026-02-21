@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Alert, DatePicker, Select, Row, Col, Empty } from 'ant-design-vue'
+import { Alert, Card, DatePicker, Select, Row, Col, Empty } from 'ant-design-vue'
 import {
   ThunderboltOutlined,
   WarningOutlined,
@@ -19,6 +19,7 @@ import InsightCards from '@/components/InsightCards.vue'
 import EcoRankingTable from '@/views/eco-driving/EcoRankingTable.vue'
 import EcoDistributionChart from '@/views/eco-driving/EcoDistributionChart.vue'
 import EcoEventLog from '@/views/eco-driving/EcoEventLog.vue'
+import EcoEventMap from '@/views/eco-driving/EcoEventMap.vue'
 
 const { RangePicker } = DatePicker
 
@@ -265,6 +266,25 @@ const insightData = computed(() => ({
         @change="onDateRangeChange"
       />
     </div>
+
+    <!-- Hero event map -->
+    <Card
+      v-if="totalEvents > 0"
+      :body-style="{ padding: 0 }"
+    >
+      <div class="px-5 pt-5 pb-2">
+        <h3 class="text-sm font-semibold text-gray-900 m-0">
+          {{ t('ecoDriving.eventMap') }}
+        </h3>
+        <p class="text-xs text-gray-400 mt-0.5 mb-0">
+          {{ t('ecoDriving.eventMapSubtitle') }}
+        </p>
+      </div>
+
+      <div class="px-5 pb-5">
+        <EcoEventMap :events="events" />
+      </div>
+    </Card>
 
     <!-- Stat cards -->
     <Row :gutter="[16, 16]">
