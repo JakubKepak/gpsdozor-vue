@@ -89,10 +89,15 @@ Follow these skill guides for Vue best practices. Load the relevant skill file b
 - All user-facing strings must use vue-i18n `t()` function
 - Translation keys go in `src/i18n/cs.json` (primary) and `src/i18n/en.json`
 
+## Pre-commit Workflow
+Before every commit, run the `/addy-code-reviewer` skill to review all staged changes. Do not commit until the review passes.
+
 ## Commands
 - `npm run dev` — Start dev server
 - `npm run build` — Type-check + production build
 - `npm run lint` — ESLint
+- `npm run test` — Run unit/component tests (Vitest)
+- `npm run test:e2e` — Run E2E tests (Playwright, requires Node 22+)
 - `npm run preview` — Preview production build
 
 ## API
