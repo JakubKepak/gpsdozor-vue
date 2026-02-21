@@ -30,10 +30,6 @@ function truncateAddress(addr: string, maxLen = 35): string {
   return addr.length > maxLen ? addr.slice(0, maxLen) + '...' : addr
 }
 
-const vehicleFilters = computed(() =>
-  [...new Set(trips.map((t) => t.vehicleName))].map((name) => ({ text: name, value: name })),
-)
-
 const driverFilters = computed(() =>
   [...new Set(trips.map((t) => (t.DriverName ?? '').trim()).filter(Boolean))].map((name) => ({
     text: name,
@@ -46,9 +42,6 @@ const columns = computed(() => [
     title: t('fleet.colVehicle'),
     key: 'vehicle',
     width: 150,
-    filters: vehicleFilters.value,
-    onFilter: (value: string | number | boolean, record: TripWithVehicle) =>
-      record.vehicleName === String(value),
   },
   {
     title: t('fleet.colDriver'),

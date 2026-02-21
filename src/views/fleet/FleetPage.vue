@@ -97,8 +97,8 @@ const selectedCodes = computed(() => {
 })
 
 function setSelectedCodes(codes: unknown) {
-  if (!Array.isArray(codes)) return
-  setVehiclesParam(codes.length > 0 ? codes.join(',') : '')
+  if (!Array.isArray(codes) || codes.length === 0) return
+  setVehiclesParam(codes.join(','))
 }
 
 const vehicleOptions = computed(() =>
@@ -178,25 +178,37 @@ const insightData = computed(() => ({
           {{ t('fleet.subtitle') }}
         </p>
       </div>
-      <div class="flex items-center gap-3">
-        <RangePicker
-          :value="dateRange"
-          :format="dateFormat"
-          :allow-clear="false"
-          :disabled-date="disabledDate"
-          @calendar-change="
-            (dates: unknown) => {
-              if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
-              else pickerDates = [null, null]
-            }
-          "
-          @change="onDateRangeChange"
-        />
-        <AIInsightsButton
-          :active="showInsights"
-          @click="showInsights = !showInsights"
-        />
-      </div>
+      <AIInsightsButton
+        :active="showInsights"
+        @click="showInsights = !showInsights"
+      />
+    </div>
+
+    <!-- Filters -->
+    <div class="flex items-center gap-3 flex-wrap">
+      <Select
+        mode="multiple"
+        :value="selectedCodes"
+        :class="['min-w-60 flex-1', { 'hide-tag-close': selectedCodes.length <= 1 }]"
+        max-tag-count="responsive"
+        option-filter-prop="label"
+        :placeholder="t('fleet.selectVehicles')"
+        :options="vehicleOptions"
+        @update:value="setSelectedCodes"
+      />
+      <RangePicker
+        :value="dateRange"
+        :format="dateFormat"
+        :allow-clear="false"
+        :disabled-date="disabledDate"
+        @calendar-change="
+          (dates: unknown) => {
+            if (Array.isArray(dates)) pickerDates = [dates[0] ?? null, dates[1] ?? null]
+            else pickerDates = [null, null]
+          }
+        "
+        @change="onDateRangeChange"
+      />
     </div>
 
     <!-- Stat cards -->
@@ -267,17 +279,6 @@ const insightData = computed(() => ({
       </Col>
     </Row>
 
-    <!-- Filters -->
-    <Select
-      mode="multiple"
-      :value="selectedCodes"
-      class="w-full"
-      max-tag-count="responsive"
-      :placeholder="t('fleet.selectVehicles')"
-      :options="vehicleOptions"
-      @update:value="setSelectedCodes"
-    />
-
     <!-- AI Insights -->
     <InsightCards
       module="fleet"
@@ -292,3 +293,9 @@ const insightData = computed(() => ({
     />
   </div>
 </template>
+
+<style scoped>
+.hide-tag-close :deep(.ant-select-selection-item-remove) {
+  display: none;
+}
+</style>
