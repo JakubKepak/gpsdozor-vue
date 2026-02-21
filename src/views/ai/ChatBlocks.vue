@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, Row, Col, Statistic, Tag } from 'ant-design-vue'
+import { Card, Tag } from 'ant-design-vue'
 import { CarOutlined } from '@ant-design/icons-vue'
 import type { ChatBlock } from '@/types/chat'
 
@@ -62,36 +62,4 @@ defineProps<{
     </Card>
   </div>
 
-  <!-- Stat cards -->
-  <Row
-    v-else-if="block.type === 'statCard'"
-    :gutter="[12, 12]"
-  >
-    <Col
-      v-for="(s, i) in block.stats"
-      :key="i"
-      :xs="12"
-      :sm="8"
-    >
-      <Card
-        size="small"
-        :body-style="{ padding: '12px 16px' }"
-      >
-        <Statistic
-          :value="s.value"
-          :value-style="{ fontSize: '18px' }"
-        >
-          <template #title>
-            <span class="text-xs">{{ s.label }}</span>
-          </template>
-        </Statistic>
-        <div
-          v-if="s.description"
-          class="text-xs text-gray-400 mt-1"
-        >
-          {{ s.description }}
-        </div>
-      </Card>
-    </Col>
-  </Row>
 </template>

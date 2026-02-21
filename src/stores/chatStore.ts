@@ -81,7 +81,15 @@ export function provideChatStore() {
       let blocks: ChatBlock[]
 
       if (data.blocks && Array.isArray(data.blocks)) {
-        blocks = data.blocks
+        blocks = data.blocks.map((b: any) => {
+          if (b.type === 'statCard' && Array.isArray(b.stats)) {
+            const lines = b.stats.map((s: any) =>
+              s.description ? `${s.label}: ${s.value} (${s.description})` : `${s.label}: ${s.value}`,
+            )
+            return { type: 'text' as const, content: lines.join('\n') }
+          }
+          return b
+        })
       } else {
         blocks = [{ type: 'text', content: t('ai.error') }]
       }
