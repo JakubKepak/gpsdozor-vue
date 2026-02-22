@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { CustomMarker, InfoWindow } from 'vue3-google-map'
 import { Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { INT_MIN, EVENT_TYPE_COLORS, eventKey as makeEventKey, eventTypeName, severityName, severityColor, formatSpeed, type EcoEventWithVehicle } from './constants'
+import { EVENT_TYPE_COLORS, eventKey as makeEventKey, eventTypeName, severityName, severityColor, formatSpeed, type EcoEventWithVehicle } from './constants'
 
 const { event, selected = false } = defineProps<{
   event: EcoEventWithVehicle

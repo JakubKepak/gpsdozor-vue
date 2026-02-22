@@ -83,7 +83,7 @@ const columns = computed(() => [
       text: t(`health.ecoDriving.type.${d.label}`),
       value: d.type,
     })),
-    onFilter: (value: number, record: EcoRow) => record.EventType === value,
+    onFilter: (value: string | number | boolean, record: EcoRow) => record.EventType === value,
   },
   {
     title: t('health.ecoDriving.colSeverity'),
@@ -94,7 +94,7 @@ const columns = computed(() => [
       { text: t('health.ecoDriving.severity.Medium'), value: 2 },
       { text: t('health.ecoDriving.severity.Low'), value: 1 },
     ],
-    onFilter: (value: number, record: EcoRow) => record.EventSeverity === value,
+    onFilter: (value: string | number | boolean, record: EcoRow) => record.EventSeverity === value,
     sorter: (a: EcoRow, b: EcoRow) => a.EventSeverity - b.EventSeverity,
   },
   {
