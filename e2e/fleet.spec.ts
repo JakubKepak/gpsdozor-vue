@@ -15,12 +15,10 @@ test.describe('Fleet / Trip Logs', () => {
   })
 
   test('renders vehicle selector', async ({ page }) => {
-    const select = page.locator('.ant-select')
-    await expect(select.first()).toBeVisible()
+    await expect(page.getByRole('combobox').first()).toBeVisible()
   })
 
   test('renders trip table', async ({ page }) => {
-    const table = page.locator('.ant-table')
-    await expect(table).toBeVisible()
+    await expect(page.getByRole('table')).toBeVisible()
   })
 })

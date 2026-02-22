@@ -5,6 +5,8 @@ test.describe('Chat Panel', () => {
   test.beforeEach(async ({ page }) => {
     await setEnglishLocale(page)
     await mockApi(page)
+    // Disable CSS animations so Playwright doesn't see the chat bubble as unstable
+    await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/')
   })
 

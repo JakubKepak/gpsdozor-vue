@@ -23,6 +23,10 @@ test.describe('Navigation', () => {
     await page.getByRole('menuitem', { name: /fleet/i }).click()
     await expect(page).toHaveURL('/health')
 
+    // Navigate to Eco-Driving
+    await page.getByRole('menuitem', { name: /eco-driving/i }).click()
+    await expect(page).toHaveURL(/\/eco-driving/)
+
     // Navigate back to Dashboard
     await page.getByRole('menuitem', { name: /dashboard/i }).click()
     await expect(page).toHaveURL('/')

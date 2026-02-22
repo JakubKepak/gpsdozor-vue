@@ -48,6 +48,51 @@ export async function mockApi(page: Page) {
       IsInvoiced: false,
       RefuelingCards: [],
     },
+    {
+      Code: 'V3',
+      GroupCode: 'G1',
+      BranchId: 1,
+      BranchName: 'Prague',
+      Name: 'Skoda AHE Superb',
+      SPZ: '3EF 9012',
+      BatteryPercentage: 70,
+      Speed: 0,
+      LastPosition: { Latitude: '50.0880', Longitude: '14.4208' },
+      DeviceImei: '111222333',
+      IsActive: true,
+      LastPositionTimestamp: new Date().toISOString(),
+      IsEcoDrivingEnabled: true,
+      Odometer: 120000,
+      IsInvoiced: false,
+      RefuelingCards: [],
+    },
+  ]
+
+  const ecoEvents = [
+    {
+      EventType: 5, // Braking
+      EventValue: 42,
+      Timestamp: '2025-01-15T08:15:00',
+      Position: { Latitude: 50.08, Longitude: 14.43 },
+      EventSeverity: 3, // High
+      Speed: 85,
+    },
+    {
+      EventType: 4, // Acceleration
+      EventValue: 28,
+      Timestamp: '2025-01-15T09:00:00',
+      Position: { Latitude: 50.09, Longitude: 14.45 },
+      EventSeverity: 2, // Medium
+      Speed: 60,
+    },
+    {
+      EventType: 3, // Cornering
+      EventValue: 15,
+      Timestamp: '2025-01-15T10:30:00',
+      Position: { Latitude: 50.07, Longitude: 14.42 },
+      EventSeverity: 1, // Low
+      Speed: 45,
+    },
   ]
 
   const trips = [
@@ -83,6 +128,9 @@ export async function mockApi(page: Page) {
     }
     if (url.match(/\/api\/v1\/vehicles\/group\//)) {
       return route.fulfill({ json: vehicles })
+    }
+    if (url.match(/\/api\/v1\/vehicle\/[^/]+\/eco-driving-events/)) {
+      return route.fulfill({ json: ecoEvents })
     }
     if (url.match(/\/api\/v1\/vehicle\/[^/]+\/trips/)) {
       return route.fulfill({ json: trips })

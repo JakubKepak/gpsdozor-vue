@@ -23,10 +23,9 @@ test.describe('Locale', () => {
 
     // After expanding, the locale is a Select dropdown — pick Czech
     const localeSelect = page.locator('.locale-select')
-    if (await localeSelect.isVisible()) {
-      await localeSelect.click()
-      await page.getByText('CZ').click()
-    }
+    await expect(localeSelect).toBeVisible()
+    await localeSelect.click()
+    await page.getByText('CZ').click()
 
     // English title should be gone, Czech title should appear
     await expect(page.getByText('Fleet Dashboard')).not.toBeVisible()
@@ -39,10 +38,9 @@ test.describe('Locale', () => {
 
     await expandSidebar(page)
     const localeSelect = page.locator('.locale-select')
-    if (await localeSelect.isVisible()) {
-      await localeSelect.click()
-      await page.getByText('CZ').click()
-    }
+    await expect(localeSelect).toBeVisible()
+    await localeSelect.click()
+    await page.getByText('CZ').click()
 
     await expect(page.getByText('Fleet Dashboard')).not.toBeVisible()
 
