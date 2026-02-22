@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { GoogleMap, Marker } from 'vue3-google-map'
+import { GoogleMap, CustomMarker } from 'vue3-google-map'
 import { EnvironmentOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import type { TripWithVehicle } from '@/api/composables/useAllVehicleTrips'
@@ -82,15 +82,15 @@ const endPos = computed(() =>
   polylinePath.value.length > 1 ? polylinePath.value[polylinePath.value.length - 1] : null,
 )
 
-const startMarkerOptions = computed(() =>
+const startMarkerOpts = computed(() =>
   startPos.value
-    ? { position: startPos.value, icon: startIconUrl, zIndex: 10 }
+    ? { position: startPos.value, anchorPoint: 'CENTER' as const, zIndex: 10 }
     : null,
 )
 
-const endMarkerOptions = computed(() =>
+const endMarkerOpts = computed(() =>
   endPos.value
-    ? { position: endPos.value, icon: endIconUrl, zIndex: 10 }
+    ? { position: endPos.value, anchorPoint: 'BOTTOM_CENTER' as const, zIndex: 10 }
     : null,
 )
 
@@ -145,16 +145,30 @@ watch(
       :zoom-control="true"
     >
       <!-- Start marker -->
-      <Marker
-        v-if="startMarkerOptions"
-        :options="startMarkerOptions"
-      />
+      <CustomMarker
+        v-if="startMarkerOpts"
+        :options="startMarkerOpts"
+      >
+        <img
+          :src="startIconUrl"
+          width="18"
+          height="18"
+          alt=""
+        >
+      </CustomMarker>
 
       <!-- End marker -->
-      <Marker
-        v-if="endMarkerOptions"
-        :options="endMarkerOptions"
-      />
+      <CustomMarker
+        v-if="endMarkerOpts"
+        :options="endMarkerOpts"
+      >
+        <img
+          :src="endIconUrl"
+          width="30"
+          height="42"
+          alt=""
+        >
+      </CustomMarker>
     </GoogleMap>
 
     <!-- Overlay: no trip selected -->
