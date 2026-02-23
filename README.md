@@ -14,7 +14,7 @@ Pro práci používám převážne skilly a commandy. Workflow je následující
 Planning - implementace - review - commit.
 Nepodceňuji fázi planingu. Čím lépe a přesněji je specifikovaný a rozpadnutý plán na jednotlivé kroky, tím přesnější je pak výsledek implementace. Před každým commitem je spuštěn code-review agent.
 
-V samotné appce je pak použito Gemini 2.5 Flash pro AI chat a AI analýzu.
+V samotné appce je pak použito Gemini 2.5 Flash pro AI chat a AI analýzu. Je tam použitý free plán, takže jen 20 requestů za den.
 
 ## Na co jsem narazil
 
